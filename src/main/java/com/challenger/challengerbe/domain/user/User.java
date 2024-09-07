@@ -1,31 +1,33 @@
 package com.challenger.challengerbe.domain.user;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
 
 @Entity
 @Getter
+@Table(name = "user")
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long idk;
 
+    @Column(name = "username")
     private String username;
 
+    @Column(name = "email")
     private String email;
 
+    @Column(name = "password")
     private String password;
 
-    private String idk;
-
     @Enumerated(EnumType.STRING)
+    @Column(name = "role")
     private Role role;
 
     @Getter
@@ -42,11 +44,11 @@ public class User {
     }
 
     @Builder
-    public User(String username, String email, String password, String idk, Role role) {
+    public User(Long idk, String username, String email, String password, Role role) {
+        this.idk = idk;
         this.username = username;
         this.email = email;
         this.password = password;
-        this.idk = idk;
         this.role = role;
     }
 }
