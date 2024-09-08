@@ -1,8 +1,56 @@
 spring:
-  application:
-    name: challenger-be
+  profiles:
+    group:
+      local: local,common
+      dev : dev,common
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+
   datasource:
-    url: jdbc:mysql://localhost:3306/challenger_db?useSSL=false&allowPublicKeyRetrieval=true
-    username: root
-    password: root
+    url: jdbc:mysql://115.85.182.23:33306/challenger_db?serverTimezone=UTC&characterEncoding=UTF-8&useSSL=false
+    username: challenger
+    password: challenger_db
+#    url: jdbc:mysql://localhost:3306/challenger_db?useSSL=false&allowPublicKeyRetrieval=true
+#    username: root
+#    password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  datasource:
+    url: jdbc:mysql://172.18.0.2:3306/challenger_db?serverTimezone=UTC&characterEncoding=UTF-8&useSSL=false
+    username: challenger
+    password: challenger_db
+    tomcat:
+      initial-size: 20
+      max-idle: 15
+      min-idle: 8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+---
+spring:
+  config:
+    activate:
+      on-profile: common
+
+  jpa:
+    open-in-view: false # OSIV 성능 최적화를 위한 false 처리 영속성 컨텍스트 와 db 커넥션의 범위를 조정하여 리소스 낭비를 줄임
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        # show_sql: true
+        # format_sql: true
+        default_batch_fetch_size : 500  # 컬렉션 조회 최적화를 위한 설정
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.type: debug
