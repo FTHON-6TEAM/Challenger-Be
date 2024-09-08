@@ -97,4 +97,4 @@ jobs:
           port: ${{ secrets.DEVELOP_PORT}}
           connect_timeout: 120s
           first_ssh: |
-            docker run -d -p 32468:8080 --name challenger -e SPRING_PROFILES_ACTIVE=dev --network docker_challenger-net challenger:latest;
+            docker run -d -p 32468:8080 --name challenger -e SPRING_PROFILES_ACTIVE=dev --network mariadb_mariadb-master-net challenger:latest;
