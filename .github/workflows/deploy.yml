@@ -57,8 +57,8 @@ jobs:
       uses: appleboy/scp-action@master
       with:
         host: ${{ secrets.DEVELOP_HOST}}
-        username: ${{ secrets.POSTOFFICE_NAME }} # dailyroutine
-        password : ${{ secrets.POSTOFFICE_PASS }} # daily!23
+        username: ${{ secrets.POSTOFFICE_NAME }}
+        password : ${{ secrets.POSTOFFICE_PASS }}
         port: ${{ secrets.DEVELOP_PORT}}
         source: "challenger.tar"
         target: "/home/fton/backend"
