@@ -24,7 +24,6 @@ public class UserRefreshToken {
     @Column(name = "user_idk")
     private String userIdk;
 
-
     @Embedded
     private RefreshToken refreshToken;
 

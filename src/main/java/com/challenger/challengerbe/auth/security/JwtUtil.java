@@ -19,7 +19,7 @@ import org.springframework.util.StringUtils;
 public class JwtUtil {
     public static final String AUTHORIZATION_HEADER = "Authorization"; // Header KEY 값
     public static final String BEARER_PREFIX = "Bearer "; // Token 식별자
-    private static final long TOKEN_TIME = Duration.ofDays(5).toMillis(); // 토큰 만료시간 5 days
+    private static final long TOKEN_TIME = Duration.ofDays(1).toMillis(); // 토큰 만료시간 1 days
 
     @Value("${jwt.secret}") // Base 64 decode시 사용하는 Key
     private String secretKey;
