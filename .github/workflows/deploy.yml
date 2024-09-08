@@ -57,8 +57,8 @@ jobs:
       uses: appleboy/scp-action@master
       with:
         host: ${{ secrets.DEVELOP_HOST}}
-        username: ${{ secrets.POSTOFFICE_NAME }} # dailyroutine
-        password : ${{ secrets.POSTOFFICE_PASS }} # daily!23
+        username: ${{ secrets.POSTOFFICE_NAME }}
+        password : ${{ secrets.POSTOFFICE_PASS }}
         port: ${{ secrets.DEVELOP_PORT}}
         source: "challenger.tar"
         target: "/home/fton/backend"
@@ -84,7 +84,7 @@ jobs:
 
     - name: Load versions to image
       run : sshpass -p ${{ secrets.POSTOFFICE_PASS }} ssh -o StrictHostKeyChecking=no -o ServerAliveInterval=60 -o ServerAliveCountMax=60 -T -p ${{ secrets.DEVELOP_PORT}} ${{ secrets.POSTOFFICE_NAME }}@${{ secrets.DEVELOP_HOST}} "
-          docker load -i /home/fton/backend/challenger.tar;
+         docker load -i /home/fton/backend/challenger.tar;
         "
           
 
@@ -97,4 +97,4 @@ jobs:
           port: ${{ secrets.DEVELOP_PORT}}
           connect_timeout: 120s
           first_ssh: |
-            docker run -d -p 32468:8080 --name challenger -e SPRING_PROFILES_ACTIVE=dev --network docker_challenger-net challenger:latest;
+            docker run -d -p 32468:8080 --name challenger -e SPRING_PROFILES_ACTIVE=dev --network mariadb_mariadb-master-net challenger:latest;
