@@ -1,4 +1,4 @@
-package com.challenger.challengerbe.domain.user;
+package com.challenger.challengerbe.module.user.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,7 +15,7 @@ import lombok.Getter;
 public class User {
 
     @Id
-    private Long idk;
+    private String idk;
 
     @Column(name = "username")
     private String username;
@@ -44,7 +44,7 @@ public class User {
     }
 
     @Builder
-    public User(Long idk, String username, String email, String password, Role role) {
+    public User(String idk, String username, String email, String password, Role role) {
         this.idk = idk;
         this.username = username;
         this.email = email;
