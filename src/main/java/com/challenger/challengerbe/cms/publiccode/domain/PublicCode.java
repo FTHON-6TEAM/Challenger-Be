@@ -85,6 +85,10 @@ public class PublicCode implements Persistable<String> {
         this.modifyDate = dto.getModifyDate();
     }
 
+    public void addPubCd(String pubCd) {
+        this.pubCd = pubCd;
+    }
+
     @Override
     public String getId() {
         return this.pubCd;

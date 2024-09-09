@@ -36,7 +36,7 @@ import java.util.Map;
  * -----------------------------------------------------------
  * 2024/09/08        GAMJA       최초 생성
  */
-@Tag(name = "공통 코드 api")
+@Tag(name = "공통 코드 관리 컨트롤러")
 @RestController
 @RequiredArgsConstructor
 public class PublicCodeController extends BaseController {
@@ -56,7 +56,7 @@ public class PublicCodeController extends BaseController {
             @ApiResponse(responseCode = "404", description = "목록 조회에 실패하였습니다.")
     })
     @GetMapping(MGN_URL+"/public/code/list")
-    public List<PublicCodeDto> selectPublicCodePageList(PublicCodeDefaultDto searchDto) throws Exception {
+    public List<PublicCodeDto> selectPublicCodePageList(@Parameter(hidden = true) PublicCodeDefaultDto searchDto) throws Exception {
         return publicCodeService.selectPublicCodeList(searchDto);
     }
 
@@ -73,7 +73,7 @@ public class PublicCodeController extends BaseController {
             @ApiResponse(responseCode = "404", description = "상세 조회에 실패하였습니다.")
     })
     @GetMapping(MGN_URL+"/public/code/view")
-    public PublicCodeDto selectPublicCodeView(PublicCodeDto publicCodeDto) throws Exception {
+    public PublicCodeDto selectPublicCodeView(@Parameter(hidden = true) PublicCodeDto publicCodeDto) throws Exception {
         return publicCodeService.selectPublicCodeView(publicCodeDto);
     }
 
