@@ -54,3 +54,6 @@ logging:
   level:
     org.hibernate.SQL: debug
     org.hibernate.type: debug
+
+jwt:
+  secret: BShnJuVMiiPnYWljfoMtuONwwfheModfwresdfasdfwerwqasfwdasf
