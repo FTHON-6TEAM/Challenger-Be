@@ -2,7 +2,7 @@ package com.challenger.challengerbe.modules.user.dto;
 
 import jakarta.validation.constraints.NotBlank;
 
-public record CreateUserRequest (
+public record UserCreateRequest(
         @NotBlank(message = "idk 값은 필수 항목입니다.")
         String idk,
         @NotBlank(message = "이메일은 필수 항목입니다.")

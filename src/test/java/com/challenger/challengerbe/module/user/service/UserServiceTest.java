@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import com.challenger.challengerbe.modules.user.domain.User;
 import com.challenger.challengerbe.modules.user.domain.User.Role;
 import com.challenger.challengerbe.modules.user.domain.UserRefreshToken;
-import com.challenger.challengerbe.modules.user.dto.CreateUserRequest;
+import com.challenger.challengerbe.modules.user.dto.UserCreateRequest;
 import com.challenger.challengerbe.modules.user.repository.UserRefreshTokenRepository;
 import com.challenger.challengerbe.modules.user.repository.UserRepository;
 import com.challenger.challengerbe.modules.user.service.UserService;
@@ -47,10 +47,10 @@ class UserServiceTest {
         String password = "password";
         String username = "name";
         String role = "admin";
-        CreateUserRequest request = new CreateUserRequest("idk", email, password, username, role);
+        UserCreateRequest request = new UserCreateRequest("idk", email, password, username, role);
 
         // when
-        String userIdk = userService.registerUser(request);
+        String userIdk = userService.insertUser(request);
         User user = userRepository.findById(userIdk).orElseThrow();
 
         // then
@@ -81,9 +81,9 @@ class UserServiceTest {
         String password = "password";
         String username = "name";
         String role = "admin";
-        CreateUserRequest createRequest = new CreateUserRequest("idk", email, password, username, role);
+        UserCreateRequest createRequest = new UserCreateRequest("idk", email, password, username, role);
 
-        String userIdk = userService.registerUser(createRequest);
+        String userIdk = userService.insertUser(createRequest);
 
         // refresh token
         UserRefreshToken userRefreshToken = new UserRefreshToken(userIdk);
@@ -114,9 +114,9 @@ class UserServiceTest {
         String password = "password";
         String username = "name";
         String role = "admin";
-        CreateUserRequest createRequest = new CreateUserRequest("idk", email, password, username, role);
+        UserCreateRequest createRequest = new UserCreateRequest("idk", email, password, username, role);
 
-        String userIdk = userService.registerUser(createRequest);
+        String userIdk = userService.insertUser(createRequest);
 
         // refresh token
         UserRefreshToken userRefreshToken = new UserRefreshToken(userIdk);

@@ -5,6 +5,13 @@ import com.challenger.challengerbe.cms.publiccode.dto.PublicCodeDefaultDto;
 import com.challenger.challengerbe.cms.publiccode.dto.PublicCodeDto;
 import com.challenger.challengerbe.cms.publiccode.service.PublicCodeService;
 import com.challenger.challengerbe.common.BaseController;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -29,6 +36,7 @@ import java.util.Map;
  * -----------------------------------------------------------
  * 2024/09/08        GAMJA       최초 생성
  */
+@Tag(name = "공통 코드 api")
 @RestController
 @RequiredArgsConstructor
 public class PublicCodeController extends BaseController {
@@ -41,6 +49,12 @@ public class PublicCodeController extends BaseController {
      * @return
      * @throws Exception
      */
+    @Operation(summary = "공통 코드 목록")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공",
+                    content = {@Content(schema = @Schema(implementation = PublicCodeDefaultDto.class))}),
+            @ApiResponse(responseCode = "404", description = "목록 조회에 실패하였습니다.")
+    })
     @GetMapping(MGN_URL+"/public/code/list")
     public List<PublicCodeDto> selectPublicCodePageList(PublicCodeDefaultDto searchDto) throws Exception {
         return publicCodeService.selectPublicCodeList(searchDto);
@@ -52,6 +66,12 @@ public class PublicCodeController extends BaseController {
      * @return
      * @throws Exception
      */
+    @Operation(summary = "공통 코드 상세 조회")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공",
+                    content = {@Content(schema = @Schema(implementation = PublicCodeDto.class))}),
+            @ApiResponse(responseCode = "404", description = "상세 조회에 실패하였습니다.")
+    })
     @GetMapping(MGN_URL+"/public/code/view")
     public PublicCodeDto selectPublicCodeView(PublicCodeDto publicCodeDto) throws Exception {
         return publicCodeService.selectPublicCodeView(publicCodeDto);
@@ -63,6 +83,12 @@ public class PublicCodeController extends BaseController {
      * @return
      * @throws Exception
      */
+    @Operation(summary = "등록")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공",
+                    content = {@Content(schema = @Schema(implementation = PublicCodeDto.class))}),
+            @ApiResponse(responseCode = "404", description = "등록에 실패하였습니다.")
+    })
     @PostMapping(MGN_URL+"/public/code/ins")
     public ResponseEntity<String> insertPublicCode(PublicCodeDto publicCodeDto) throws Exception {
 
@@ -85,6 +111,12 @@ public class PublicCodeController extends BaseController {
      * @return
      * @throws Exception
      */
+    @Operation(summary = "수정")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공",
+                    content = {@Content(schema = @Schema(implementation = PublicCodeDto.class))}),
+            @ApiResponse(responseCode = "404", description = "수정에 실패하였습니다.")
+    })
     @PostMapping(MGN_URL+"/public/code/upd")
     public ResponseEntity<String> updatePublicCode(PublicCodeDto publicCodeDto) throws Exception {
 
@@ -107,6 +139,12 @@ public class PublicCodeController extends BaseController {
      * @return
      * @throws Exception
      */
+    @Operation(summary = "삭제")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공",
+                    content = {@Content(schema = @Schema(implementation = PublicCodeDto.class))}),
+            @ApiResponse(responseCode = "404", description = "삭제에 실패하였습니다.")
+    })
     @PostMapping(MGN_URL+"/public/code/del")
     public ResponseEntity<String> deletePublicCode(PublicCodeDto publicCodeDto) throws Exception {
 
@@ -123,6 +161,13 @@ public class PublicCodeController extends BaseController {
         return new ResponseEntity<>("삭제 되었습니다.",HttpStatus.OK);
     }
 
+    @Operation(summary = "정렬 업데이트")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공",
+                    content = {@Content(schema = @Schema(implementation = List.class))}),
+            @ApiResponse(responseCode = "404", description = "정렬에 실패하였습니다.")
+    })
+    @Parameter(name = "pubCdList")
     @PostMapping(MGN_URL+"/public/code/ord")
     public ResponseEntity<String> updatePublicCodeOrd(@RequestParam("pubCds[]") List<String> pubCdList) throws Exception {
 
