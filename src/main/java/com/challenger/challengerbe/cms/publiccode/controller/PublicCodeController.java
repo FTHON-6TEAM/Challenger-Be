@@ -5,6 +5,9 @@ import com.challenger.challengerbe.cms.publiccode.dto.PublicCodeDefaultDto;
 import com.challenger.challengerbe.cms.publiccode.dto.PublicCodeDto;
 import com.challenger.challengerbe.cms.publiccode.service.PublicCodeService;
 import com.challenger.challengerbe.common.BaseController;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -29,6 +32,7 @@ import java.util.Map;
  * -----------------------------------------------------------
  * 2024/09/08        GAMJA       최초 생성
  */
+@Tag(name = "공통 코드 관리 컨트롤러")
 @RestController
 @RequiredArgsConstructor
 public class PublicCodeController extends BaseController {
@@ -42,7 +46,7 @@ public class PublicCodeController extends BaseController {
      * @throws Exception
      */
     @GetMapping(MGN_URL+"/public/code/list")
-    public List<PublicCodeDto> selectPublicCodePageList(PublicCodeDefaultDto searchDto) throws Exception {
+    public List<PublicCodeDto> selectPublicCodePageList(@Parameter(hidden = true) PublicCodeDefaultDto searchDto) throws Exception {
         return publicCodeService.selectPublicCodeList(searchDto);
     }
 
@@ -53,7 +57,7 @@ public class PublicCodeController extends BaseController {
      * @throws Exception
      */
     @GetMapping(MGN_URL+"/public/code/view")
-    public PublicCodeDto selectPublicCodeView(PublicCodeDto publicCodeDto) throws Exception {
+    public PublicCodeDto selectPublicCodeView(@Parameter(hidden = true) PublicCodeDto publicCodeDto) throws Exception {
         return publicCodeService.selectPublicCodeView(publicCodeDto);
     }
 

@@ -1,6 +1,7 @@
 package com.challenger.challengerbe.modules.challenge.domain;
 
 import com.challenger.challengerbe.cms.publiccode.domain.PublicCode;
+import com.challenger.challengerbe.modules.challenge.dto.ChallengeDto;
 import com.challenger.challengerbe.modules.user.domain.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -74,4 +75,32 @@ public class Challenge {
     @OneToMany(mappedBy = "challenge",orphanRemoval = true, cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REMOVE},fetch = FetchType.LAZY)
     private List<ChallengeItem> challengeItemList = new ArrayList<>();
 
+    public Challenge(ChallengeDto dto) {
+        if(dto.getIdx() > 0){
+            this.idx = idx;
+        }
+        this.publicCode = new PublicCode();
+        publicCode.addPubCd(dto.getCode());
+        this.user = new User();
+        user.addIdk(dto.getIdk());
+        this.startDate =  dto.getStartDate();
+        this.endDate = dto.getEndDate();
+        this.successCnt = dto.getSuccessCnt();
+        this.title = dto.getTitle();
+        this.remark = dto.getRemark();
+    }
+
+    public void changeChallenge(ChallengeDto dto) {
+        this.publicCode = new PublicCode();
+        publicCode.addPubCd(dto.getCode());
+        this.startDate =  dto.getStartDate();
+        this.endDate = dto.getEndDate();
+        this.successCnt = dto.getSuccessCnt();
+        this.title = dto.getTitle();
+        this.remark = dto.getRemark();
+    }
+
+    public void addItemList(List<ChallengeItem> list) {
+        challengeItemList = list;
+    }
 }
