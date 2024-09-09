@@ -33,7 +33,7 @@ public class ChallengeItem {
     private Long idx;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idx" ,nullable = false)
+    @JoinColumn(name = "challenge_idx" ,nullable = false)
     private Challenge challenge;
 
     @Comment("제목")

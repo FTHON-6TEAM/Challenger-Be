@@ -1,17 +1,9 @@
 package com.challenger.challengerbe.modules.challenge.dto;
 
-import com.challenger.challengerbe.cms.publiccode.domain.PublicCode;
-import com.challenger.challengerbe.domain.user.User;
-import com.challenger.challengerbe.modules.challenge.domain.ChallengeItem;
-import jakarta.persistence.*;
-import jakarta.websocket.server.ServerEndpoint;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Comment;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
