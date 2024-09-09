@@ -1,4 +1,4 @@
-package com.challenger.challengerbe.module.user.controller;
+package com.challenger.challengerbe.modules.user.controller;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,7 +1,7 @@
 package com.challenger.challengerbe.auth.security;
 
-import com.challenger.challengerbe.module.user.domain.User;
-import com.challenger.challengerbe.module.user.repository.UserRepository;
+import com.challenger.challengerbe.modules.user.domain.User;
+import com.challenger.challengerbe.modules.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

@@ -1,14 +1,14 @@
-package com.challenger.challengerbe.module.user.service;
+package com.challenger.challengerbe.modules.user.service;
 
 import com.challenger.challengerbe.auth.security.CustomPasswordEncoder;
 import com.challenger.challengerbe.auth.security.JwtUtil;
 import com.challenger.challengerbe.common.utils.CookieUtil;
-import com.challenger.challengerbe.module.user.domain.User;
-import com.challenger.challengerbe.module.user.domain.User.Role;
-import com.challenger.challengerbe.module.user.domain.UserRefreshToken;
-import com.challenger.challengerbe.module.user.dto.CreateUserRequest;
-import com.challenger.challengerbe.module.user.repository.UserRefreshTokenRepository;
-import com.challenger.challengerbe.module.user.repository.UserRepository;
+import com.challenger.challengerbe.modules.user.domain.User;
+import com.challenger.challengerbe.modules.user.domain.User.Role;
+import com.challenger.challengerbe.modules.user.domain.UserRefreshToken;
+import com.challenger.challengerbe.modules.user.dto.CreateUserRequest;
+import com.challenger.challengerbe.modules.user.repository.UserRefreshTokenRepository;
+import com.challenger.challengerbe.modules.user.repository.UserRepository;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

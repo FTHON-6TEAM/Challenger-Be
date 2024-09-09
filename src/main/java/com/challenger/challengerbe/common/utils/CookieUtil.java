@@ -1,7 +1,7 @@
 package com.challenger.challengerbe.common.utils;
 
 import com.challenger.challengerbe.auth.security.JwtUtil;
-import com.challenger.challengerbe.module.user.domain.UserRefreshToken;
+import com.challenger.challengerbe.modules.user.domain.UserRefreshToken;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

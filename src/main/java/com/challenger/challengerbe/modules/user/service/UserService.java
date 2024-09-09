@@ -1,7 +1,7 @@
-package com.challenger.challengerbe.module.user.service;
+package com.challenger.challengerbe.modules.user.service;
 
-import com.challenger.challengerbe.module.user.domain.User;
-import com.challenger.challengerbe.module.user.dto.CreateUserRequest;
+import com.challenger.challengerbe.modules.user.domain.User;
+import com.challenger.challengerbe.modules.user.dto.CreateUserRequest;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 

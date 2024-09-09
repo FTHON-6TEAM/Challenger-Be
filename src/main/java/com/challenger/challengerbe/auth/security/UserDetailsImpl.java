@@ -1,6 +1,6 @@
 package com.challenger.challengerbe.auth.security;
 
-import com.challenger.challengerbe.module.user.domain.User;
+import com.challenger.challengerbe.modules.user.domain.User;
 import java.util.ArrayList;
 import java.util.Collection;
 import lombok.RequiredArgsConstructor;

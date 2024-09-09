@@ -1,7 +1,7 @@
 package com.challenger.challengerbe.modules.challenge.domain;
 
 import com.challenger.challengerbe.cms.publiccode.domain.PublicCode;
-import com.challenger.challengerbe.domain.user.User;
+import com.challenger.challengerbe.modules.user.domain.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

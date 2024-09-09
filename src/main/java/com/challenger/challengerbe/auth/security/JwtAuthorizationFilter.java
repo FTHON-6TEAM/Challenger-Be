@@ -1,9 +1,8 @@
 package com.challenger.challengerbe.auth.security;
 
 import com.challenger.challengerbe.common.utils.CookieUtil;
-import com.challenger.challengerbe.module.user.domain.UserRefreshToken;
-import com.challenger.challengerbe.module.user.repository.UserRefreshTokenRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.challenger.challengerbe.modules.user.domain.UserRefreshToken;
+import com.challenger.challengerbe.modules.user.repository.UserRefreshTokenRepository;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -12,7 +11,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

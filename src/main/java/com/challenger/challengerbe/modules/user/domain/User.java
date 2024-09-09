@@ -1,4 +1,4 @@
-package com.challenger.challengerbe.module.user.domain;
+package com.challenger.challengerbe.modules.user.domain;
 
 import com.challenger.challengerbe.auth.security.CustomPasswordEncoder;
 import jakarta.persistence.Column;

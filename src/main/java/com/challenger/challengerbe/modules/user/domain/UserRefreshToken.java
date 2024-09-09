@@ -1,4 +1,4 @@
-package com.challenger.challengerbe.module.user.domain;
+package com.challenger.challengerbe.modules.user.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;

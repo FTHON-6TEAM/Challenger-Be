@@ -8,7 +8,7 @@ import com.challenger.challengerbe.auth.security.JwtAuthorizationFilter;
 import com.challenger.challengerbe.auth.security.JwtUtil;
 import com.challenger.challengerbe.auth.security.UserDetailsServiceImpl;
 import com.challenger.challengerbe.common.utils.CookieUtil;
-import com.challenger.challengerbe.module.user.repository.UserRefreshTokenRepository;
+import com.challenger.challengerbe.modules.user.repository.UserRefreshTokenRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

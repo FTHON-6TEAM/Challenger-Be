@@ -2,9 +2,9 @@ package com.challenger.challengerbe.auth.security;
 
 import com.challenger.challengerbe.common.utils.ApiResponseDto;
 import com.challenger.challengerbe.common.utils.CookieUtil;
-import com.challenger.challengerbe.module.user.controller.LoginRequest;
-import com.challenger.challengerbe.module.user.domain.UserRefreshToken;
-import com.challenger.challengerbe.module.user.repository.UserRefreshTokenRepository;
+import com.challenger.challengerbe.modules.user.controller.LoginRequest;
+import com.challenger.challengerbe.modules.user.domain.UserRefreshToken;
+import com.challenger.challengerbe.modules.user.repository.UserRefreshTokenRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;

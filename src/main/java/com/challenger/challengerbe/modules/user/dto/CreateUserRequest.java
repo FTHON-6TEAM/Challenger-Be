@@ -1,4 +1,4 @@
-package com.challenger.challengerbe.module.user.dto;
+package com.challenger.challengerbe.modules.user.dto;
 
 import jakarta.validation.constraints.NotBlank;
 

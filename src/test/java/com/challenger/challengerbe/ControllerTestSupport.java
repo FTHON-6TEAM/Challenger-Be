@@ -2,10 +2,10 @@ package com.challenger.challengerbe;
 
 import com.challenger.challengerbe.auth.security.JwtUtil;
 import com.challenger.challengerbe.common.utils.CookieUtil;
-import com.challenger.challengerbe.module.user.controller.UserController;
-import com.challenger.challengerbe.module.user.repository.UserRefreshTokenRepository;
-import com.challenger.challengerbe.module.user.repository.UserRepository;
-import com.challenger.challengerbe.module.user.service.UserService;
+import com.challenger.challengerbe.modules.user.controller.UserController;
+import com.challenger.challengerbe.modules.user.repository.UserRefreshTokenRepository;
+import com.challenger.challengerbe.modules.user.repository.UserRepository;
+import com.challenger.challengerbe.modules.user.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;

@@ -1,7 +1,7 @@
-package com.challenger.challengerbe.module.user.controller;
+package com.challenger.challengerbe.modules.user.controller;
 
-import com.challenger.challengerbe.module.user.dto.CreateUserRequest;
-import com.challenger.challengerbe.module.user.service.UserService;
+import com.challenger.challengerbe.modules.user.dto.CreateUserRequest;
+import com.challenger.challengerbe.modules.user.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
