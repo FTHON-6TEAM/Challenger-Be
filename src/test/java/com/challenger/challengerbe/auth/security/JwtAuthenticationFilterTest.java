@@ -8,12 +8,15 @@ import com.challenger.challengerbe.ControllerTestSupport;
 import jakarta.servlet.FilterChain;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.test.context.support.WithMockUser;
 
-public class JwtAuthenticationFilterTest extends ControllerTestSupport {
+@MockBean(JpaMetamodelMappingContext.class)
+class JwtAuthenticationFilterTest extends ControllerTestSupport {
 
     @DisplayName("email, password로 로그인시 인증필터를 거친다.")
     @WithMockUser(username = "as@gmail.com", password = "whdgns0000", roles = "USER")

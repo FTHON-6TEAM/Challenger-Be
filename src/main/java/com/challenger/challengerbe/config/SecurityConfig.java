@@ -83,7 +83,8 @@ public class SecurityConfig {
                 .headers(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/v1/users/refresh-token", "/api/v1/users/**", "/api/v1/users/login").permitAll() // 특정 경로 허용
+//                        .requestMatchers("/api/v1/users/refresh-token", "/api/v1/users/**", "/api/v1/users/login").permitAll() // 특정 경로 허용
+                        .requestMatchers("/**").permitAll() // 특정 경로 허용
                         .anyRequest().authenticated() // 나머지 요청은 인증 필요
                 );
 
