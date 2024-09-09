@@ -1,6 +1,8 @@
-package com.challenger.challengerbe.domain.user;
+package com.challenger.challengerbe.modules.user.domain;
 
+import com.challenger.challengerbe.auth.security.CustomPasswordEncoder;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -15,7 +17,7 @@ import lombok.Getter;
 public class User {
 
     @Id
-    private Long idk;
+    private String idk;
 
     @Column(name = "username")
     private String username;
@@ -23,8 +25,8 @@ public class User {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "password")
-    private String password;
+    @Embedded
+    private UserPassword password;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
@@ -44,11 +46,11 @@ public class User {
     }
 
     @Builder
-    public User(Long idk, String username, String email, String password, Role role) {
+    public User(String idk, String username, String email, String password, CustomPasswordEncoder passwordEncoder, Role role) {
         this.idk = idk;
         this.username = username;
         this.email = email;
-        this.password = password;
+        this.password = new UserPassword(password, passwordEncoder);
         this.role = role;
     }
 }
