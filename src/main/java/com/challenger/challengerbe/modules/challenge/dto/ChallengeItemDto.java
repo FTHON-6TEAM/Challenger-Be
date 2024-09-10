@@ -48,4 +48,8 @@ public class ChallengeItemDto {
         this.createDate = entity.getCreateDate();
         this.modifyDate = entity.getModifyDate();
     }
+
+    public ChallengeItemDto(ChallengeItemCreateRequest request){
+        this.title = request.getTitle();
+    }
 }

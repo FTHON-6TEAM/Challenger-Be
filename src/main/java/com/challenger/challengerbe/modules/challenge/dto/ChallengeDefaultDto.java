@@ -28,4 +28,7 @@ public class ChallengeDefaultDto extends BaseDto {
     /**마지막일자*/
     private String endDate;
 
+    /**진행 상태값*/
+    private String activeStatus;
+
 }

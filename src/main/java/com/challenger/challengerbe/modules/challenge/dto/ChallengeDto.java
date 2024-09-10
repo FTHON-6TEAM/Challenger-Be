@@ -59,4 +59,29 @@ public class ChallengeDto {
     /**항목 목록*/
     private List<ChallengeItemDto> challengeItemList = new ArrayList<>();
 
+    public static ChallengeDto createof(ChallengeCreateRequest challengeCreateRequest) {
+        ChallengeDto challengeDto =new ChallengeDto();
+        challengeDto.setCode(challengeCreateRequest.getCode());
+        challengeDto.setStartDate(challengeCreateRequest.getStartDate());
+        challengeDto.setEndDate(challengeCreateRequest.getEndDate());
+        challengeDto.setSuccessCnt(challengeCreateRequest.getSuccessCnt());
+        challengeDto.setTitle(challengeCreateRequest.getTitle());
+        challengeDto.setRemark(challengeCreateRequest.getRemark());
+        challengeDto.setChallengeItemList(challengeCreateRequest.getItemList().stream().map(ChallengeItemDto::new).toList());
+        return challengeDto;
+    }
+
+    public static ChallengeDto updateOf(ChallengeUpdateRequest challengeUpdateRequest) {
+        ChallengeDto challengeDto =new ChallengeDto();
+        challengeDto.setIdx(challengeUpdateRequest.getIdx());
+        challengeDto.setCode(challengeUpdateRequest.getCode());
+        challengeDto.setStartDate(challengeUpdateRequest.getStartDate());
+        challengeDto.setEndDate(challengeUpdateRequest.getEndDate());
+        challengeDto.setSuccessCnt(challengeUpdateRequest.getSuccessCnt());
+        challengeDto.setTitle(challengeUpdateRequest.getTitle());
+        challengeDto.setRemark(challengeUpdateRequest.getRemark());
+        challengeDto.setChallengeItemList(challengeUpdateRequest.getItemList().stream().map(ChallengeItemDto::new).toList());
+        return challengeDto;
+    }
+
 }

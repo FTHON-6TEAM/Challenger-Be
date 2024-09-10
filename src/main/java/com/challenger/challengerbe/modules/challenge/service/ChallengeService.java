@@ -6,6 +6,7 @@ import com.challenger.challengerbe.modules.challenge.domain.ChallengeUser;
 import com.challenger.challengerbe.modules.challenge.dto.ChallengeDefaultDto;
 import com.challenger.challengerbe.modules.challenge.dto.ChallengeDto;
 import com.challenger.challengerbe.modules.challenge.dto.ChallengeItemDto;
+import com.challenger.challengerbe.modules.challenge.dto.ChallengeSummaryResponse;
 import com.challenger.challengerbe.modules.challenge.repository.ChallengeItemRepository;
 import com.challenger.challengerbe.modules.challenge.repository.ChallengeRepository;
 import lombok.RequiredArgsConstructor;
@@ -42,7 +43,7 @@ public class ChallengeService {
      * @return
      * @throws Exception
      */
-    public Page<ChallengeDto> selectChallengePageList(ChallengeDefaultDto searchDto) throws Exception {
+    public Page<ChallengeSummaryResponse> selectChallengePageList(ChallengeDefaultDto searchDto) throws Exception {
         return challengeRepository.selectChallengePageList(searchDto);
     }
 
@@ -52,7 +53,7 @@ public class ChallengeService {
      * @return
      * @throws Exception
      */
-    public List<ChallengeDto> selectChallengeList(ChallengeDefaultDto searchDto) throws Exception {
+    public List<ChallengeSummaryResponse> selectChallengeList(ChallengeDefaultDto searchDto) throws Exception {
         return challengeRepository.selectChallengeList(searchDto);
     }
 

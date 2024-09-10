@@ -2,6 +2,7 @@ package com.challenger.challengerbe.modules.challenge.repository;
 
 import com.challenger.challengerbe.modules.challenge.dto.ChallengeDefaultDto;
 import com.challenger.challengerbe.modules.challenge.dto.ChallengeDto;
+import com.challenger.challengerbe.modules.challenge.dto.ChallengeSummaryResponse;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public interface ChallengeCtRepository {
      * @return
      * @throws Exception
      */
-    Page<ChallengeDto> selectChallengePageList(ChallengeDefaultDto searchDto) throws Exception;
+    Page<ChallengeSummaryResponse> selectChallengePageList(ChallengeDefaultDto searchDto) throws Exception;
 
     /**
      * 목록(페이징 미포함)
@@ -33,7 +34,7 @@ public interface ChallengeCtRepository {
      * @return
      * @throws Exception
      */
-    List<ChallengeDto> selectChallengeList(ChallengeDefaultDto searchDto) throws Exception;
+    List<ChallengeSummaryResponse> selectChallengeList(ChallengeDefaultDto searchDto) throws Exception;
 
 
 }
