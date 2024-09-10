@@ -52,11 +52,11 @@ spring:
 
   ai:
     openai:
-      api-key: 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
+      api-key: ${{ secrets.OPENAI_API_KEY }}
     vertex:
       ai:
         gemini:
-          project-id: totemic-audio-351914
+          project-id: ${{ secrets.GOOGLE_PROJECT_ID }}
           location: asia-northeast3
 
 logging:
