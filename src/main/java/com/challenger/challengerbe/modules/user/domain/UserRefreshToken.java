@@ -17,7 +17,6 @@ import lombok.NoArgsConstructor;
 @Table(name = "user_refresh_token")
 public class UserRefreshToken {
     @Id
-    @Column(name = "user_refresh_token_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

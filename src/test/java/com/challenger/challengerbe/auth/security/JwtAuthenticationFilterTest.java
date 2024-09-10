@@ -24,7 +24,7 @@ class JwtAuthenticationFilterTest extends ControllerTestSupport {
     void testJwtAuthenticationFilter() throws Exception {
         // Given
 
-        JwtAuthenticationFilter filter = new JwtAuthenticationFilter(jwtUtil, userRefreshTokenRepository, cookieUtil);
+        JwtAuthenticationFilter filter = new JwtAuthenticationFilter(jwtUtil, userRefreshTokenRepository, userRepository, passwordEncoder, cookieUtil);
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.setMethod("POST");
         request.setRequestURI("/api/v1/users/login");

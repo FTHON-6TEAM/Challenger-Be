@@ -50,6 +50,15 @@ spring:
         # format_sql: true
         default_batch_fetch_size : 500  # 컬렉션 조회 최적화를 위한 설정
 
+  ai:
+    openai:
+      api-key: ${{ secrets.OPENAI_API_KEY }}
+    vertex:
+      ai:
+        gemini:
+          project-id: ${{ secrets.GOOGLE_PROJECT_ID }}
+          location: asia-northeast3
+
 logging:
   level:
     org.hibernate.SQL: debug
