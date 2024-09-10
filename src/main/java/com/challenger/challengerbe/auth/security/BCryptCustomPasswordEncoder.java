@@ -2,7 +2,9 @@ package com.challenger.challengerbe.auth.security;
 
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 
+//@Component
 public class BCryptCustomPasswordEncoder implements CustomPasswordEncoder {
     private final PasswordEncoder passwordEncoder;
 

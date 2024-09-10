@@ -3,8 +3,10 @@ package com.challenger.challengerbe.auth.security;
 import com.challenger.challengerbe.common.utils.ApiResponseDto;
 import com.challenger.challengerbe.common.utils.CookieUtil;
 import com.challenger.challengerbe.modules.user.controller.LoginRequest;
+import com.challenger.challengerbe.modules.user.domain.User;
 import com.challenger.challengerbe.modules.user.domain.UserRefreshToken;
 import com.challenger.challengerbe.modules.user.repository.UserRefreshTokenRepository;
+import com.challenger.challengerbe.modules.user.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,11 +28,15 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     private final JwtUtil jwtUtil;
     private final UserRefreshTokenRepository userRefreshTokenRepository;
     private final CookieUtil cookieUtil;
+    private final UserRepository userRepository;
+    private final CustomPasswordEncoder passwordEncoder;
 
-    public JwtAuthenticationFilter(JwtUtil jwtUtil, UserRefreshTokenRepository userRefreshTokenRepository, CookieUtil cookieUtil) {
+    public JwtAuthenticationFilter(JwtUtil jwtUtil, UserRefreshTokenRepository userRefreshTokenRepository, UserRepository userRepository, CustomPasswordEncoder passwordEncoder, CookieUtil cookieUtil) {
         this.jwtUtil = jwtUtil;
         this.userRefreshTokenRepository = userRefreshTokenRepository;
         this.cookieUtil = cookieUtil;
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
         setFilterProcessesUrl("/api/v1/users/login");
     }
 
@@ -42,17 +48,42 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                     LoginRequest.class);
             List<GrantedAuthority> authorities = getAuthorities(List.of("ROLE_USER"));
 
-            return getAuthenticationManager().authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            loginRequest.getEmail(),
-                            loginRequest.getPassword(),
-                            authorities
-//                            null
-                    )
+            // 이메일로 사용자 조회
+            Optional<User> userOptional = userRepository.findByEmail(loginRequest.getEmail());
+
+            if (userOptional.isEmpty()) {
+                // 이메일로 사용자를 찾지 못했다면 회원가입 처리
+                User newUser = User.builder()
+                        .idk(loginRequest.getIdk())
+                        .username(loginRequest.getUsername())
+                        .email(loginRequest.getEmail())
+                        .passwordEncoder(passwordEncoder)
+                        .build();
+                userRepository.save(newUser);
+            }
+
+            // UsernamePasswordAuthenticationToken 생성 시 loginRequest를 details에 담아 전달
+            UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(
+                    loginRequest.getEmail(),
+                    loginRequest.getIdk(),
+                    authorities
             );
-        } catch (IOException e) {
-            throw new RuntimeException(e.getMessage());
-        }
+//            authRequest.setDetails(loginRequest); // 추가 정보를 details에 설정
+
+            return getAuthenticationManager().authenticate(authRequest);
+//            return getAuthenticationManager().authenticate(
+//                    new UsernamePasswordAuthenticationToken(
+//                            loginRequest.getEmail(),
+//                            loginRequest.getIdk(),
+//                            authorities
+////                            null
+//                    )
+//            );
+        } catch (Exception e) {
+            e.printStackTrace();
+//            throw new RuntimeException(e.getMessage());
+
+        } return null;
     }
 
     private List<GrantedAuthority> getAuthorities(List<String> authorities) {

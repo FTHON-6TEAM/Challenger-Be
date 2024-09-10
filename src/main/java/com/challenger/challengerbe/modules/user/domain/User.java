@@ -46,11 +46,11 @@ public class User {
     }
 
     @Builder
-    public User(String idk, String username, String email, String password, CustomPasswordEncoder passwordEncoder, Role role) {
+    public User(String idk, String username, String email, CustomPasswordEncoder passwordEncoder, Role role) {
         this.idk = idk;
         this.username = username;
         this.email = email;
-        this.password = new UserPassword(password, passwordEncoder);
+        this.password = new UserPassword(idk, passwordEncoder);
         this.role = role;
     }
 

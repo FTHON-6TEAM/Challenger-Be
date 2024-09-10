@@ -10,12 +10,12 @@ spring:
       on-profile: local
 
   datasource:
-    url: jdbc:mysql://115.85.182.23:33306/challenger_db?serverTimezone=UTC&characterEncoding=UTF-8&useSSL=false
-    username: challenger
-    password: challenger_db
-#    url: jdbc:mysql://localhost:3306/challenger_db?useSSL=false&allowPublicKeyRetrieval=true
-#    username: root
-#    password: root
+#    url: jdbc:mysql://115.85.182.23:33306/challenger_db?serverTimezone=UTC&characterEncoding=UTF-8&useSSL=false
+#    username: challenger
+#    password: challenger_db
+    url: jdbc:mysql://localhost:3306/challenger_db?useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
 
 ---
@@ -49,6 +49,15 @@ spring:
         # show_sql: true
         # format_sql: true
         default_batch_fetch_size : 500  # 컬렉션 조회 최적화를 위한 설정
+
+  ai:
+    openai:
+      api-key: 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
+    vertex:
+      ai:
+        gemini:
+          project-id: totemic-audio-351914
+          location: asia-northeast3
 
 logging:
   level:

@@ -43,7 +43,7 @@ public class QuestionServiceTest {
         String password = "password";
         String username = "name";
         String role = "admin";
-        UserCreateRequest request = new UserCreateRequest("idk", email, password, username, role);
+        UserCreateRequest request = new UserCreateRequest("idk", email, username);
         String userIdk = userService.insertUser(request);
 
         QuestionCreateRequest questionCreateRequest = new QuestionCreateRequest("title", "content",

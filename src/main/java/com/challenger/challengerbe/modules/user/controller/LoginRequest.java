@@ -6,11 +6,13 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class LoginRequest {
+    private String idk;
     private String email;
-    private String password;
+    private String username;
 
-    public LoginRequest(String email, String password) {
+    public LoginRequest(String idk, String email, String username) {
+        this.idk = idk;
         this.email = email;
-        this.password = password;
+        this.username = username;
     }
 }

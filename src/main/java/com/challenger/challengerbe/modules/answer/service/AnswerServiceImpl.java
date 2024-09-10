@@ -32,7 +32,7 @@ public class AnswerServiceImpl implements AnswerService {
 
     @Override
     public Long insertAnswer(AnswerCreateRequest request) {
-        User user = userService.getUserByIdk(request.getUserIdk());
+        User user = userService.selectUserByIdk(request.getUserIdk());
         Question question = questionService.getQuestionByIdx(request.getQuestionIdx());
         Answer newAnswer = Answer.builder()
                 .user(user)

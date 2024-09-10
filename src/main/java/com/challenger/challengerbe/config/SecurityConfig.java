@@ -9,6 +9,7 @@ import com.challenger.challengerbe.auth.security.JwtUtil;
 import com.challenger.challengerbe.auth.security.UserDetailsServiceImpl;
 import com.challenger.challengerbe.common.utils.CookieUtil;
 import com.challenger.challengerbe.modules.user.repository.UserRefreshTokenRepository;
+import com.challenger.challengerbe.modules.user.repository.UserRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -37,7 +38,10 @@ public class SecurityConfig {
     private final UserDetailsServiceImpl userDetailsService;
     private final AuthenticationConfiguration authenticationConfiguration;
     private final JwtAuthenticationProvider authenticationProvider;
+    private final UserRepository userRepository;
+//    private final CustomPasswordEncoder passwordEncoder;
     private final CookieUtil cookieUtil;
+
     @Bean
     public CustomPasswordEncoder customPasswordEncoder() {
         return new BCryptCustomPasswordEncoder();
@@ -50,8 +54,8 @@ public class SecurityConfig {
 
     // Authenticatoin, 토큰에 대해 인증
     @Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
-        JwtAuthenticationFilter filter = new JwtAuthenticationFilter(jwtUtil, userRefreshTokenRepository, cookieUtil);
+    public JwtAuthenticationFilter jwtAuthenticationFilter(CustomPasswordEncoder passwordEncoder) throws Exception {
+        JwtAuthenticationFilter filter = new JwtAuthenticationFilter(jwtUtil, userRefreshTokenRepository, userRepository, passwordEncoder, cookieUtil);
         filter.setAuthenticationManager(authenticationManager(authenticationConfiguration));
 
         return filter;
@@ -66,7 +70,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(
             HttpSecurity httpSecurity,
-            CorsFilter corsFilter
+            CorsFilter corsFilter,
+            CustomPasswordEncoder passwordEncoder
 
     ) throws Exception {
         httpSecurity.csrf(AbstractHttpConfigurer::disable)
@@ -79,7 +84,7 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilter(corsFilter)
                 .addFilterBefore(jwtAuthorizationFilter(), JwtAuthenticationFilter.class)
-                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthenticationFilter(passwordEncoder), UsernamePasswordAuthenticationFilter.class)
                 .headers(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize

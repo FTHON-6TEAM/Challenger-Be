@@ -32,7 +32,7 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     @Transactional
     public Long insertQuestion(QuestionCreateRequest request) {
-        User user = userService.getUserByIdk(request.getUserIdk());
+        User user = userService.selectUserByIdk(request.getUserIdk());
         Question newQuestion = Question.builder()
                 .user(user)
                 .title(request.getTitle())

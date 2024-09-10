@@ -47,7 +47,7 @@ class UserServiceTest {
         String password = "password";
         String username = "name";
         String role = "admin";
-        UserCreateRequest request = new UserCreateRequest("idk", email, password, username, role);
+        UserCreateRequest request = new UserCreateRequest("idk", email, username);
 
         // when
         String userIdk = userService.insertUser(request);
@@ -81,7 +81,7 @@ class UserServiceTest {
         String password = "password";
         String username = "name";
         String role = "admin";
-        UserCreateRequest createRequest = new UserCreateRequest("idk", email, password, username, role);
+        UserCreateRequest createRequest = new UserCreateRequest("idk", email, username);
 
         String userIdk = userService.insertUser(createRequest);
 
@@ -114,7 +114,7 @@ class UserServiceTest {
         String password = "password";
         String username = "name";
         String role = "admin";
-        UserCreateRequest createRequest = new UserCreateRequest("idk", email, password, username, role);
+        UserCreateRequest createRequest = new UserCreateRequest("idk", email, username);
 
         String userIdk = userService.insertUser(createRequest);
 

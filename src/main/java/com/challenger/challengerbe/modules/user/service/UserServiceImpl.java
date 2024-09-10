@@ -26,7 +26,6 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserRefreshTokenRepository userRefreshTokenRepository;
-    private final CustomPasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
     private final CookieUtil cookieUtil;
 
@@ -34,15 +33,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public String insertUser(UserCreateRequest request) {
         Role role = Role.ROLE_USER;
-        if (request.getRole().equals("admin")) role = Role.ROLE_ADMIN;
 
         User user = User.builder()
                 .idk(request.getIdk())
                 .email(request.getEmail())
-                .password(request.getPassword())
                 .username(request.getUsername())
-                .passwordEncoder(passwordEncoder)
-                .role(role)
                 .build();
         userRepository.save(user);
 
