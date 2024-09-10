@@ -173,11 +173,11 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     }
 
     // 인증 객체 생성
-    private Authentication createAuthentication(String account) {
-
-        // 여기서 userId get 가능
-        UserDetailsImpl userDetails = (UserDetailsImpl) userDetailsService.loadUserByUsername(account);
-        String userId = userDetails.getUserIdk();
-        return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-    }
+//    private Authentication createAuthentication(String account) {
+//
+//        // 여기서 userId get 가능
+//        UserDetailsImpl userDetails = (UserDetailsImpl) userDetailsService.loadUserByUsername(account);
+//        String userId = userDetails.getUserIdk();
+//        return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+//    }
 }

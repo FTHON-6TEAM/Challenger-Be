@@ -77,7 +77,7 @@ public class Challenge {
 
     public Challenge(ChallengeDto dto) {
         if(dto.getIdx() > 0){
-            this.idx = idx;
+            this.idx = dto.getIdx();
         }
         this.publicCode = new PublicCode();
         publicCode.addPubCd(dto.getCode());
@@ -98,6 +98,10 @@ public class Challenge {
         this.successCnt = dto.getSuccessCnt();
         this.title = dto.getTitle();
         this.remark = dto.getRemark();
+    }
+
+    public void addIdx(Long idx) {
+        this.idx = idx;
     }
 
     public void addItemList(List<ChallengeItem> list) {

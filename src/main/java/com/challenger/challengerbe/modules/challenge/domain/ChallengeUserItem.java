@@ -1,5 +1,6 @@
 package com.challenger.challengerbe.modules.challenge.domain;
 
+import com.challenger.challengerbe.modules.challenge.dto.ChallengeUserItemDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -42,6 +43,10 @@ public class ChallengeUserItem {
     @JoinColumn(name = "challenge_item_idx", nullable = false,unique = false)
     private ChallengeItem challengeItem;
     
+    @Comment("완료일자")
+    @Column(length = 20)
+    private String completeDate;
+    
     @Comment("완료여부")
     @Column(length = 1)
     private String completeYn;
@@ -53,5 +58,17 @@ public class ChallengeUserItem {
     @Comment("수정일자")
     @LastModifiedDate
     private LocalDateTime modifyDate;
+
+    public ChallengeUserItem(ChallengeUserItemDto dto) {
+        if(dto.getIdx() > 0) {
+            this.idx = dto.getIdx();
+        }
+        this.challengeUser = new ChallengeUser();
+        challengeUser.addIdx(dto.getChallengeUserIdx());
+        this.challengeItem = new ChallengeItem();
+        challengeItem.addIdx(dto.getChallengeItemIdx());
+        this.completeDate = dto.getCompleteDate();
+        this.completeYn = dto.getCompleteYn();
+    }
 
 }

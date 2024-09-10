@@ -1,5 +1,6 @@
 package com.challenger.challengerbe;
 
+import com.challenger.challengerbe.auth.security.CustomPasswordEncoder;
 import com.challenger.challengerbe.auth.security.JwtUtil;
 import com.challenger.challengerbe.common.utils.CookieUtil;
 import com.challenger.challengerbe.modules.user.controller.UserController;
@@ -36,5 +37,8 @@ public abstract class ControllerTestSupport {
 
     @MockBean
     protected CookieUtil cookieUtil;
+
+    @MockBean
+    protected CustomPasswordEncoder passwordEncoder;
 }
 

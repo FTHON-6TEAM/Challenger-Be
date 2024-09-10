@@ -47,6 +47,12 @@ public class ChallengeItem {
     @LastModifiedDate
     private LocalDateTime modifyDate;
 
+    public void addChallenge(Challenge challenge){
+        this.challenge = challenge;
+    }
+    public void addIdx(Long idx) {
+        this.idx = idx;
+    }
     public void addTitle(String title) {
         this.title = title;
     }

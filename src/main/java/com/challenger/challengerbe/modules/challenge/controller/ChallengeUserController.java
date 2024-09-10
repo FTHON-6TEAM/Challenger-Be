@@ -1,5 +1,6 @@
 package com.challenger.challengerbe.modules.challenge.controller;
 
+import com.challenger.challengerbe.auth.login.AuthInfo;
 import com.challenger.challengerbe.common.CommonResponse;
 import com.challenger.challengerbe.modules.challenge.dto.*;
 import com.challenger.challengerbe.modules.challenge.service.ChallengeService;
@@ -15,10 +16,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * packageName    : com.challenger.challengerbe.modules.challenge.controller
@@ -63,11 +63,13 @@ public class ChallengeUserController {
             @ApiResponse(responseCode = "200", description = "등록 완료"),
             @ApiResponse(responseCode = "400", description = "등록 오류 발생")
     })
-    @PostMapping("/challenge/ins")
-    public ResponseEntity<?> insertChallenge(final @Valid @RequestBody ChallengeCreateRequest challengeCreateRequest) throws Exception {
+    @PostMapping(value="/challenge/ins", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> insertChallenge(final @Valid @RequestPart ChallengeCreateRequest challengeCreateRequest,
+                                             @AuthInfo String token) throws Exception {
 
         try{
             ChallengeDto challengeDto = ChallengeDto.createof(challengeCreateRequest);
+            challengeDto.setIdk(token);
             challengeService.insertChallenge(challengeDto);
         }catch (Exception e) {
             logger.error("insert challenge info error : {}",e.getMessage());
@@ -82,11 +84,13 @@ public class ChallengeUserController {
             @ApiResponse(responseCode = "200", description = "수정 완료"),
             @ApiResponse(responseCode = "400", description = "수정 오류 발생")
     })
-    @PutMapping("/challenge/upd")
-    public ResponseEntity<?> updateChallenge(final @Valid @RequestBody ChallengeUpdateRequest challengeUpdateRequest) throws Exception {
+    @PutMapping(value="/challenge/upd", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> updateChallenge(final @Valid @RequestPart ChallengeUpdateRequest challengeUpdateRequest,
+                                             @AuthInfo String token) throws Exception {
 
         try{
             ChallengeDto challengeDto = ChallengeDto.updateOf(challengeUpdateRequest);
+            challengeDto.setIdk(token);
             challengeService.updateChallenge(challengeDto);
         }catch (Exception e) {
             logger.error("update challenge info error : {}",e.getMessage());

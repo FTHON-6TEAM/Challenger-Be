@@ -1,5 +1,6 @@
 package com.challenger.challengerbe.modules.challenge.domain;
 
+import com.challenger.challengerbe.modules.challenge.dto.ChallengeUserDto;
 import com.challenger.challengerbe.modules.user.domain.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -49,6 +50,19 @@ public class ChallengeUser {
     @Comment("수정일자")
     @LastModifiedDate
     private LocalDateTime modifyDate;
-    
+
+    public ChallengeUser(ChallengeUserDto dto) {
+        if(dto.getIdx() > 0) {
+            this.idx = dto.getIdx();
+        }
+        this.user = new User();
+        user.addIdk(dto.getIdk());
+        this.challenge = new Challenge();
+        challenge.addIdx(dto.getChallengeIdx());
+    }
+
+    public void addIdx(Long idx) {
+        this.idx = idx;
+    }
 
 }

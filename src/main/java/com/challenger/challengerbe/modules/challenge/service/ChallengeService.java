@@ -1,5 +1,6 @@
 package com.challenger.challengerbe.modules.challenge.service;
 
+import com.challenger.challengerbe.cms.file.service.CmsFileService;
 import com.challenger.challengerbe.modules.challenge.domain.Challenge;
 import com.challenger.challengerbe.modules.challenge.domain.ChallengeItem;
 import com.challenger.challengerbe.modules.challenge.domain.ChallengeUser;
@@ -36,6 +37,8 @@ public class ChallengeService {
     private final ChallengeRepository challengeRepository;
 
     private final ChallengeItemRepository challengeItemRepository;
+
+    private final CmsFileService cmsFileService;
 
     /**
      * 챌린지 목록(페이징 o)
@@ -80,12 +83,14 @@ public class ChallengeService {
         Challenge challenge = new Challenge(challengeDto);
         List<ChallengeItem> itemList = new ArrayList<>();
         for(ChallengeItemDto itemDto : challengeDto.getChallengeItemList()) {
-            ChallengeItem dto = new ChallengeItem();
-            dto.addTitle(itemDto.getTitle());
-            itemList.add(dto);
+            ChallengeItem item = new ChallengeItem();
+            item.addTitle(itemDto.getTitle());
+            item.addChallenge(challenge);
+            itemList.add(item);
         }
         challenge.addItemList(itemList);
         challengeRepository.save(challenge);
+        cmsFileService.processFileCreate(challengeDto);
     }
 
     /**
@@ -103,14 +108,15 @@ public class ChallengeService {
 
         List<ChallengeItem> itemList = new ArrayList<>();
         for(ChallengeItemDto itemDto : challengeDto.getChallengeItemList()) {
-            ChallengeItem dto = new ChallengeItem();
-            dto.addTitle(itemDto.getTitle());
-            itemList.add(dto);
+            ChallengeItem item = new ChallengeItem();
+            item.addTitle(itemDto.getTitle());
+            item.addChallenge(challenge);
+            itemList.add(item);
         }
 
         challenge.addItemList(itemList);
         challenge.changeChallenge(challengeDto);
-
+        cmsFileService.processFileUpdate(challengeDto);
     }
 
     /**
@@ -120,6 +126,7 @@ public class ChallengeService {
      */
     @Transactional
     public void deleteChallenge(ChallengeDto challengeDto) throws Exception {
+        cmsFileService.proccessFileDelete(challengeDto);
         challengeItemRepository.deleteByChallenge_Idx(challengeDto.getIdx());
         challengeRepository.deleteById(challengeDto.getIdx());
     }
