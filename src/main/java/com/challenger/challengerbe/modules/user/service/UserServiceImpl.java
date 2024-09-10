@@ -6,7 +6,7 @@ import com.challenger.challengerbe.common.utils.CookieUtil;
 import com.challenger.challengerbe.modules.user.domain.User;
 import com.challenger.challengerbe.modules.user.domain.User.Role;
 import com.challenger.challengerbe.modules.user.domain.UserRefreshToken;
-import com.challenger.challengerbe.modules.user.dto.CreateUserRequest;
+import com.challenger.challengerbe.modules.user.dto.UserCreateRequest;
 import com.challenger.challengerbe.modules.user.repository.UserRefreshTokenRepository;
 import com.challenger.challengerbe.modules.user.repository.UserRepository;
 import jakarta.servlet.http.Cookie;
@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public String registerUser(CreateUserRequest request) {
+    public String insertUser(UserCreateRequest request) {
         Role role = Role.ROLE_USER;
         if (request.role().equals("admin")) role = Role.ROLE_ADMIN;
 
@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserByIdk(String userIdk) {
+    public User selectUserByIdk(String userIdk) {
         return userRepository.findById(userIdk).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다."));
     }
 
@@ -85,7 +85,7 @@ public class UserServiceImpl implements UserService {
         // token으로 변경되어야 함
         String userIdk = getRefreshToken.getUserIdk();
 
-        User user = getUserByIdk(userIdk);
+        User user = selectUserByIdk(userIdk);
         String email = user.getEmail();
         String accessToken = jwtUtil.createToken(user.getIdk(), email);
         log.info("refreshToken save success");
