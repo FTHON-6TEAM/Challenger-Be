@@ -9,6 +9,6 @@ public interface UserService {
 
     String insertUser(UserCreateRequest request);
     void checkEmailDuplicate(String email);
-    User getUserByIdk(String userToken);
+    User selectUserByIdk(String userToken);
     void generateAccessTokenByRefreshToken(HttpServletRequest request, HttpServletResponse response);
 }

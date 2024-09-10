@@ -53,4 +53,8 @@ public class User {
         this.password = new UserPassword(password, passwordEncoder);
         this.role = role;
     }
+
+    public void addIdk(String idk) {
+        this.idk = idk;
+    }
 }

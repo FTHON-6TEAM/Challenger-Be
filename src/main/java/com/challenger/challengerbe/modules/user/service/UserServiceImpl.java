@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserByIdk(String userIdk) {
+    public User selectUserByIdk(String userIdk) {
         return userRepository.findById(userIdk).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다."));
     }
 
@@ -85,7 +85,7 @@ public class UserServiceImpl implements UserService {
         // token으로 변경되어야 함
         String userIdk = getRefreshToken.getUserIdk();
 
-        User user = getUserByIdk(userIdk);
+        User user = selectUserByIdk(userIdk);
         String email = user.getEmail();
         String accessToken = jwtUtil.createToken(user.getIdk(), email);
         log.info("refreshToken save success");
