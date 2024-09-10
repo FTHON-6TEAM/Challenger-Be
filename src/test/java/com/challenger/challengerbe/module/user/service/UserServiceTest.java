@@ -39,7 +39,7 @@ class UserServiceTest {
 
     @DisplayName("회원가입 유저를 등록한다.")
     @Test
-    void registerUser() {
+    void insertUser() {
         // given
         String email = "jonghuncu@gmail.com";
         String password = "password";
@@ -48,7 +48,7 @@ class UserServiceTest {
         CreateUserRequest request = new CreateUserRequest("idk", email, password, username, role);
 
         // when
-        String userIdk = userService.registerUser(request);
+        String userIdk = userService.insertUser(request);
         User user = userRepository.findById(userIdk).orElseThrow();
 
         // then
@@ -81,7 +81,7 @@ class UserServiceTest {
         String role = "admin";
         CreateUserRequest createRequest = new CreateUserRequest("idk", email, password, username, role);
 
-        String userIdk = userService.registerUser(createRequest);
+        String userIdk = userService.insertUser(createRequest);
 
         // refresh token
         UserRefreshToken userRefreshToken = new UserRefreshToken(userIdk);
@@ -114,7 +114,7 @@ class UserServiceTest {
         String role = "admin";
         CreateUserRequest createRequest = new CreateUserRequest("idk", email, password, username, role);
 
-        String userIdk = userService.registerUser(createRequest);
+        String userIdk = userService.insertUser(createRequest);
 
         // refresh token
         UserRefreshToken userRefreshToken = new UserRefreshToken(userIdk);

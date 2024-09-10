@@ -32,15 +32,15 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public String registerUser(CreateUserRequest request) {
+    public String insertUser(CreateUserRequest request) {
         Role role = Role.ROLE_USER;
-        if (request.role().equals("admin")) role = Role.ROLE_ADMIN;
+        if (request.getRole().equals("admin")) role = Role.ROLE_ADMIN;
 
         User user = User.builder()
-                .idk(request.idk())
-                .email(request.email())
-                .password(request.password())
-                .username(request.username())
+                .idk(request.getIdk())
+                .email(request.getEmail())
+                .password(request.getPassword())
+                .username(request.getUsername())
                 .passwordEncoder(passwordEncoder)
                 .role(role)
                 .build();

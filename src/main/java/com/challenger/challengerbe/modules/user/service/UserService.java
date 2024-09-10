@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public interface UserService {
 
-    String registerUser(CreateUserRequest request);
+    String insertUser(CreateUserRequest request);
     void checkEmailDuplicate(String email);
     User getUserByIdk(String userToken);
     void generateAccessTokenByRefreshToken(HttpServletRequest request, HttpServletResponse response);
