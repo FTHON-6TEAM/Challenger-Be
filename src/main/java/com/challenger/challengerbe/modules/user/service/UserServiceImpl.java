@@ -6,7 +6,7 @@ import com.challenger.challengerbe.common.utils.CookieUtil;
 import com.challenger.challengerbe.modules.user.domain.User;
 import com.challenger.challengerbe.modules.user.domain.User.Role;
 import com.challenger.challengerbe.modules.user.domain.UserRefreshToken;
-import com.challenger.challengerbe.modules.user.dto.CreateUserRequest;
+import com.challenger.challengerbe.modules.user.dto.UserCreateRequest;
 import com.challenger.challengerbe.modules.user.repository.UserRefreshTokenRepository;
 import com.challenger.challengerbe.modules.user.repository.UserRepository;
 import jakarta.servlet.http.Cookie;
@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public String insertUser(CreateUserRequest request) {
+    public String insertUser(UserCreateRequest request) {
         Role role = Role.ROLE_USER;
         if (request.getRole().equals("admin")) role = Role.ROLE_ADMIN;
 

@@ -1,6 +1,6 @@
 package com.challenger.challengerbe.modules.user.controller;
 
-import com.challenger.challengerbe.modules.user.dto.CreateUserRequest;
+import com.challenger.challengerbe.modules.user.dto.UserCreateRequest;
 import com.challenger.challengerbe.modules.user.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,7 +25,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<String> registerUser(@Valid @RequestBody CreateUserRequest request) {
+    public ResponseEntity<String> registerUser(@Valid @RequestBody UserCreateRequest request) {
         String userIdk = userService.insertUser(request);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(userIdk);
