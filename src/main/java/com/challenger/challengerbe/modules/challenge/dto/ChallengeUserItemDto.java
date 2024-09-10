@@ -1,9 +1,12 @@
-package com.challenger.challengerbe.modules.challenge.domain;
+package com.challenger.challengerbe.modules.challenge.dto;
 
+import com.challenger.challengerbe.modules.challenge.domain.ChallengeItem;
+import com.challenger.challengerbe.modules.challenge.domain.ChallengeUser;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.Comment;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -13,48 +16,33 @@ import java.time.LocalDateTime;
 
 /**
  * packageName    : com.challenger.challengerbe.modules.challenge.domain
- * fileName       : ChallengeItem
+ * fileName       : ChallengeUseritem
  * author         : rhkdg
  * date           : 2024-09-09
- * description    : 챌린지 항목 정보
+ * description    :
  * ===========================================================
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
  * 2024-09-09        rhkdg       최초 생성
  */
-@Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EntityListeners(AuditingEntityListener.class)
-public class ChallengeItem {
+public class ChallengeUserItemDto {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idx;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "challenge_idx" ,nullable = false)
-    private Challenge challenge;
+    private Long challengeUserIdx;
 
-    @Comment("제목")
-    private String title;
+    private Long challengeItemIdx;
 
-    @Comment("등록일자")
-    @CreatedDate
+    private String completeDate;
+
+    private String completeYn;
+
     private LocalDateTime createDate;
 
-    @Comment("수정일자")
-    @LastModifiedDate
     private LocalDateTime modifyDate;
-
-    public void addChallenge(Challenge challenge){
-        this.challenge = challenge;
-    }
-    public void addIdx(Long idx) {
-        this.idx = idx;
-    }
-    public void addTitle(String title) {
-        this.title = title;
-    }
 
 }

@@ -22,6 +22,8 @@ public class ChallengeDefaultDto extends BaseDto {
     /**키워드*/
     private String code;
 
+    private String idk;
+
     /**시작일자*/
     private String startDate;
 

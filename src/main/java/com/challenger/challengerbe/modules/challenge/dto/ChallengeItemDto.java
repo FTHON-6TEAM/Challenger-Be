@@ -27,7 +27,7 @@ import java.time.LocalDateTime;
 @Setter
 public class ChallengeItemDto {
 
-    private Long idx;
+    private Long idx = 0L;
 
 
     private Long challengeIdx;

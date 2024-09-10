@@ -1,11 +1,12 @@
-package com.challenger.challengerbe.modules.challenge.domain;
+package com.challenger.challengerbe.modules.challenge.dto;
 
-import com.challenger.challengerbe.modules.challenge.dto.ChallengeUserDto;
+import com.challenger.challengerbe.modules.challenge.domain.Challenge;
 import com.challenger.challengerbe.modules.user.domain.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.Comment;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -24,45 +25,28 @@ import java.time.LocalDateTime;
  * -----------------------------------------------------------
  * 2024-09-09        rhkdg       최초 생성
  */
-@Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EntityListeners(AuditingEntityListener.class)
-public class ChallengeUser {
+public class ChallengeUserDto {
 
-    @Comment("일련번호")
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idx;
 
-    @ManyToOne(fetch =  FetchType.LAZY)
-    @JoinColumn(name = "idk", nullable = false)
-    private User user;
-    
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "challenge_idx", nullable = false)
-    private Challenge challenge;
-    
-    @Comment("등록일자")
-    @CreatedDate
+    private String idk;
+
+    private Long challengeIdx;
+
     private LocalDateTime createDate;
-    
-    @Comment("수정일자")
-    @LastModifiedDate
+
     private LocalDateTime modifyDate;
 
-    public ChallengeUser(ChallengeUserDto dto) {
-        if(dto.getIdx() > 0) {
-            this.idx = dto.getIdx();
-        }
-        this.user = new User();
-        user.addIdk(dto.getIdk());
-        this.challenge = new Challenge();
-        challenge.addIdx(dto.getChallengeIdx());
-    }
+    private ChallengeSummaryInfoResponse challengeSummaryInfoResponse;
 
-    public void addIdx(Long idx) {
-        this.idx = idx;
+    public static ChallengeUserDto createOf(ChallengeUserCreateRequest challengeUserCreateRequest) {
+        ChallengeUserDto dto = new ChallengeUserDto();
+        dto.setChallengeIdx(challengeUserCreateRequest.challengeIdx());
+        return dto;
     }
 
 }
