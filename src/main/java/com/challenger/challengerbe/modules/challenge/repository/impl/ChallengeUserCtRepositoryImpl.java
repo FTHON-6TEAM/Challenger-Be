@@ -13,9 +13,12 @@ import com.challenger.challengerbe.modules.challenge.dto.ChallengeUserDto;
 import com.challenger.challengerbe.modules.challenge.repository.ChallengeUserCtRepository;
 import com.challenger.challengerbe.modules.user.domain.QUser;
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.DateTemplate;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import io.micrometer.common.util.StringUtils;
 import jakarta.persistence.EntityManager;
@@ -91,16 +94,18 @@ public class ChallengeUserCtRepositoryImpl extends BaseAbstractRepositoryImpl im
                                 qChallenge.successCnt,
                                 qChallenge.title,
                                 qChallenge.remark,
-                                qCmsFile.saveFilePath.concat("/").concat(qCmsFile.saveFileName),
-                                qChallengeUser2.count(),
+                                qCmsFile.idx,
+                                ExpressionUtils.as(
+                                        JPAExpressions.select(qChallengeUser.count())
+                                                .from(qChallengeUser)
+                                                .where(qChallenge.idx.eq(qChallengeUser.challenge.idx).and(qChallengeUser.user.idk.ne(searchDto.getIdk())))
+
+                                        ,"joinCnt"),
                                 qChallenge.createDate,
                                 qChallenge.modifyDate
                         )
                 )
         ).from(qChallengeUser)
-                .leftJoin(qChallengeUser2).on(qChallengeUser2.challenge.idx.eq(qChallenge.idx).and(
-                        qChallengeUser2.user.idk.ne(searchDto.getIdk())
-                ))
                 .innerJoin(qChallenge).on(qChallengeUser.challenge.idx.eq(qChallenge.idx))
                 .innerJoin(qUser).on(qChallengeUser.user.idk.eq(qUser.idk))
                 .leftJoin(qCmsFile)
@@ -139,16 +144,18 @@ public class ChallengeUserCtRepositoryImpl extends BaseAbstractRepositoryImpl im
                                         qChallenge.successCnt,
                                         qChallenge.title,
                                         qChallenge.remark,
-                                        qCmsFile.saveFilePath.concat("/").concat(qCmsFile.saveFileName),
-                                        qChallengeUser2.count(),
+                                        qCmsFile.idx,
+                                        ExpressionUtils.as(
+                                                JPAExpressions.select(qChallengeUser.count())
+                                                        .from(qChallengeUser)
+                                                        .where(qChallenge.idx.eq(qChallengeUser.challenge.idx).and(qChallengeUser.user.idk.ne(searchDto.getIdk())))
+
+                                                ,"joinCnt"),
                                         qChallenge.createDate,
                                         qChallenge.modifyDate
                                 )
                         )
                 ).from(qChallengeUser)
-                .leftJoin(qChallengeUser2).on(qChallengeUser2.challenge.idx.eq(qChallenge.idx).and(
-                        qChallengeUser2.user.idk.ne(searchDto.getIdk())
-                ))
                 .innerJoin(qChallenge).on(qChallengeUser.challenge.idx.eq(qChallenge.idx))
                 .innerJoin(qUser).on(qChallengeUser.user.idk.eq(qUser.idk))
                 .leftJoin(qCmsFile)
@@ -179,6 +186,12 @@ public class ChallengeUserCtRepositoryImpl extends BaseAbstractRepositoryImpl im
                                         qChallenge.successCnt,
                                         qChallenge.title,
                                         qChallenge.remark,
+                                        Expressions.numberTemplate(Long.class,"0") ,
+                                        ExpressionUtils.as(
+                                                JPAExpressions.select(qChallengeUser.count())
+                                                        .from(qChallengeUser)
+                                                        .where(qChallenge.idx.eq(qChallengeUser.challenge.idx).and(qChallengeUser.user.idk.ne(dto.getIdk())))
+                                                ,"joinCnt"),
                                         qChallenge.createDate,
                                         qChallenge.modifyDate
                                 )

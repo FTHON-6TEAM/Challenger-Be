@@ -44,7 +44,7 @@ public record ChallengeSummaryResponse(
         /**비고*/
          String remark,
 
-         String file,
+         Long fileIdx,
 
          Long joinCnt,
 
