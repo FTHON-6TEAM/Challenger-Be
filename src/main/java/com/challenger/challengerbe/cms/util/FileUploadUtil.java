@@ -108,7 +108,7 @@ public class FileUploadUtil {
             }
         }catch (Exception e) {
             e.printStackTrace();
-            throw new Exception("파일 저장시 오류가 발생했습니다. :" + e.getMessage());
+            throw new Exception("파일 저장시 오류가 발생했습니다. " + e.getMessage());
         }
         return name;
     }
