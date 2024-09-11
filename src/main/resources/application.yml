@@ -18,6 +18,10 @@ spring:
 #    password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+globals:
+  upload:
+    path: C:\temp\upload
+
 ---
 spring:
   config:
@@ -33,6 +37,10 @@ spring:
       max-idle: 15
       min-idle: 8
     driver-class-name: com.mysql.cj.jdbc.Driver
+
+globals:
+  upload:
+    path: /home/fton/backend/upload
 
 ---
 spring:
@@ -63,6 +71,7 @@ logging:
   level:
     org.hibernate.SQL: debug
     org.hibernate.type: debug
+
 
 jwt:
   secret: BShnJuVMiiPnYWljfoMtuONwwfheModfwresdfasdfwerwqasfwdasf
