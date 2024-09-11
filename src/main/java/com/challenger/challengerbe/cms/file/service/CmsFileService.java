@@ -11,6 +11,7 @@ import com.challenger.challengerbe.cms.upload.service.FileUploadService;
 import com.challenger.challengerbe.cms.util.FileUploadUtil;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,6 +47,8 @@ public class CmsFileService implements CmsFileDetailService{
 
     private final FileUploadService fileUploadService;
 
+    @Value("${globals.upload.path}")
+    private String globalPath;
 
     /**
      * 파일 목록 조회
@@ -140,8 +143,8 @@ public class CmsFileService implements CmsFileDetailService{
                     cmsFileDto.setParentIdx(obj.getParentIdx());
                     cmsFileDto.setUploadCode(obj.getUploadCode());
                     cmsFileDto.setOriginalFileName(multipartFile.getOriginalFilename());
-                    String saveFileName = fileUploadUtil.saveUploadFile(uploadDto.getPath(), multipartFile,null,false);
-                    exceptionFileDeleteList.add(new File(uploadDto.getPath(),saveFileName));
+                    String saveFileName = fileUploadUtil.saveUploadFile(globalPath+uploadDto.getPath(), multipartFile,null,false);
+                    exceptionFileDeleteList.add(new File(globalPath+uploadDto.getPath(),saveFileName));
                     cmsFileDto.setSaveFileName(saveFileName);
                     cmsFileDto.setFileSize(multipartFile.getSize()+"");
                     cmsFileDto.setTagName(formName);
@@ -155,7 +158,7 @@ public class CmsFileService implements CmsFileDetailService{
                         cmsFileRepository.updateCmsFile(cmsFileDto);
                         CmsFileDto tempFileDto = existMap.get(modifyIdx);
                         if(tempFileDto != null){
-                            existFileDeleteList.add(new File(uploadDto.getPath(),tempFileDto.getSaveFileName()));
+                            existFileDeleteList.add(new File(globalPath+uploadDto.getPath(),tempFileDto.getSaveFileName()));
                         }
                     }else {
                         cmsFileRepository.insertCmsFile(cmsFileDto);
@@ -166,7 +169,7 @@ public class CmsFileService implements CmsFileDetailService{
                         if(deleteIdx != null && existMap.containsKey(deleteIdx)){
                             CmsFileDto deleteMap = existMap.get(deleteIdx);
                             if(deleteMap != null){
-                                existFileDeleteList.add(new File(uploadDto.getPath(),deleteMap.getSaveFileName()));
+                                existFileDeleteList.add(new File(globalPath+uploadDto.getPath(),deleteMap.getSaveFileName()));
                                 cmsFileRepository.deleteCmsFile(deleteMap);
                             }
                         }

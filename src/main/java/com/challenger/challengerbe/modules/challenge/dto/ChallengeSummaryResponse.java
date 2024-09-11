@@ -44,6 +44,10 @@ public record ChallengeSummaryResponse(
         /**비고*/
          String remark,
 
+         String file,
+
+         Long joinCnt,
+
          LocalDateTime createDate,
 
          LocalDateTime modifyDate

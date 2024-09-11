@@ -89,7 +89,8 @@ public class ChallengeService {
             itemList.add(item);
         }
         challenge.addItemList(itemList);
-        challengeRepository.save(challenge);
+        challenge = challengeRepository.save(challenge);
+        challengeDto.setIdx(challenge.getIdx());
         cmsFileService.processFileCreate(challengeDto);
     }
 
