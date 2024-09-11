@@ -1,5 +1,7 @@
 package com.challenger.challengerbe.modules.challenge.dto;
 
+import com.challenger.challengerbe.cms.file.dto.CmsFileDto;
+import com.challenger.challengerbe.cms.file.dto.CmsFileSupport;
 import com.challenger.challengerbe.modules.challenge.domain.Challenge;
 import com.challenger.challengerbe.modules.user.domain.User;
 import jakarta.persistence.*;
@@ -13,6 +15,8 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * packageName    : com.challenger.challengerbe.modules.challenge.domain
@@ -28,8 +32,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-public class ChallengeUserDto {
+public class ChallengeUserDto  {
 
     private Long idx;
 
@@ -43,10 +46,20 @@ public class ChallengeUserDto {
 
     private ChallengeSummaryInfoResponse challengeSummaryInfoResponse;
 
+    public ChallengeUserDto(Long idx, String idk, Long challengeIdx, LocalDateTime createDate, LocalDateTime modifyDate, ChallengeSummaryInfoResponse challengeSummaryInfoResponse) {
+        this.idx = idx;
+        this.idk = idk;
+        this.challengeIdx = challengeIdx;
+        this.createDate = createDate;
+        this.modifyDate = modifyDate;
+        this.challengeSummaryInfoResponse = challengeSummaryInfoResponse;
+    }
+
     public static ChallengeUserDto createOf(ChallengeUserCreateRequest challengeUserCreateRequest) {
         ChallengeUserDto dto = new ChallengeUserDto();
         dto.setChallengeIdx(challengeUserCreateRequest.challengeIdx());
         return dto;
     }
+
 
 }

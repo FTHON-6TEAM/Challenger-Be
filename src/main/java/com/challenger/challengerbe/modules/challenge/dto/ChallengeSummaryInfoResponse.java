@@ -32,6 +32,9 @@ public record ChallengeSummaryInfoResponse(
         /**비고*/
         String remark,
 
+        String imageLink,
+        Long joinCnt,
+
         LocalDateTime createDate,
 
         LocalDateTime modifyDate

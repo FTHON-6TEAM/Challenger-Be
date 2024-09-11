@@ -63,6 +63,20 @@ public class ChallengeDto implements CmsFileSupport<CmsFileDto> {
 
     private List<CmsFileDto> cmsFileList = new ArrayList<>();
 
+    public ChallengeDto(Long idx, String code, String idk, String startDate, String endDate, int successCnt, String title, String remark, LocalDateTime createDate, LocalDateTime modifyDate, List<ChallengeItemDto> challengeItemList) {
+        this.idx = idx;
+        this.code = code;
+        this.idk = idk;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.successCnt = successCnt;
+        this.title = title;
+        this.remark = remark;
+        this.createDate = createDate;
+        this.modifyDate = modifyDate;
+        this.challengeItemList = challengeItemList;
+    }
+
     public static ChallengeDto createof(ChallengeCreateRequest challengeCreateRequest) {
         ChallengeDto challengeDto =new ChallengeDto();
         challengeDto.setCode(challengeCreateRequest.getCode());
@@ -100,7 +114,7 @@ public class ChallengeDto implements CmsFileSupport<CmsFileDto> {
 
     @Override
     public String getUploadCode() {
-        return "upload.challenge";
+        return "upload.challenge.create";
     }
 
     @Override

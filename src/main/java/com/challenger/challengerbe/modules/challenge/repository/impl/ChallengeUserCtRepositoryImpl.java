@@ -1,5 +1,7 @@
 package com.challenger.challengerbe.modules.challenge.repository.impl;
 
+import com.challenger.challengerbe.cms.file.domain.QCmsFile;
+import com.challenger.challengerbe.cms.publiccode.domain.QPublicCode;
 import com.challenger.challengerbe.common.BaseAbstractRepositoryImpl;
 import com.challenger.challengerbe.modules.challenge.domain.ChallengeUser;
 import com.challenger.challengerbe.modules.challenge.domain.QChallenge;
@@ -61,8 +63,11 @@ public class ChallengeUserCtRepositoryImpl extends BaseAbstractRepositoryImpl im
     @Override
     public Page<ChallengeUserDto> selectChallengeUserPageList(ChallengeDefaultDto searchDto) throws Exception {
         QChallengeUser qChallengeUser = QChallengeUser.challengeUser;
+        QChallengeUser qChallengeUser2 = QChallengeUser.challengeUser;
         QChallenge qChallenge = QChallenge.challenge;
         QUser qUser = QUser.user;
+        QPublicCode qPublicCode = QPublicCode.publicCode;
+        QCmsFile qCmsFile = QCmsFile.cmsFile;
 
         long totCnt = jpaQuery.select(qChallengeUser.count())
                 .from(qChallengeUser)
@@ -86,13 +91,21 @@ public class ChallengeUserCtRepositoryImpl extends BaseAbstractRepositoryImpl im
                                 qChallenge.successCnt,
                                 qChallenge.title,
                                 qChallenge.remark,
+                                qCmsFile.saveFilePath.concat("/").concat(qCmsFile.saveFileName),
+                                qChallengeUser2.count(),
                                 qChallenge.createDate,
                                 qChallenge.modifyDate
                         )
                 )
         ).from(qChallengeUser)
+                .leftJoin(qChallengeUser2).on(qChallengeUser2.challenge.idx.eq(qChallenge.idx).and(
+                        qChallengeUser2.user.idk.ne(searchDto.getIdk())
+                ))
                 .innerJoin(qChallenge).on(qChallengeUser.challenge.idx.eq(qChallenge.idx))
                 .innerJoin(qUser).on(qChallengeUser.user.idk.eq(qUser.idk))
+                .leftJoin(qCmsFile)
+                .on(qCmsFile.parentIdx.eq(qChallenge.idx.stringValue())
+                        .and(qCmsFile.uploadCode.eq("upload.challenge.create")))
                 .where(commonQuery(searchDto))
                 .offset(searchDto.getPageable().getOffset())
                 .limit(searchDto.getPageable().getPageSize())
@@ -104,8 +117,11 @@ public class ChallengeUserCtRepositoryImpl extends BaseAbstractRepositoryImpl im
     @Override
     public List<ChallengeUserDto> selectChallengeUserList(ChallengeDefaultDto searchDto) throws Exception {
         QChallengeUser qChallengeUser = QChallengeUser.challengeUser;
+        QChallengeUser qChallengeUser2 = QChallengeUser.challengeUser;
         QChallenge qChallenge = QChallenge.challenge;
         QUser qUser = QUser.user;
+        QPublicCode qPublicCode = QPublicCode.publicCode;
+        QCmsFile qCmsFile = QCmsFile.cmsFile;
 
         return jpaQuery.select(
                         Projections.constructor(
@@ -123,13 +139,21 @@ public class ChallengeUserCtRepositoryImpl extends BaseAbstractRepositoryImpl im
                                         qChallenge.successCnt,
                                         qChallenge.title,
                                         qChallenge.remark,
+                                        qCmsFile.saveFilePath.concat("/").concat(qCmsFile.saveFileName),
+                                        qChallengeUser2.count(),
                                         qChallenge.createDate,
                                         qChallenge.modifyDate
                                 )
                         )
                 ).from(qChallengeUser)
+                .leftJoin(qChallengeUser2).on(qChallengeUser2.challenge.idx.eq(qChallenge.idx).and(
+                        qChallengeUser2.user.idk.ne(searchDto.getIdk())
+                ))
                 .innerJoin(qChallenge).on(qChallengeUser.challenge.idx.eq(qChallenge.idx))
                 .innerJoin(qUser).on(qChallengeUser.user.idk.eq(qUser.idk))
+                .leftJoin(qCmsFile)
+                .on(qCmsFile.parentIdx.eq(qChallenge.idx.stringValue())
+                        .and(qCmsFile.uploadCode.eq("upload.challenge.create")))
                 .where(commonQuery(searchDto))
                 .fetch();
     }
