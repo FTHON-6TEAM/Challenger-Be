@@ -86,6 +86,7 @@ public class ChallengeService {
             ChallengeItem item = new ChallengeItem();
             item.addTitle(itemDto.getTitle());
             item.addChallenge(challenge);
+            System.out.println(itemDto.getTitle());
             itemList.add(item);
         }
         challenge.addItemList(itemList);
@@ -107,15 +108,13 @@ public class ChallengeService {
             challengeItemRepository.deleteByChallenge_Idx(challengeDto.getIdx());
         }
 
-        List<ChallengeItem> itemList = new ArrayList<>();
         for(ChallengeItemDto itemDto : challengeDto.getChallengeItemList()) {
             ChallengeItem item = new ChallengeItem();
             item.addTitle(itemDto.getTitle());
             item.addChallenge(challenge);
-            itemList.add(item);
+            challengeItemRepository.save(item);
         }
 
-        challenge.addItemList(itemList);
         challenge.changeChallenge(challengeDto);
         cmsFileService.processFileUpdate(challengeDto);
     }
