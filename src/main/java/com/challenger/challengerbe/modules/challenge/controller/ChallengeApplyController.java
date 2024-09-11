@@ -115,6 +115,7 @@ public class ChallengeApplyController {
     public ResponseEntity<?> deleteChallengeApplyItem(@RequestParam("idx") Long idx) throws Exception {
         ChallengeUserItemDto dto = new ChallengeUserItemDto();
         dto.setIdx(idx);
+        challengeApplyService.deleteChallengeApplyItem(dto);
         return new ResponseEntity<>(CommonResponse.resOnlyMessageOf("취소하셨습니다."),HttpStatus.OK);
     }
     

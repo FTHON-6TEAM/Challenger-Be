@@ -72,7 +72,7 @@ public class Challenge {
     @LastModifiedDate
     private LocalDateTime modifyDate;
 
-    @OneToMany(mappedBy = "challenge",orphanRemoval = true, cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REMOVE},fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "challenge",orphanRemoval = true, cascade = {CascadeType.PERSIST},fetch = FetchType.LAZY)
     private List<ChallengeItem> challengeItemList = new ArrayList<>();
 
     public Challenge(ChallengeDto dto) {
