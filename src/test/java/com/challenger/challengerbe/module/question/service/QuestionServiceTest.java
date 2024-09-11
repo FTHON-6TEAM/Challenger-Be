@@ -46,11 +46,10 @@ public class QuestionServiceTest {
         UserCreateRequest request = new UserCreateRequest("idk", email, username);
         String userIdk = userService.insertUser(request);
 
-        QuestionCreateRequest questionCreateRequest = new QuestionCreateRequest("title", "content",
-                userIdk);
+        QuestionCreateRequest questionCreateRequest = new QuestionCreateRequest("title", "content");
 
         // when
-        Long questionIdx =  questionService.insertQuestion(questionCreateRequest);
+        Long questionIdx =  questionService.insertQuestion(questionCreateRequest, userIdk);
         Question question = questionService.getQuestionByIdx(questionIdx);
 
         // then

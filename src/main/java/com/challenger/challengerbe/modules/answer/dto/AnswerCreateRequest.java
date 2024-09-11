@@ -24,8 +24,9 @@ public class AnswerCreateRequest {
     private Long questionIdx;
 
     @Builder
-    public AnswerCreateRequest(String content, String userIdk) {
+    public AnswerCreateRequest(String content, String userIdk, Long questionIdx) {
         this.content = content;
         this.userIdk = userIdk;
+        this.questionIdx = questionIdx;
     }
 }

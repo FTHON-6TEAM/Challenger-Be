@@ -1,5 +1,7 @@
 package com.challenger.challengerbe.modules.question.service;
 
+import com.challenger.challengerbe.modules.answer.dto.AnswerCreateRequest;
+import com.challenger.challengerbe.modules.answer.service.AnswerService;
 import com.challenger.challengerbe.modules.question.domain.Question;
 import com.challenger.challengerbe.modules.question.dto.QuestionCreateRequest;
 import com.challenger.challengerbe.modules.question.repository.QuestionRepository;
@@ -28,11 +30,12 @@ public class QuestionServiceImpl implements QuestionService {
 
     private final QuestionRepository questionRepository;
     private final UserService userService;
+    private final QuestionAnswerMediator mediator;
 
     @Override
     @Transactional
-    public Long insertQuestion(QuestionCreateRequest request) {
-        User user = userService.selectUserByIdk(request.getUserIdk());
+    public Long insertQuestion(QuestionCreateRequest request, String userIdk) {
+        User user = userService.selectUserByIdk(userIdk);
         Question newQuestion = Question.builder()
                 .user(user)
                 .title(request.getTitle())
@@ -40,7 +43,9 @@ public class QuestionServiceImpl implements QuestionService {
                 .build();
         Question question = questionRepository.save(newQuestion);
 
-        // AI answer 자동 등록 (비동기 처리)
+        // AI answer 자동 등록 (@Async 비동기 처리)
+        // 비동기 등록
+        mediator.generateAnswerForQuestion(question.getIdx(), userIdk);
 
         return question.getIdx();
     }

@@ -21,12 +21,10 @@ import lombok.NoArgsConstructor;
 public class QuestionCreateRequest {
     private String title;
     private String content;
-    private String userIdk;
 
     @Builder
-    public QuestionCreateRequest(String title, String content, String userIdk) {
+    public QuestionCreateRequest(String title, String content) {
         this.title = title;
         this.content = content;
-        this.userIdk = userIdk;
     }
 }

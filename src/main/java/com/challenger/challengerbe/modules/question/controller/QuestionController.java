@@ -36,7 +36,7 @@ public class QuestionController {
 
     @PostMapping
     public ResponseEntity<Long> createQuestion(@Valid @RequestBody QuestionCreateRequest request, @AuthInfo String userIdk) {
-        Long response = questionService.insertQuestion(request);
+        Long response = questionService.insertQuestion(request, userIdk);
         log.info("userIdk : " + userIdk);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
