@@ -78,6 +78,7 @@ public class FileUploadUtil {
         String name = "";
         try {
             if(file != null && !"".equals(file.getOriginalFilename())) {
+                System.out.println("파일 경로 : "+path);
                 File renameFile = rename(new File(path,file.getOriginalFilename()));
                 file.transferTo(renameFile);
                 name = renameFile.getName();
