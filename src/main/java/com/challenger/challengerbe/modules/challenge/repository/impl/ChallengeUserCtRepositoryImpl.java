@@ -3,20 +3,16 @@ package com.challenger.challengerbe.modules.challenge.repository.impl;
 import com.challenger.challengerbe.cms.file.domain.QCmsFile;
 import com.challenger.challengerbe.cms.publiccode.domain.QPublicCode;
 import com.challenger.challengerbe.common.BaseAbstractRepositoryImpl;
-import com.challenger.challengerbe.modules.challenge.domain.ChallengeUser;
 import com.challenger.challengerbe.modules.challenge.domain.QChallenge;
 import com.challenger.challengerbe.modules.challenge.domain.QChallengeUser;
-import com.challenger.challengerbe.modules.challenge.dto.ChallengeActiveType;
 import com.challenger.challengerbe.modules.challenge.dto.ChallengeDefaultDto;
 import com.challenger.challengerbe.modules.challenge.dto.ChallengeSummaryInfoResponse;
 import com.challenger.challengerbe.modules.challenge.dto.ChallengeUserDto;
 import com.challenger.challengerbe.modules.challenge.repository.ChallengeUserCtRepository;
 import com.challenger.challengerbe.modules.user.domain.QUser;
 import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.dsl.DateTemplate;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -26,7 +22,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -58,6 +53,10 @@ public class ChallengeUserCtRepositoryImpl extends BaseAbstractRepositoryImpl im
 
         if(!StringUtils.isBlank(searchDto.getStartDate()) && !StringUtils.isBlank(searchDto.getEndDate())){
             sql.and(qChallenge.startDate.goe(searchDto.getStartDate()).and(qChallenge.endDate.loe(searchDto.getEndDate())));
+        }
+
+        if(!StringUtils.isBlank(searchDto.getCode())){
+            sql.and(qChallenge.publicCode.pubCd.eq(searchDto.getCode()));
         }
 
         return sql;
