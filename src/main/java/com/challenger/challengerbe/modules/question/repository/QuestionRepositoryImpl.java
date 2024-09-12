@@ -83,8 +83,9 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
         QQuestion qQuestion = QQuestion.question;
         QPublicCode qPublicCode = QPublicCode.publicCode;
         QUser qUser = QUser.user;
+        QCmsFile qCmsFile = QCmsFile.cmsFile;
 
-        QuestionSummaryResponse response = queryFactory.select(
+        return queryFactory.select(
                         Projections.constructor(
                                 QuestionSummaryResponse.class,
                                 qQuestion.idx,
@@ -94,16 +95,18 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
                                 qQuestion.content,
                                 qUser.username,
                                 qUser.idk,
+                                qCmsFile.idx,
                                 qQuestion.createDate,
                                 qQuestion.modifyDate
                         )
                 ).from(qQuestion)
                 .leftJoin(qPublicCode).on(qQuestion.publicCode.pubCd.eq(qPublicCode.pubCd))
                 .leftJoin(qUser).on(qQuestion.user.idk.eq(qUser.idk))
+                .leftJoin(qCmsFile)
+                .on(qCmsFile.parentIdx.eq(qQuestion.idx.stringValue())
+                        .and(qCmsFile.uploadCode.eq("upload.question")))
                 .where(qQuestion.idx.eq(questionIdk))
                 .fetchFirst();
-
-        return response;
     }
 
     // 공통 쿼리 조건 처리 메소드

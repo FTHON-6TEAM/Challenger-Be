@@ -49,6 +49,7 @@ public class QuestionServiceImpl implements QuestionService {
                 .dto(questionDto)
                 .build();
         Question question = questionRepository.save(newQuestion);
+        questionDto.setQuestionIdx(question.getIdx());
         cmsFileService.processFileCreate(questionDto);
 
         AsyncAnswerCreateDto request = AsyncAnswerCreateDto.builder()
