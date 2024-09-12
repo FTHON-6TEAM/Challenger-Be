@@ -54,7 +54,7 @@ public class QuestionDto implements CmsFileSupport<CmsFileDto> {
 
     @Override
     public String getParentIdx() {
-        return this.userIdx + "";
+        return this.questionIdx + "";
     }
 
     @Override
