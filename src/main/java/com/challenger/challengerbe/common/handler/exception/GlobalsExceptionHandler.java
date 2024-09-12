@@ -1,6 +1,9 @@
 package com.challenger.challengerbe.common.handler.exception;
 
 import com.challenger.challengerbe.common.CommonResponse;
+import com.challenger.challengerbe.common.exception.AlreadyExistException;
+import com.challenger.challengerbe.common.exception.AlreadyUseException;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -33,4 +36,33 @@ public class GlobalsExceptionHandler extends ResponseEntityExceptionHandler {
 //        CommonResponse<?> response = new CommonResponse<>(e.getBindingResult().getAllErrors().get(0).getDefaultMessage());
 //        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 //    }
+
+    /**
+     * 이미 존재 여부
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(AlreadyExistException.class)
+    public final ResponseEntity<?> handlerAlreadyException (AlreadyExistException e) {
+        CommonResponse<?> response = new CommonResponse<>(e.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.ALREADY_REPORTED);
+    }
+
+    /**
+     * 이미 사용 여부
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(AlreadyUseException.class)
+    public final ResponseEntity<?> handlerAlreadyException (AlreadyUseException e) {
+        CommonResponse<?> response = new CommonResponse<>(e.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.ALREADY_REPORTED);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public final ResponseEntity<?> handlerAlreadyException (Exception e) {
+        CommonResponse<?> response = new CommonResponse<>(e.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 }

@@ -37,7 +37,7 @@ import java.util.List;
 public class ChallengeUserDto  {
 
     @Schema(description = "챌린지 참여자 일련번호")
-    private Long idx;
+    private Long idx = 0L;
 
     @Schema(description = "챌린지 참여자 키값")
     private String idk;

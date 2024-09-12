@@ -2,7 +2,10 @@ package com.challenger.challengerbe.modules.challenge.controller;
 
 import com.challenger.challengerbe.auth.login.AuthInfo;
 import com.challenger.challengerbe.common.CommonResponse;
+import com.challenger.challengerbe.common.exception.AlreadyExistException;
+import com.challenger.challengerbe.common.exception.AlreadyUseException;
 import com.challenger.challengerbe.modules.challenge.dto.*;
+import com.challenger.challengerbe.modules.challenge.service.ChallengeApplyService;
 import com.challenger.challengerbe.modules.challenge.service.ChallengeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -38,6 +41,8 @@ public class ChallengeUserController {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final ChallengeService challengeService;
+
+    private final ChallengeApplyService challengeApplyService;
 
     @Operation(summary = "챌린지 목록 조회(페이징 포함)")
     @Parameters({
@@ -95,14 +100,9 @@ public class ChallengeUserController {
     public ResponseEntity<?> updateChallenge(final @Valid @RequestPart ChallengeUpdateRequest challengeUpdateRequest,
                                              @Parameter(hidden = true) @AuthInfo String token) throws Exception {
 
-        try{
-            ChallengeDto challengeDto = ChallengeDto.updateOf(challengeUpdateRequest);
-            challengeDto.setIdk(token);
-            challengeService.updateChallenge(challengeDto);
-        }catch (Exception e) {
-            logger.error("update challenge info error : {}",e.getMessage());
-            return new ResponseEntity<>(CommonResponse.resOnlyMessageOf("수정시 오류가 발생했습니다."), HttpStatus.BAD_REQUEST);
-        }
+        ChallengeDto challengeDto = ChallengeDto.updateOf(challengeUpdateRequest);
+        challengeDto.setIdk(token);
+        challengeService.updateChallenge(challengeDto);
 
         return new ResponseEntity<>(CommonResponse.resOnlyMessageOf("수정 되었습니다."),HttpStatus.OK);
     }
@@ -115,15 +115,15 @@ public class ChallengeUserController {
     })
     @DeleteMapping("/challenge/del")
     public ResponseEntity<?> deleteChallenge(@RequestParam("idx") Long idx) throws Exception {
-        
-        try{
-            ChallengeDto challengeDto = new ChallengeDto();
-            challengeDto.setIdx(idx);
-            challengeService.deleteChallenge(challengeDto);
-        }catch (Exception e) {
-            logger.error("delete challenge info error : {}",e.getMessage());
-            return new ResponseEntity<>(CommonResponse.resOnlyMessageOf("삭제시 오류가 발생했습니다."), HttpStatus.BAD_REQUEST);
+
+        int totCnt = challengeApplyService.selectChallengeUserTotalCountByChallengeIdx(idx);
+        if(totCnt > 0) {
+            throw new AlreadyUseException("이미 참여중인 참여자들이 있어 삭제가 불가능합니다.");
         }
+
+        ChallengeDto challengeDto = new ChallengeDto();
+        challengeDto.setIdx(idx);
+        challengeService.deleteChallenge(challengeDto);
 
         return new ResponseEntity<>(CommonResponse.resOnlyMessageOf("삭제 되었습니다."),HttpStatus.OK);
     }
