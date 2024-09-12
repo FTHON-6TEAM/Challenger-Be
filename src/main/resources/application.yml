@@ -60,7 +60,8 @@ spring:
 
   ai:
     openai:
-      api-key: ${OPENAI_API_KEY}
+#      api-key: "${{ secrets.OPENAI_API_KEY }}"
+      api-key: test
       model: gpt-4o
       url: https://api.openai.com/v1/chat/completions
 #    vertex:
