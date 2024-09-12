@@ -59,12 +59,12 @@ public class QuestionDto implements CmsFileSupport<CmsFileDto> {
 
     @Override
     public String getUploadCodePath() {
-        return null;
+        return "";
     }
 
     @Override
     public String getUploadCode() {
-        return null;
+        return "upload.question";
     }
 
     @Override
