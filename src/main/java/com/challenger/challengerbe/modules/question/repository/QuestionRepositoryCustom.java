@@ -20,4 +20,6 @@ public interface QuestionRepositoryCustom {
     Page<QuestionSummaryResponse> selectQuestionList(QuestionListDto searchDto);
 
     QuestionSummaryResponse selectQuestionDto(Long questionIdk);
+
+    Long selectFileIdxByQuestion(Long questionIdk);
 }

@@ -5,18 +5,21 @@ import com.challenger.challengerbe.common.CommonResponse;
 import com.challenger.challengerbe.modules.answer.dto.AnswerCreateRequest;
 import com.challenger.challengerbe.modules.answer.dto.AnswerDto;
 import com.challenger.challengerbe.modules.answer.dto.AnswerResponse;
+import com.challenger.challengerbe.modules.answer.openai.dto.ChatGPTResponse;
+import com.challenger.challengerbe.modules.answer.openai.service.AiCallService;
 import com.challenger.challengerbe.modules.answer.service.AnswerService;
+import com.challenger.challengerbe.modules.question.repository.QuestionRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ai.openai.OpenAiChatModel;
-import org.springframework.ai.vertexai.gemini.VertexAiGeminiChatModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,6 +47,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class AnswerController {
     private final AnswerService answerService;
     private final OpenAiChatModel openAiChatModel;
+    private final QuestionRepository questionRepository;
+    private final AiCallService aiCallService;
 
     @Operation(summary = "답변 등록")
     @ApiResponses(value = {
@@ -80,6 +85,24 @@ public class AnswerController {
         responses.put("openai(chatGPT) 응답", openAiResponse);
 
         return responses;
+    }
+
+    @GetMapping("/test")
+    public Long test() {
+        Long response = questionRepository.selectFileIdxByQuestion(14L);
+        return response;
+    }
+
+    @GetMapping("/image/test")
+    public String testImgae() throws IOException {
+        String fileUrl = "http://115.85.182.23:32468/cms/file/image/link?idx=1";
+        String userText = "이 상자는 플라스틱 박스입니다. 환경보호를 위해 어떻게 하면 좋을까요 ?";
+        ChatGPTResponse chatGPTResponse = aiCallService.requestImageAnalysisWithUrl(fileUrl, userText);
+
+        // openai 가 이미지와 질문을 분석한 결과 값
+        String imageAnalysisResult = chatGPTResponse.getChoices().get(0).getMessage().getContent();
+
+        return imageAnalysisResult;
     }
 
 }
