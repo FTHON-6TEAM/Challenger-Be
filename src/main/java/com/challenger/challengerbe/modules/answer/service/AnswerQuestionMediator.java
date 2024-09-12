@@ -1,6 +1,9 @@
 package com.challenger.challengerbe.modules.answer.service;
 
 import com.challenger.challengerbe.modules.answer.dto.AsyncAnswerCreateDto;
+import com.challenger.challengerbe.modules.answer.openai.dto.ChatGPTResponse;
+import com.challenger.challengerbe.modules.answer.openai.service.AiCallService;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -33,9 +36,22 @@ public class AnswerQuestionMediator {
 
     private final AnswerService answerService;
     private final OpenAiChatModel openAiChatModel;
+    private final AiCallService aiCallService;
 
     @Async
-    public void generateAnswerForQuestion(AsyncAnswerCreateDto answerCreateDto) {
+    public void generateAnswerForQuestion(AsyncAnswerCreateDto answerCreateDto) throws IOException {
+        // file idx 를 가져와야 한다.
+
+
+        Long fileIdx = 1L;
+        String preFileUrl = "http://115.85.182.23:32468/cms/file/image/link/";
+        String fileUrl = preFileUrl + fileIdx;
+        log.info("file URL : " + fileUrl);
+
+        ChatGPTResponse chatGPTResponse = aiCallService.requestImageAnalysisWithUrl(fileUrl, answerCreateDto.getQuestionContent());
+        String gptResponse = chatGPTResponse.getChoices().get(0).getMessage().getContent();
+
+
         String userText = answerCreateDto.getQuestionContent();
         Message userMessage = new UserMessage(userText);
         String systemText = """
