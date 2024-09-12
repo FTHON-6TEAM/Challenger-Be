@@ -4,19 +4,22 @@ import com.challenger.challengerbe.cms.file.service.CmsFileService;
 import com.challenger.challengerbe.modules.challenge.domain.Challenge;
 import com.challenger.challengerbe.modules.challenge.domain.ChallengeItem;
 import com.challenger.challengerbe.modules.challenge.domain.ChallengeUser;
-import com.challenger.challengerbe.modules.challenge.dto.ChallengeDefaultDto;
-import com.challenger.challengerbe.modules.challenge.dto.ChallengeDto;
-import com.challenger.challengerbe.modules.challenge.dto.ChallengeItemDto;
-import com.challenger.challengerbe.modules.challenge.dto.ChallengeSummaryResponse;
+import com.challenger.challengerbe.modules.challenge.domain.ChallengeUserItem;
+import com.challenger.challengerbe.modules.challenge.dto.*;
 import com.challenger.challengerbe.modules.challenge.repository.ChallengeItemRepository;
 import com.challenger.challengerbe.modules.challenge.repository.ChallengeRepository;
+import com.challenger.challengerbe.modules.challenge.repository.ChallengeUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * packageName    : com.challenger.challengerbe.modules.challenge.service
@@ -35,6 +38,8 @@ import java.util.List;
 public class ChallengeService {
 
     private final ChallengeRepository challengeRepository;
+
+    private final ChallengeUserRepository challengeUserRepository;
 
     private final ChallengeItemRepository challengeItemRepository;
 
@@ -60,6 +65,11 @@ public class ChallengeService {
         return challengeRepository.selectChallengeList(searchDto);
     }
 
+    public List<ChallengeItemDto> selectChallengeItemDtoList(ChallengeItemDto dto) throws Exception {
+        List<ChallengeItem> list =  challengeItemRepository.findByChallenge_Idx(dto.getChallengeIdx());
+        return list.stream().map(ChallengeItemDto::new).collect(Collectors.toList());
+    }
+
     /**
      * 챌린지 상세 정보
      * @param challengeDto
@@ -67,10 +77,52 @@ public class ChallengeService {
      * @throws Exception
      */
     public ChallengeDto selectChallengeDto(ChallengeDto challengeDto) throws Exception {
-        challengeDto = challengeRepository.selectChallengeDto(challengeDto.getIdx());
+        Challenge challenge = challengeRepository.findById(challengeDto.getIdx()).orElseThrow();
+        challengeDto.setChallenge(challenge);
+
+        ChallengeUser challengeUser = challengeUserRepository.selectChallengeUserByChallengeIdxAndIdk(challengeDto.getIdx(),challengeDto.getIdk());
+        if(challengeUser != null) {
+            challengeDto.setJoin(true);
+        }
         List<ChallengeItem> itemList = challengeItemRepository.findByChallenge_Idx(challengeDto.getIdx());
         challengeDto.setChallengeItemList(itemList.stream().map(ChallengeItemDto::new).toList());
         return challengeDto;
+    }
+
+    /**
+     * 챌린지 항목 목록
+     * @param dto1,dto2
+     * @return
+     * @throws Exception
+     */
+    public List<List<ChallengeItemDto>> selectChallengeItemListForUser(ChallengeItemDto dto1, ChallengeUserItemDto dto2) throws Exception {
+
+        List<ChallengeItem> list = challengeItemRepository.findByChallenge_Idx(dto1.getChallengeIdx());
+        List<ChallengeItemDto> resultList = challengeRepository.selectChallengeItemListForUser(dto1, dto2);
+        List<List<ChallengeItemDto>> resultList3 = new ArrayList<>();
+
+        if(resultList.isEmpty()) {
+            List<ChallengeItemDto> resultList2 = new ArrayList<>();
+            for (ChallengeItem item : list) {
+                ChallengeItemDto temp = new ChallengeItemDto(item);
+                resultList2.add(temp);
+            }
+            resultList3.add(resultList2);
+        }else {
+            for (ChallengeItemDto itemDto : resultList) {
+                List<ChallengeItemDto> resultList2 = new ArrayList<>();
+                for (ChallengeItem item : list) {
+                    if (!Objects.equals(item.getIdx(), itemDto.getIdx())) {
+                        ChallengeItemDto temp = new ChallengeItemDto(item);
+                        resultList2.add(temp);
+                    } else {
+                        resultList2.add(itemDto);
+                    }
+                }
+                resultList3.add(resultList2);
+            }
+        }
+        return resultList3;
     }
 
     /**

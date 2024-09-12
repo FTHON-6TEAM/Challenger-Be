@@ -47,6 +47,9 @@ dependencies {
     //aop
     implementation 'org.springframework.boot:spring-boot-starter-aop';
 
+    // https://mvnrepository.com/artifact/org.qlrm/qlrm
+    implementation group: 'org.qlrm', name: 'qlrm', version: '4.0.1'
+
     // apache poi
     // https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml
     implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '4.1.2'

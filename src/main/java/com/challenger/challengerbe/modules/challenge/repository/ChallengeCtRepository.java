@@ -1,8 +1,7 @@
 package com.challenger.challengerbe.modules.challenge.repository;
 
-import com.challenger.challengerbe.modules.challenge.dto.ChallengeDefaultDto;
-import com.challenger.challengerbe.modules.challenge.dto.ChallengeDto;
-import com.challenger.challengerbe.modules.challenge.dto.ChallengeSummaryResponse;
+import com.challenger.challengerbe.modules.challenge.domain.Challenge;
+import com.challenger.challengerbe.modules.challenge.dto.*;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -35,6 +34,15 @@ public interface ChallengeCtRepository {
      * @throws Exception
      */
     List<ChallengeSummaryResponse> selectChallengeList(ChallengeDefaultDto searchDto) throws Exception;
+
+
+    /**
+     * 참여자 챌린지 항목 목록 조회
+     * @param dto
+     * @return
+     * @throws Exception
+     */
+    List<ChallengeItemDto> selectChallengeItemListForUser(ChallengeItemDto itemDto, ChallengeUserItemDto dto) throws Exception;
 
 
 }

@@ -4,10 +4,8 @@ import com.challenger.challengerbe.cms.file.service.CmsFileService;
 import com.challenger.challengerbe.common.exception.AlreadyExistException;
 import com.challenger.challengerbe.modules.challenge.domain.ChallengeUser;
 import com.challenger.challengerbe.modules.challenge.domain.ChallengeUserItem;
-import com.challenger.challengerbe.modules.challenge.dto.ChallengeDefaultDto;
-import com.challenger.challengerbe.modules.challenge.dto.ChallengeDto;
-import com.challenger.challengerbe.modules.challenge.dto.ChallengeUserDto;
-import com.challenger.challengerbe.modules.challenge.dto.ChallengeUserItemDto;
+import com.challenger.challengerbe.modules.challenge.dto.*;
+import com.challenger.challengerbe.modules.challenge.repository.ChallengeRepository;
 import com.challenger.challengerbe.modules.challenge.repository.ChallengeUserCtRepository;
 import com.challenger.challengerbe.modules.challenge.repository.ChallengeUserItemRepository;
 import com.challenger.challengerbe.modules.challenge.repository.ChallengeUserRepository;
@@ -104,6 +102,8 @@ public class ChallengeApplyService {
         challengeUserItemRepository.deleteChallengeUserItemForUser(dto.getIdx());
         challengeUserRepository.deleteById(dto.getIdx());
     }
+
+
 
     /**
      * 수정

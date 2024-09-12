@@ -3,13 +3,8 @@ package com.challenger.challengerbe.modules.challenge.repository.impl;
 import com.challenger.challengerbe.cms.file.domain.QCmsFile;
 import com.challenger.challengerbe.cms.publiccode.domain.QPublicCode;
 import com.challenger.challengerbe.common.BaseAbstractRepositoryImpl;
-import com.challenger.challengerbe.modules.challenge.domain.Challenge;
-import com.challenger.challengerbe.modules.challenge.domain.QChallenge;
-import com.challenger.challengerbe.modules.challenge.domain.QChallengeUser;
-import com.challenger.challengerbe.modules.challenge.dto.ChallengeActiveType;
-import com.challenger.challengerbe.modules.challenge.dto.ChallengeDefaultDto;
-import com.challenger.challengerbe.modules.challenge.dto.ChallengeDto;
-import com.challenger.challengerbe.modules.challenge.dto.ChallengeSummaryResponse;
+import com.challenger.challengerbe.modules.challenge.domain.*;
+import com.challenger.challengerbe.modules.challenge.dto.*;
 import com.challenger.challengerbe.modules.challenge.repository.ChallengeCtRepository;
 import com.challenger.challengerbe.modules.user.domain.QUser;
 import com.querydsl.core.BooleanBuilder;
@@ -23,6 +18,7 @@ import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import io.micrometer.common.util.StringUtils;
 import jakarta.persistence.EntityManager;
+import org.checkerframework.checker.units.qual.C;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -165,4 +161,40 @@ public class ChallengeCtRepositoryImpl extends BaseAbstractRepositoryImpl implem
                 .orderBy(qChallenge.idx.desc())
                 .fetch();
     }
+
+    @Override
+    public List<ChallengeItemDto> selectChallengeItemListForUser(ChallengeItemDto itemDto, ChallengeUserItemDto dto) throws Exception {
+
+        QChallengeUserItem qChallengeUserItem = QChallengeUserItem.challengeUserItem;
+        QChallengeItem qChallengeItem = QChallengeItem.challengeItem;
+
+        BooleanBuilder sql = new BooleanBuilder().and(qChallengeItem.challenge.idx.eq(itemDto.getChallengeIdx()))
+                .and(qChallengeUserItem.challengeUser.idx.eq(dto.getChallengeUserIdx()));
+
+        if(!StringUtils.isBlank(dto.getCompleteDate())) {
+            sql.and(qChallengeUserItem.completeDate.eq(dto.getCompleteDate()));
+        }
+
+        return jpaQuery.select(
+                        Projections.constructor(
+                                ChallengeItemDto.class,
+                                qChallengeItem.idx,
+                                qChallengeItem.challenge.idx,
+                                qChallengeItem.title,
+                                qChallengeItem.createDate,
+                                qChallengeItem.modifyDate,
+                                Projections.constructor(
+                                        ChallengeUserItemSummaryResponse.class,
+                                        qChallengeUserItem.idx,
+                                        qChallengeUserItem.completeDate,
+                                        qChallengeUserItem.completeYn
+                                )
+                        )
+                ).from(qChallengeItem)
+                .innerJoin(qChallengeUserItem).on(qChallengeItem.idx.eq(qChallengeUserItem.challengeItem.idx))
+                .where(sql)
+                .fetch();
+
+    }
+
 }

@@ -5,6 +5,7 @@ import com.challenger.challengerbe.modules.challenge.domain.ChallengeUser;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Comment;
 import org.springframework.data.annotation.CreatedDate;
@@ -25,6 +26,7 @@ import java.time.LocalDateTime;
  */
 @Getter
 @Setter
+@NoArgsConstructor
 public class ChallengeItemDto {
 
     private Long idx = 0L;
@@ -41,12 +43,24 @@ public class ChallengeItemDto {
 
     private LocalDateTime modifyDate;
 
+
+    private ChallengeUserItemSummaryResponse challengeUserItemSummaryResponse;
+
     public ChallengeItemDto(ChallengeItem entity) {
         this.idx = entity.getIdx();
         this.challengeIdx = entity.getChallenge().getIdx();
         this.title = entity.getTitle();
         this.createDate = entity.getCreateDate();
         this.modifyDate = entity.getModifyDate();
+    }
+
+    public ChallengeItemDto(Long idx, Long challengeIdx, String title, LocalDateTime createDate, LocalDateTime modifyDate, ChallengeUserItemSummaryResponse challengeUserItemSummaryResponse) {
+        this.idx = idx;
+        this.challengeIdx = challengeIdx;
+        this.title = title;
+        this.createDate = createDate;
+        this.modifyDate = modifyDate;
+        this.challengeUserItemSummaryResponse = challengeUserItemSummaryResponse;
     }
 
     public ChallengeItemDto(ChallengeItemCreateRequest request){

@@ -4,6 +4,7 @@ import com.challenger.challengerbe.modules.challenge.domain.ChallengeUser;
 import com.challenger.challengerbe.modules.challenge.dto.ChallengeDefaultDto;
 import com.challenger.challengerbe.modules.challenge.dto.ChallengeDto;
 import com.challenger.challengerbe.modules.challenge.dto.ChallengeUserDto;
+import com.challenger.challengerbe.modules.challenge.dto.ChallengeUserItemDto;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -45,5 +46,5 @@ public interface ChallengeUserCtRepository {
      * @throws Exception
      */
     ChallengeUserDto selectChallengeUser(ChallengeUserDto dto) throws Exception;
-    
+
 }
