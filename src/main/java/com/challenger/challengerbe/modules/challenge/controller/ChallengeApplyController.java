@@ -73,14 +73,9 @@ public class ChallengeApplyController {
     public ResponseEntity<?> insertChallenge(final @Valid @RequestBody ChallengeUserCreateRequest challengeUserCreateRequest,
                                              @Parameter(hidden = true) @AuthInfo String token) throws Exception {
 
-        try{
-            ChallengeUserDto challengeUserDto = ChallengeUserDto.createOf(challengeUserCreateRequest);
-            challengeUserDto.setIdk(token);
-            challengeApplyService.insertChallengeApply(challengeUserDto);
-        }catch (Exception e) {
-            logger.error("insert challenge apply info error : {}",e.getMessage());
-            return new ResponseEntity<>(CommonResponse.resOnlyMessageOf("등록시 오류가 발생했습니다."), HttpStatus.BAD_REQUEST);
-        }
+        ChallengeUserDto challengeUserDto = ChallengeUserDto.createOf(challengeUserCreateRequest);
+        challengeUserDto.setIdk(token);
+        challengeApplyService.insertChallengeApply(challengeUserDto);
 
         return new ResponseEntity<>(CommonResponse.resOnlyMessageOf("등록 되었습니다."),HttpStatus.OK);
     }
