@@ -109,6 +109,27 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
                 .fetchFirst();
     }
 
+    @Override
+    public Long selectFileIdxByQuestion(Long questionIdk) {
+        QQuestion qQuestion = QQuestion.question;
+        QCmsFile qCmsFile = QCmsFile.cmsFile;
+
+        Long fileIdx = queryFactory.select(
+                        Projections.constructor(
+                                Long.class,
+                                qCmsFile.idx
+                        )
+                ).from(qQuestion)
+                .from(qQuestion)
+                .leftJoin(qCmsFile)
+                .on(qCmsFile.parentIdx.eq(qQuestion.idx.stringValue())
+                        .and(qCmsFile.uploadCode.eq("upload.question")))
+                .where(qQuestion.idx.eq(questionIdk))
+                .fetchFirst();
+        return fileIdx;
+
+    }
+
     // 공통 쿼리 조건 처리 메소드
     private BooleanBuilder commonQuery(QuestionListDto searchDto) {
         QQuestion qQuestion = QQuestion.question;
