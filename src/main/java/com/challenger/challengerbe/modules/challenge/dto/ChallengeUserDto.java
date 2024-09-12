@@ -30,28 +30,28 @@ import java.util.List;
  * -----------------------------------------------------------
  * 2024-09-09        rhkdg       최초 생성
  */
-@Schema(name = "챌린지 참여자 정보")
+@Schema(description = "챌린지 참여자 정보")
 @Getter
 @Setter
 @NoArgsConstructor
 public class ChallengeUserDto  {
 
-    @Schema(name = "챌린지 참여자 일련번호")
+    @Schema(description = "챌린지 참여자 일련번호")
     private Long idx;
 
-    @Schema(name = "챌린지 참여자 키값")
+    @Schema(description = "챌린지 참여자 키값")
     private String idk;
 
-    @Schema(name = "챌린지 방 일련번호")
+    @Schema(description = "챌린지 방 일련번호")
     private Long challengeIdx;
 
-    @Schema(name = "등록일자")
+    @Schema(description = "등록일자")
     private LocalDateTime createDate;
 
-    @Schema(name = "수정일자")
+    @Schema(description = "수정일자")
     private LocalDateTime modifyDate;
 
-    @Schema(name = "챌린지 방 정보")
+    @Schema(description = "챌린지 방 정보")
     private ChallengeSummaryInfoResponse challengeSummaryInfoResponse;
 
     public ChallengeUserDto(Long idx, String idk, Long challengeIdx, LocalDateTime createDate, LocalDateTime modifyDate, ChallengeSummaryInfoResponse challengeSummaryInfoResponse) {
