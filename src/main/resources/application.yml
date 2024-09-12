@@ -60,14 +60,14 @@ spring:
 
   ai:
     openai:
-      api-key: ${{ secrets.OPENAI_API_KEY }}
+      api-key: ${OPENAI_API_KEY}
       model: gpt-4o
       url: https://api.openai.com/v1/chat/completions
-    vertex:
-      ai:
-        gemini:
-          project-id: ${{ secrets.GOOGLE_PROJECT_ID }}
-          location: asia-northeast3
+#    vertex:
+#      ai:
+#        gemini:
+#          project-id: ${ secrets.GOOGLE_PROJECT_ID }
+#          location: asia-northeast3
 
 logging:
   level:
