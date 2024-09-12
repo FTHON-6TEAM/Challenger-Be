@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -44,11 +45,15 @@ public class ChallengeApplyController {
 
     @Operation(summary = "챌린지 참여 목록 조회(페이징 포함)")
     @Parameters({
+            @Parameter(name = "code", description = "키워드 (만약 전체일 경우 빈값으로 전달 주시면 되겠습니다.",required = false),
             @Parameter(name = "startDate", description = "시작일자 (string 타입으로 전달 주시면 됩니다.)", example = "0000-00-00",required = false),
-            @Parameter(name = "endDate", description = "마지막일자 (string 타입으로 전달 주시면 됩니다.)", example = "0000-00-00",required = false)
+            @Parameter(name = "endDate", description = "마지막일자 (string 타입으로 전달 주시면 됩니다.)", example = "0000-00-00",required = false),
+            @Parameter(name = "page", description = "페이지 번호 ", example = "1",required = false)
     })
     @GetMapping("/challenge/apply/list")
-    public Page<ChallengeUserDto> selectChallengeUserList(@Parameter(hidden = true)ChallengeDefaultDto searchDto) throws Exception {
+    public Page<ChallengeUserDto> selectChallengeUserList(@Parameter(hidden = true) ChallengeDefaultDto searchDto,
+                                                          @Parameter(hidden = true) @AuthInfo String token) throws Exception {
+        searchDto.setIdk(token);
         return challengeApplyService.selectChallengeUserPageList(searchDto);
     }
 

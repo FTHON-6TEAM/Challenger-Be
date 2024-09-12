@@ -44,7 +44,8 @@ public class ChallengeUserController {
             @Parameter(name = "code", description = "키워드 (만약 전체일 경우 빈값으로 전달 주시면 되겠습니다.",required = false),
             @Parameter(name = "startDate", description = "시작일자 (string 타입으로 전달 주시면 됩니다.)", example = "0000-00-00",required = false),
             @Parameter(name = "endDate", description = "마지막일자 (string 타입으로 전달 주시면 됩니다.)", example = "0000-00-00",required = false),
-            @Parameter(name = "activeStatus", description = "진행상태 ", example = "ex) JOIN(모집중), KEEP(진행중), END(종료) ",required = false)
+            @Parameter(name = "activeStatus", description = "진행상태 ", example = "ex) JOIN(모집중), KEEP(진행중), END(종료) ",required = false),
+            @Parameter(name = "page", description = "페이지 번호 ", example = "1",required = false)
     })
     @GetMapping("/challenge/list")
     public Page<ChallengeSummaryResponse> selectChallengeList(@Parameter(hidden = true) ChallengeDefaultDto searchDto,
@@ -83,8 +84,8 @@ public class ChallengeUserController {
     @Parameters({
             @Parameter(name = "_file", description = "formData 에서 파일 형식 ,파일 이름에 해당 , 파일명은 아무거나 선언가능 _file은 예시"),
             @Parameter(name = "_alt_file", description = "formData 에서 string, 파일의 비고명 아무거나 선언가능 대신 파일명의 name을 뒤에 그대로 붙여줘야함 _alt{파일name}"),
-            @Parameter(name = "_modify_file", description = "수정하는 파일에 대한 parent_idx 값 (필수로 들어가야함), 파일의 비고명 아무거나 선언가능 대신 파일명의 name을 뒤에 그대로 붙여줘야함 _modify{파일name}",required = true),
-            @Parameter(name = "_delete_file", description = "삭제하는 파일에 대한 parent_idx 값, 파일의 비고명 아무거나 선언가능 대신 파일명의 name을 뒤에 그대로 붙여줘야함 _delete{파일name}")
+            @Parameter(name = "_modify_file", description = "file idx 값 (필수로 들어가야함), 파일의 비고명 아무거나 선언가능 대신 파일명의 name을 뒤에 그대로 붙여줘야함 _modify{파일name}",required = true),
+            @Parameter(name = "_delete_file", description = "file idx 값 (이미지와 상관없이 기존에 존재하는 이미지를 지우고자 할 경우 선택), 파일의 비고명 아무거나 선언가능 대신 파일명의 name을 뒤에 그대로 붙여줘야함 _delete{파일name}")
     })
     @ApiResponses(value={
             @ApiResponse(responseCode = "200", description = "수정 완료"),
