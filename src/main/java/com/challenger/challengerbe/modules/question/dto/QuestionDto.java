@@ -32,7 +32,7 @@ public class QuestionDto implements CmsFileSupport<CmsFileDto> {
     private String title;
     private String content;
     private List<CmsFileDto> cmsFileDtoList = new ArrayList<>();
-    private String idx;
+    private String userIdx;
     private String code;
 
     public static QuestionDto createOf(QuestionCreateRequest request) {
@@ -54,7 +54,7 @@ public class QuestionDto implements CmsFileSupport<CmsFileDto> {
 
     @Override
     public String getParentIdx() {
-        return this.idx + "";
+        return this.userIdx + "";
     }
 
     @Override

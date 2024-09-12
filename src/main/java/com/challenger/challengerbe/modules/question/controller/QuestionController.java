@@ -74,7 +74,7 @@ public class QuestionController {
 
         try {
             QuestionDto questionDto = QuestionDto.createOf(request);
-            questionDto.setIdx(userIdk);
+            questionDto.setUserIdx(userIdk);
             questionService.insertQuestion(questionDto);
 
         } catch (Exception e) {
@@ -105,7 +105,7 @@ public class QuestionController {
     @PutMapping
     public ResponseEntity<?> updateQuestion(@Valid @RequestBody QuestionUpdateRequest request, @AuthInfo String userIdk) {
         QuestionDto questionDto = QuestionDto.updateOf(request);
-        questionDto.setIdx(userIdk);
+        questionDto.setUserIdx(userIdk);
         questionService.updateQuestion(questionDto);
 
         return new ResponseEntity<>(CommonResponse.resOnlyMessageOf("질문 수정이 완료되었습니다."),HttpStatus.OK);
