@@ -82,9 +82,4 @@ public class AnswerController {
         return responses;
     }
 
-    @GetMapping("/abc")
-    public String chatabc() {
-        return "test";
-    }
-
 }

@@ -52,6 +52,7 @@ public class QuestionServiceImpl implements QuestionService {
 
         AsyncAnswerCreateDto request = AsyncAnswerCreateDto.builder()
                 .questionIdx(question.getIdx())
+                .questionContent(question.getContent())
                 .userIdk(questionDto.getUserIdx())
                 .build();
 

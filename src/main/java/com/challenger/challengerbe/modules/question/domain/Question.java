@@ -61,7 +61,7 @@ public class Question {
     @Column(name = "title")
     private String title;
 
-    @Column(name = "content")
+    @Column(name = "content", length = 3000)
     private String content;
 
     @Comment("등록일자")

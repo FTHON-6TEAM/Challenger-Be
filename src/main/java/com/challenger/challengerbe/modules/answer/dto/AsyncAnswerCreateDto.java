@@ -26,11 +26,13 @@ public class AsyncAnswerCreateDto {
     private String userIdk;
     private Long answerIdx;
     private Long questionIdx;
+    private String questionContent;
     private String content;
 
     @Builder
-    public AsyncAnswerCreateDto(String userIdk, Long questionIdx) {
+    public AsyncAnswerCreateDto(String userIdk, Long questionIdx, String questionContent) {
         this.userIdk = userIdk;
+        this.questionContent = questionContent;
         this.questionIdx = questionIdx;
     }
 
