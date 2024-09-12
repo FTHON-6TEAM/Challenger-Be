@@ -1,22 +1,17 @@
 package com.challenger.challengerbe.modules.question.service;
 
 import com.challenger.challengerbe.cms.file.service.CmsFileService;
-import com.challenger.challengerbe.modules.answer.dto.AnswerCreateRequest;
-import com.challenger.challengerbe.modules.answer.service.AnswerService;
 import com.challenger.challengerbe.modules.question.domain.Question;
-import com.challenger.challengerbe.modules.question.dto.QuestionCreateRequest;
+import com.challenger.challengerbe.modules.answer.dto.AsyncAnswerCreateDto;
 import com.challenger.challengerbe.modules.question.dto.QuestionDeleteRequest;
 import com.challenger.challengerbe.modules.question.dto.QuestionDto;
-import com.challenger.challengerbe.modules.question.dto.QuestionGetRequest;
 import com.challenger.challengerbe.modules.question.dto.QuestionListDto;
 import com.challenger.challengerbe.modules.question.dto.QuestionSummaryResponse;
-import com.challenger.challengerbe.modules.question.dto.QuestionUpdateRequest;
 import com.challenger.challengerbe.modules.question.repository.QuestionRepository;
 import com.challenger.challengerbe.modules.user.domain.User;
 import com.challenger.challengerbe.modules.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,7 +40,7 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     @Transactional
     public Long insertQuestion(QuestionDto questionDto) throws Exception {
-        User user = userService.selectUserByIdk(questionDto.getIdx());
+        User user = userService.selectUserByIdk(questionDto.getUserIdx());
         Question newQuestion = Question.builder()
                 .user(user)
                 .title(questionDto.getTitle())
@@ -55,9 +50,14 @@ public class QuestionServiceImpl implements QuestionService {
         Question question = questionRepository.save(newQuestion);
         cmsFileService.processFileCreate(questionDto);
 
+        AsyncAnswerCreateDto request = AsyncAnswerCreateDto.builder()
+                .questionIdx(question.getIdx())
+                .userIdk(questionDto.getUserIdx())
+                .build();
+
         // AI answer 자동 등록 (@Async 비동기 처리)
         // 비동기 등록
-        mediator.generateAnswerForQuestion(question.getIdx(), questionDto.getIdx());
+        mediator.generateAnswerForQuestion(request);
 
         return question.getIdx();
     }
@@ -85,7 +85,7 @@ public class QuestionServiceImpl implements QuestionService {
     public void updateQuestion(QuestionDto questionDto) {
         Question question = questionRepository.findById(questionDto.getQuestionIdx())
                 .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 질문입니다."));
-        if (!(question.getUser().getIdk().equals(questionDto.getIdx()))) {
+        if (!(question.getUser().getIdk().equals(questionDto.getUserIdx()))) {
             throw new IllegalArgumentException("유효하지 않은 사용자입니다.");
         }
         question.updateTitleAndContent(questionDto);

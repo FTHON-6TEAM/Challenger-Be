@@ -1,9 +1,9 @@
 package com.challenger.challengerbe.modules.question.service;
 
-import com.challenger.challengerbe.modules.answer.dto.AnswerCreateRequest;
+import com.challenger.challengerbe.modules.answer.dto.AnswerDto;
 import com.challenger.challengerbe.modules.answer.service.AnswerService;
+import com.challenger.challengerbe.modules.answer.dto.AsyncAnswerCreateDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
@@ -27,11 +27,12 @@ public class QuestionAnswerMediator {
 //    private final OpenAiChatModel openAiChatModel;
 
     @Async
-    public void generateAnswerForQuestion(Long questoinIdx, String userIdk) {
+    public void generateAnswerForQuestion(AsyncAnswerCreateDto answerCreateDto) {
 //        String aiResponse = openAiChatModel.generateResponse(questionContent);
         String aiResponse = "ai response";
-        AnswerCreateRequest answerCreateRequest = new AnswerCreateRequest(aiResponse, userIdk, questoinIdx);
-        answerService.insertAnswerAsync(answerCreateRequest);
+        answerCreateDto.setContent(aiResponse); // 예시
+        answerService.insertAnswerAsync(answerCreateDto);
+        // 후처리
     }
 
 

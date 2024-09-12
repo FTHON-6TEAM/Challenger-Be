@@ -1,34 +1,37 @@
 package com.challenger.challengerbe.modules.answer.dto;
 
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
  * packageName    : com.challenger.challengerbe.modules.answer.dto
- * fileName       : AnswerCreateRequest
+ * fileName       : AnswerDto
  * author         : jongh
- * date           : 2024-09-10
+ * date           : 2024-09-12
  * description    :
  * ===========================================================
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
- * 2024-09-10           jongh          최초 생성
+ * 2024-09-12           jongh          최초 생성
  */
 
 @Getter
 @Setter
 @NoArgsConstructor
-public class AnswerCreateRequest {
+@AllArgsConstructor
+public class AnswerDto {
+    private Long answerIdx;
+    private Long questionIdx;
     private String content;
     private String userIdk;
-    private Long questionIdx;
 
-    @Builder
-    public AnswerCreateRequest(String content, String userIdk, Long questionIdx) {
-        this.content = content;
-        this.userIdk = userIdk;
-        this.questionIdx = questionIdx;
+    public static AnswerDto createOf(AnswerCreateRequest request) {
+        AnswerDto answerDto = new AnswerDto();
+        answerDto.setQuestionIdx(request.getQuestionIdx());
+        answerDto.setContent(request.getContent());
+
+        return answerDto;
     }
 }
