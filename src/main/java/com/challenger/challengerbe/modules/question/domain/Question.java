@@ -1,6 +1,9 @@
 package com.challenger.challengerbe.modules.question.domain;
 
+import com.challenger.challengerbe.cms.publiccode.domain.PublicCode;
 import com.challenger.challengerbe.modules.answer.domain.Answer;
+import com.challenger.challengerbe.modules.question.dto.QuestionDto;
+import com.challenger.challengerbe.modules.question.dto.QuestionUpdateRequest;
 import com.challenger.challengerbe.modules.user.domain.User;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -48,6 +51,10 @@ public class Question {
     private Long idx;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "pub_cd", nullable = false)
+    private PublicCode publicCode;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idk", nullable = false)
     private User user;
 
@@ -70,9 +77,17 @@ public class Question {
     private List<Answer> answerList = new ArrayList<>();
 
     @Builder
-    public Question(User user, String title, String content) {
+    public Question(User user, String title, String content, QuestionDto dto) {
         this.user = user;
         this.title = title;
         this.content = content;
+        this.publicCode = new PublicCode();
+        publicCode.addPubCd(dto.getCode());
+    }
+
+    public Question updateTitleAndContent(QuestionDto questionDto) {
+        this.title = questionDto.getTitle();
+        this.content = questionDto.getContent();
+        return this;
     }
 }

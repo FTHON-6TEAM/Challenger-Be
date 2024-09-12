@@ -83,8 +83,10 @@ public class PublicCodeRepositoryImpl extends BaseAbstractRepositoryImpl impleme
 
     @Override
     public boolean insertPubliceCode(PublicCodeDto dto) throws Exception {
-        return entityManager.createNativeQuery("insert into cms_file(pub_cd , parent_cd, title, remark, etc1, etc2, etc3, use_yn, ord, create_date, modify_date)" +
-                ") values(?,?,?,?,?,?,?,?,?,?,?)")
+//        return entityManager.createNativeQuery("insert into cms_file(pub_cd , parent_cd, title, remark, etc1, etc2, etc3, use_yn, ord, create_date, modify_date)" +
+//                ") values(?,?,?,?,?,?,?,?,?,?,?)")
+        return entityManager.createNativeQuery("insert into cms_public_code(pub_cd, parent_cd, title, remark, etc1, etc2, etc3, use_yn, ord, create_date, modify_date) " +
+                        "values(?,?,?,?,?,?,?,?,?,?,?)")
                 .setParameter(1,dto.getPubCd())
                 .setParameter(2,dto.getParentCd())
                 .setParameter(3,dto.getTitle())
