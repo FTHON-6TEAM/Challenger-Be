@@ -1,9 +1,11 @@
 package com.challenger.challengerbe.modules.challenge.repository.impl;
 
+import com.challenger.challengerbe.cms.file.domain.QCmsFile;
 import com.challenger.challengerbe.cms.publiccode.domain.QPublicCode;
 import com.challenger.challengerbe.common.BaseAbstractRepositoryImpl;
 import com.challenger.challengerbe.modules.challenge.domain.Challenge;
 import com.challenger.challengerbe.modules.challenge.domain.QChallenge;
+import com.challenger.challengerbe.modules.challenge.domain.QChallengeUser;
 import com.challenger.challengerbe.modules.challenge.dto.ChallengeActiveType;
 import com.challenger.challengerbe.modules.challenge.dto.ChallengeDefaultDto;
 import com.challenger.challengerbe.modules.challenge.dto.ChallengeDto;
@@ -11,12 +13,17 @@ import com.challenger.challengerbe.modules.challenge.dto.ChallengeSummaryRespons
 import com.challenger.challengerbe.modules.challenge.repository.ChallengeCtRepository;
 import com.challenger.challengerbe.modules.user.domain.QUser;
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.DateTemplate;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.StringExpression;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import io.micrometer.common.util.StringUtils;
 import jakarta.persistence.EntityManager;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Repository;
@@ -72,8 +79,10 @@ public class ChallengeCtRepositoryImpl extends BaseAbstractRepositoryImpl implem
     @Override
     public Page<ChallengeSummaryResponse> selectChallengePageList(ChallengeDefaultDto searchDto) throws Exception {
         QChallenge qChallenge = QChallenge.challenge;
+        QChallengeUser qChallengeUser =  QChallengeUser.challengeUser;
         QPublicCode qPublicCode = QPublicCode.publicCode;
         QUser qUser = QUser.user;
+        QCmsFile qCmsFile = QCmsFile.cmsFile;
 
         long totCnt = jpaQuery.select(qChallenge.count())
                 .from(qChallenge).where(commonQuery(searchDto)).fetchFirst();
@@ -91,13 +100,24 @@ public class ChallengeCtRepositoryImpl extends BaseAbstractRepositoryImpl implem
                         qChallenge.successCnt,
                         qChallenge.title,
                         qChallenge.remark,
+                        qCmsFile.idx,
+                        ExpressionUtils.as(
+                                JPAExpressions.select(qChallengeUser.count())
+                                        .from(qChallengeUser)
+                                        .where(qChallenge.idx.eq(qChallengeUser.challenge.idx).and(qChallengeUser.user.idk.ne(searchDto.getIdk())))
+
+                        ,"joinCnt"),
                         qChallenge.createDate,
                         qChallenge.modifyDate
                 )
         ).from(qChallenge)
                 .leftJoin(qPublicCode).on(qChallenge.publicCode.pubCd.eq(qPublicCode.pubCd))
                 .leftJoin(qUser).on(qChallenge.user.idk.eq(qUser.idk))
+                .leftJoin(qCmsFile)
+                .on(qCmsFile.parentIdx.eq(qChallenge.idx.stringValue())
+                        .and(qCmsFile.uploadCode.eq("upload.challenge.create")))
                 .where(commonQuery(searchDto))
+                .orderBy(qChallenge.idx.desc())
                 .offset(searchDto.getPageable().getOffset())
                 .limit(searchDto.getPageable().getPageSize())
                 .fetch();
@@ -108,8 +128,10 @@ public class ChallengeCtRepositoryImpl extends BaseAbstractRepositoryImpl implem
     @Override
     public List<ChallengeSummaryResponse> selectChallengeList(ChallengeDefaultDto searchDto) throws Exception {
         QChallenge qChallenge = QChallenge.challenge;
+        QChallengeUser qChallengeUser =  QChallengeUser.challengeUser;
         QPublicCode qPublicCode = QPublicCode.publicCode;
         QUser qUser = QUser.user;
+        QCmsFile qCmsFile = QCmsFile.cmsFile;
 
         return jpaQuery.select(
                         Projections.constructor(
@@ -124,13 +146,23 @@ public class ChallengeCtRepositoryImpl extends BaseAbstractRepositoryImpl implem
                                 qChallenge.successCnt,
                                 qChallenge.title,
                                 qChallenge.remark,
+                                qCmsFile.idx,
+                                ExpressionUtils.as(
+                                        JPAExpressions.select(qChallengeUser.count())
+                                                .from(qChallengeUser)
+                                                .where(qChallenge.idx.eq(qChallengeUser.challenge.idx).and(qChallengeUser.user.idk.ne(searchDto.getIdk())))
+
+                                        ,"joinCnt"),
                                 qChallenge.createDate,
                                 qChallenge.modifyDate
                         )
                 ).from(qChallenge)
                 .leftJoin(qPublicCode).on(qChallenge.publicCode.pubCd.eq(qPublicCode.pubCd))
                 .leftJoin(qUser).on(qChallenge.user.idk.eq(qUser.idk))
+                .leftJoin(qCmsFile).on(qCmsFile.parentIdx.eq(qChallenge.idx.stringValue())
+                        .and(qCmsFile.uploadCode.eq("upload.challenge.create")))
                 .where(commonQuery(searchDto))
+                .orderBy(qChallenge.idx.desc())
                 .fetch();
     }
 }

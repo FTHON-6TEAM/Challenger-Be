@@ -86,10 +86,12 @@ public class ChallengeService {
             ChallengeItem item = new ChallengeItem();
             item.addTitle(itemDto.getTitle());
             item.addChallenge(challenge);
+            System.out.println(itemDto.getTitle());
             itemList.add(item);
         }
         challenge.addItemList(itemList);
-        challengeRepository.save(challenge);
+        challenge = challengeRepository.save(challenge);
+        challengeDto.setIdx(challenge.getIdx());
         cmsFileService.processFileCreate(challengeDto);
     }
 
@@ -106,15 +108,13 @@ public class ChallengeService {
             challengeItemRepository.deleteByChallenge_Idx(challengeDto.getIdx());
         }
 
-        List<ChallengeItem> itemList = new ArrayList<>();
         for(ChallengeItemDto itemDto : challengeDto.getChallengeItemList()) {
             ChallengeItem item = new ChallengeItem();
             item.addTitle(itemDto.getTitle());
             item.addChallenge(challenge);
-            itemList.add(item);
+            challengeItemRepository.save(item);
         }
 
-        challenge.addItemList(itemList);
         challenge.changeChallenge(challengeDto);
         cmsFileService.processFileUpdate(challengeDto);
     }
@@ -126,6 +126,9 @@ public class ChallengeService {
      */
     @Transactional
     public void deleteChallenge(ChallengeDto challengeDto) throws Exception {
+
+
+
         cmsFileService.proccessFileDelete(challengeDto);
         challengeItemRepository.deleteByChallenge_Idx(challengeDto.getIdx());
         challengeRepository.deleteById(challengeDto.getIdx());

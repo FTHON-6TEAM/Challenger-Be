@@ -1,5 +1,7 @@
 package com.challenger.challengerbe.modules.challenge.service;
 
+import com.challenger.challengerbe.cms.file.service.CmsFileService;
+import com.challenger.challengerbe.common.exception.AlreadyExistException;
 import com.challenger.challengerbe.modules.challenge.domain.ChallengeUser;
 import com.challenger.challengerbe.modules.challenge.domain.ChallengeUserItem;
 import com.challenger.challengerbe.modules.challenge.dto.ChallengeDefaultDto;
@@ -39,6 +41,8 @@ public class ChallengeApplyService {
 
     private final ChallengeUserItemRepository challengeUserItemRepository;
 
+    private final CmsFileService cmsFileService;
+
     /**
      * 참여중인 챌린지 목록(페이징 o)
      * @param searchDto
@@ -70,14 +74,35 @@ public class ChallengeApplyService {
     }
 
     /**
+     * 챌린지 방 참여자 수
+     * @param idx
+     * @return
+     * @throws Exception
+     */
+    public int selectChallengeUserTotalCountByChallengeIdx(Long idx) throws Exception {
+        return challengeUserRepository.selectChallengeUserTotalCountByChallengeIdx(idx);
+    }
+
+    /**
      * 등록
      * @param dto
      * @throws Exception
      */
     @Transactional
     public void insertChallengeApply(ChallengeUserDto dto) throws Exception {
+
+        ChallengeUser prev = challengeUserRepository.selectChallengeUserByChallengeIdxAndIdk(dto.getChallengeIdx(),dto.getIdk());
+        if(prev != null){
+            throw new AlreadyExistException("이미 참여중인 챌린지 입니다.");
+        }
+
         ChallengeUser challengeUser = new ChallengeUser(dto);
         challengeUserRepository.save(challengeUser);
+    }
+
+    public void deleteChallengeApply(ChallengeUserDto dto) throws Exception {
+        challengeUserItemRepository.deleteChallengeUserItemForUser(dto.getIdx());
+        challengeUserRepository.deleteById(dto.getIdx());
     }
 
     /**
@@ -88,7 +113,9 @@ public class ChallengeApplyService {
     @Transactional
     public void insertChallengeApplyItem(ChallengeUserItemDto dto) throws Exception {
         ChallengeUserItem challengeUserItem = new ChallengeUserItem(dto);
-        challengeUserItemRepository.save(challengeUserItem);
+        challengeUserItem = challengeUserItemRepository.save(challengeUserItem);
+        dto.setIdx(challengeUserItem.getIdx());
+        cmsFileService.processFileCreate(dto);
     }
 
     /**
@@ -99,6 +126,7 @@ public class ChallengeApplyService {
     @Transactional
     public void deleteChallengeApplyItem(ChallengeUserItemDto dto) throws Exception{
         challengeUserItemRepository.deleteById(dto.getIdx());
+        cmsFileService.proccessFileDelete(dto);
     }
 
 }

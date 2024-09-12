@@ -78,6 +78,7 @@ public class FileUploadUtil {
         String name = "";
         try {
             if(file != null && !"".equals(file.getOriginalFilename())) {
+                System.out.println("파일 경로 : "+path);
                 File renameFile = rename(new File(path,file.getOriginalFilename()));
                 file.transferTo(renameFile);
                 name = renameFile.getName();
@@ -107,7 +108,8 @@ public class FileUploadUtil {
 
             }
         }catch (Exception e) {
-            throw new Exception("파일 저장시 오류가 발생했습니다. :"+request.getSession().getServletContext().getRealPath("/"));
+            e.printStackTrace();
+            throw new Exception("파일 저장시 오류가 발생했습니다. " + e.getMessage());
         }
         return name;
     }
