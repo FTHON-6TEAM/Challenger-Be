@@ -48,13 +48,15 @@ public class AnswerQuestionMediator {
 
         Long fileIdx = questionRepository.selectFileIdxByQuestion(answerCreateDto.getQuestionIdx());
         String preFileUrl = "http://115.85.182.23:32468/cms/file/image/link/";
-        String fileUrl = preFileUrl + fileIdx;
+//        String fileUrl = preFileUrl + fileIdx;
+        String fileUrl = "https://ojsfile.ohmynews.com/CT_T_IMG/2022/0715/IE003021157_LT.jpg";
         log.info("file URL : " + fileUrl);
 
         ChatGPTResponse chatGPTResponse = aiCallService.requestImageAnalysisWithUrl(fileUrl, answerCreateDto.getQuestionContent());
 
         // openai 가 이미지와 질문을 분석한 결과 값
         String imageAnalysisResult = chatGPTResponse.getChoices().get(0).getMessage().getContent();
+        log.info("imageAnalysisResult" + imageAnalysisResult);
 
         String userText = answerCreateDto.getQuestionContent();
 
