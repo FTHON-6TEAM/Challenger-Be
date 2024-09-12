@@ -28,6 +28,7 @@ public class AsyncAnswerCreateDto {
     private Long questionIdx;
     private String questionContent;
     private String content;
+    private Long fileIdx;
 
     @Builder
     public AsyncAnswerCreateDto(String userIdk, Long questionIdx, String questionContent) {

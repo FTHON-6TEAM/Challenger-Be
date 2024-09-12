@@ -1,6 +1,7 @@
 package com.challenger.challengerbe.modules.question.service;
 
 import com.challenger.challengerbe.cms.file.service.CmsFileService;
+import com.challenger.challengerbe.modules.answer.service.AnswerQuestionMediator;
 import com.challenger.challengerbe.modules.question.domain.Question;
 import com.challenger.challengerbe.modules.answer.dto.AsyncAnswerCreateDto;
 import com.challenger.challengerbe.modules.question.dto.QuestionDeleteRequest;
@@ -34,7 +35,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     private final QuestionRepository questionRepository;
     private final UserService userService;
-    private final QuestionAnswerMediator mediator;
+    private final AnswerQuestionMediator mediator;
     private final CmsFileService cmsFileService;
 
     @Override
@@ -48,6 +49,7 @@ public class QuestionServiceImpl implements QuestionService {
                 .dto(questionDto)
                 .build();
         Question question = questionRepository.save(newQuestion);
+        questionDto.setQuestionIdx(question.getIdx());
         cmsFileService.processFileCreate(questionDto);
 
         AsyncAnswerCreateDto request = AsyncAnswerCreateDto.builder()
