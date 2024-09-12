@@ -47,8 +47,6 @@ jobs:
           tags: challenger:latest
       env:
         OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-
-    - name: Save Docker image
     - run: /usr/bin/docker save -o challenger.tar challenger:latest
 
     - run: ls
