@@ -52,7 +52,7 @@ public class Answer {
     @JoinColumn(name = "question_idx", nullable = false)
     private Question question;
 
-    @Column(name = "content")
+    @Column(name = "content", length = 3000)
     private String content;
 
     @Comment("등록일자")

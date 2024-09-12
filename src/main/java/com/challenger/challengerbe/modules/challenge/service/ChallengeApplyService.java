@@ -1,6 +1,7 @@
 package com.challenger.challengerbe.modules.challenge.service;
 
 import com.challenger.challengerbe.cms.file.service.CmsFileService;
+import com.challenger.challengerbe.common.exception.AlreadyExistException;
 import com.challenger.challengerbe.modules.challenge.domain.ChallengeUser;
 import com.challenger.challengerbe.modules.challenge.domain.ChallengeUserItem;
 import com.challenger.challengerbe.modules.challenge.dto.ChallengeDefaultDto;
@@ -73,12 +74,28 @@ public class ChallengeApplyService {
     }
 
     /**
+     * 챌린지 방 참여자 수
+     * @param idx
+     * @return
+     * @throws Exception
+     */
+    public int selectChallengeUserTotalCountByChallengeIdx(Long idx) throws Exception {
+        return challengeUserRepository.selectChallengeUserTotalCountByChallengeIdx(idx);
+    }
+
+    /**
      * 등록
      * @param dto
      * @throws Exception
      */
     @Transactional
     public void insertChallengeApply(ChallengeUserDto dto) throws Exception {
+
+        ChallengeUser prev = challengeUserRepository.selectChallengeUserByChallengeIdxAndIdk(dto.getChallengeIdx(),dto.getIdk());
+        if(prev != null){
+            throw new AlreadyExistException("이미 참여중인 챌린지 입니다.");
+        }
+
         ChallengeUser challengeUser = new ChallengeUser(dto);
         challengeUserRepository.save(challengeUser);
     }

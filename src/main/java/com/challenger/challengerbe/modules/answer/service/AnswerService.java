@@ -1,6 +1,10 @@
 package com.challenger.challengerbe.modules.answer.service;
 
-import com.challenger.challengerbe.modules.answer.dto.AnswerCreateRequest;
+import com.challenger.challengerbe.modules.answer.dto.AnswerDto;
+import com.challenger.challengerbe.modules.answer.dto.AnswerResponse;
+import com.challenger.challengerbe.modules.answer.dto.AsyncAnswerCreateDto;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * packageName    : com.challenger.challengerbe.modules.answer.service fileName       :
@@ -11,6 +15,9 @@ import com.challenger.challengerbe.modules.answer.dto.AnswerCreateRequest;
  */
 public interface AnswerService {
 
-    Long insertAnswer(AnswerCreateRequest request);
+    Long insertAnswer(AnswerDto answerDto);
 
+    CompletableFuture<Long> insertAnswerAsync(AsyncAnswerCreateDto createDto);
+
+    List<AnswerResponse> selectAnswerList(Long questionIdx);
 }

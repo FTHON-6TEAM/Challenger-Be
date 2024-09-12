@@ -1,6 +1,7 @@
 package com.challenger.challengerbe.modules.answer.repository;
 
 import com.challenger.challengerbe.modules.answer.domain.Answer;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -18,4 +19,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AnswerRepository extends JpaRepository<Answer, Long> {
+
+    List<Answer> findAnswerListByQuestionIdx(Long questionIdx);
 }

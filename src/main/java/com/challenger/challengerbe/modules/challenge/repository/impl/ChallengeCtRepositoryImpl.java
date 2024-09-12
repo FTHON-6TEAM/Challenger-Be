@@ -14,10 +14,12 @@ import com.challenger.challengerbe.modules.challenge.repository.ChallengeCtRepos
 import com.challenger.challengerbe.modules.user.domain.QUser;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.DateTemplate;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.StringExpression;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import io.micrometer.common.util.StringUtils;
 import jakarta.persistence.EntityManager;
@@ -98,21 +100,24 @@ public class ChallengeCtRepositoryImpl extends BaseAbstractRepositoryImpl implem
                         qChallenge.successCnt,
                         qChallenge.title,
                         qChallenge.remark,
-                        qCmsFile.saveFilePath.concat("/").concat(qCmsFile.saveFileName),
-                        qChallengeUser.count(),
+                        qCmsFile.idx,
+                        ExpressionUtils.as(
+                                JPAExpressions.select(qChallengeUser.count())
+                                        .from(qChallengeUser)
+                                        .where(qChallenge.idx.eq(qChallengeUser.challenge.idx).and(qChallengeUser.user.idk.ne(searchDto.getIdk())))
+
+                        ,"joinCnt"),
                         qChallenge.createDate,
                         qChallenge.modifyDate
                 )
         ).from(qChallenge)
-                .leftJoin(qChallengeUser).on(qChallengeUser.challenge.idx.eq(qChallenge.idx).and(
-                        qChallengeUser.user.idk.ne(searchDto.getIdk())
-                ))
                 .leftJoin(qPublicCode).on(qChallenge.publicCode.pubCd.eq(qPublicCode.pubCd))
                 .leftJoin(qUser).on(qChallenge.user.idk.eq(qUser.idk))
                 .leftJoin(qCmsFile)
                 .on(qCmsFile.parentIdx.eq(qChallenge.idx.stringValue())
                         .and(qCmsFile.uploadCode.eq("upload.challenge.create")))
                 .where(commonQuery(searchDto))
+                .orderBy(qChallenge.idx.desc())
                 .offset(searchDto.getPageable().getOffset())
                 .limit(searchDto.getPageable().getPageSize())
                 .fetch();
@@ -141,20 +146,23 @@ public class ChallengeCtRepositoryImpl extends BaseAbstractRepositoryImpl implem
                                 qChallenge.successCnt,
                                 qChallenge.title,
                                 qChallenge.remark,
-                                qCmsFile.saveFilePath.concat("/").concat(qCmsFile.saveFileName),
-                                qChallengeUser.count(),
+                                qCmsFile.idx,
+                                ExpressionUtils.as(
+                                        JPAExpressions.select(qChallengeUser.count())
+                                                .from(qChallengeUser)
+                                                .where(qChallenge.idx.eq(qChallengeUser.challenge.idx).and(qChallengeUser.user.idk.ne(searchDto.getIdk())))
+
+                                        ,"joinCnt"),
                                 qChallenge.createDate,
                                 qChallenge.modifyDate
                         )
                 ).from(qChallenge)
-                .leftJoin(qChallengeUser).on(qChallengeUser.challenge.idx.eq(qChallenge.idx).and(
-                        qChallengeUser.user.idk.ne(searchDto.getIdk())
-                ))
                 .leftJoin(qPublicCode).on(qChallenge.publicCode.pubCd.eq(qPublicCode.pubCd))
                 .leftJoin(qUser).on(qChallenge.user.idk.eq(qUser.idk))
                 .leftJoin(qCmsFile).on(qCmsFile.parentIdx.eq(qChallenge.idx.stringValue())
                         .and(qCmsFile.uploadCode.eq("upload.challenge.create")))
                 .where(commonQuery(searchDto))
+                .orderBy(qChallenge.idx.desc())
                 .fetch();
     }
 }

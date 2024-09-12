@@ -1,11 +1,17 @@
 package com.challenger.challengerbe.modules.question.service;
 
+import com.challenger.challengerbe.cms.file.service.CmsFileService;
 import com.challenger.challengerbe.modules.question.domain.Question;
-import com.challenger.challengerbe.modules.question.dto.QuestionCreateRequest;
+import com.challenger.challengerbe.modules.answer.dto.AsyncAnswerCreateDto;
+import com.challenger.challengerbe.modules.question.dto.QuestionDeleteRequest;
+import com.challenger.challengerbe.modules.question.dto.QuestionDto;
+import com.challenger.challengerbe.modules.question.dto.QuestionListDto;
+import com.challenger.challengerbe.modules.question.dto.QuestionSummaryResponse;
 import com.challenger.challengerbe.modules.question.repository.QuestionRepository;
 import com.challenger.challengerbe.modules.user.domain.User;
 import com.challenger.challengerbe.modules.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,28 +34,66 @@ public class QuestionServiceImpl implements QuestionService {
 
     private final QuestionRepository questionRepository;
     private final UserService userService;
+    private final QuestionAnswerMediator mediator;
+    private final CmsFileService cmsFileService;
 
     @Override
     @Transactional
-    public Long insertQuestion(QuestionCreateRequest request) {
-        User user = userService.selectUserByIdk(request.getUserIdk());
+    public Long insertQuestion(QuestionDto questionDto) throws Exception {
+        User user = userService.selectUserByIdk(questionDto.getUserIdx());
         Question newQuestion = Question.builder()
                 .user(user)
-                .title(request.getTitle())
-                .content(request.getContent())
+                .title(questionDto.getTitle())
+                .content(questionDto.getContent())
+                .dto(questionDto)
                 .build();
         Question question = questionRepository.save(newQuestion);
+        cmsFileService.processFileCreate(questionDto);
 
-        // AI answer 자동 등록 (비동기 처리)
+        AsyncAnswerCreateDto request = AsyncAnswerCreateDto.builder()
+                .questionIdx(question.getIdx())
+                .questionContent(question.getContent())
+                .userIdk(questionDto.getUserIdx())
+                .build();
+
+        // AI answer 자동 등록 (@Async 비동기 처리)
+        // 비동기 등록
+        mediator.generateAnswerForQuestion(request);
 
         return question.getIdx();
     }
 
     @Override
-    public Question getQuestionByIdx(Long questionIdx) {
-        Question question = questionRepository.findById(questionIdx)
-                .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 questionIdx 입니다."));
+    public QuestionSummaryResponse selectQuestion(Long questionIdk, String userIdk) {
+        return questionRepository.selectQuestionDto(questionIdk);
+    }
 
-        return question;
+    @Override
+    @Transactional
+    public Long deleteQuestion(QuestionDeleteRequest request, String userIdk) {
+        Question question = questionRepository.findById(request.getQuestionIdk())
+                .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 질문입니다."));
+        if (!(question.getUser().getIdk().equals(userIdk))) {
+            throw new IllegalArgumentException("유효하지 않은 사용자입니다.");
+        }
+        questionRepository.deleteById(request.getQuestionIdk());
+
+        return request.getQuestionIdk();
+    }
+
+    @Override
+    @Transactional
+    public void updateQuestion(QuestionDto questionDto) {
+        Question question = questionRepository.findById(questionDto.getQuestionIdx())
+                .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 질문입니다."));
+        if (!(question.getUser().getIdk().equals(questionDto.getUserIdx()))) {
+            throw new IllegalArgumentException("유효하지 않은 사용자입니다.");
+        }
+        question.updateTitleAndContent(questionDto);
+    }
+
+    @Override
+    public Page<QuestionSummaryResponse> selectQuestionList(QuestionListDto searchDto) {
+        return questionRepository.selectQuestionList(searchDto);
     }
 }

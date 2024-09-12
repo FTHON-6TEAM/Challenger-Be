@@ -126,6 +126,9 @@ public class ChallengeService {
      */
     @Transactional
     public void deleteChallenge(ChallengeDto challengeDto) throws Exception {
+
+
+
         cmsFileService.proccessFileDelete(challengeDto);
         challengeItemRepository.deleteByChallenge_Idx(challengeDto.getIdx());
         challengeRepository.deleteById(challengeDto.getIdx());

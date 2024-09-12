@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -90,7 +91,7 @@ public class PublicCodeController extends BaseController {
             @ApiResponse(responseCode = "404", description = "등록에 실패하였습니다.")
     })
     @PostMapping(MGN_URL+"/public/code/ins")
-    public ResponseEntity<String> insertPublicCode(PublicCodeDto publicCodeDto) throws Exception {
+    public ResponseEntity<String> insertPublicCode(@RequestBody PublicCodeDto publicCodeDto) throws Exception {
 
         try{
             boolean result = publicCodeService.insertPublicCode(publicCodeDto);

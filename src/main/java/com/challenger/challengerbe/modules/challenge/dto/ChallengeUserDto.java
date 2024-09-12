@@ -4,6 +4,7 @@ import com.challenger.challengerbe.cms.file.dto.CmsFileDto;
 import com.challenger.challengerbe.cms.file.dto.CmsFileSupport;
 import com.challenger.challengerbe.modules.challenge.domain.Challenge;
 import com.challenger.challengerbe.modules.user.domain.User;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,21 +30,28 @@ import java.util.List;
  * -----------------------------------------------------------
  * 2024-09-09        rhkdg       최초 생성
  */
+@Schema(description = "챌린지 참여자 정보")
 @Getter
 @Setter
 @NoArgsConstructor
 public class ChallengeUserDto  {
 
-    private Long idx;
+    @Schema(description = "챌린지 참여자 일련번호")
+    private Long idx = 0L;
 
+    @Schema(description = "챌린지 참여자 키값")
     private String idk;
 
+    @Schema(description = "챌린지 방 일련번호")
     private Long challengeIdx;
 
+    @Schema(description = "등록일자")
     private LocalDateTime createDate;
 
+    @Schema(description = "수정일자")
     private LocalDateTime modifyDate;
 
+    @Schema(description = "챌린지 방 정보")
     private ChallengeSummaryInfoResponse challengeSummaryInfoResponse;
 
     public ChallengeUserDto(Long idx, String idk, Long challengeIdx, LocalDateTime createDate, LocalDateTime modifyDate, ChallengeSummaryInfoResponse challengeSummaryInfoResponse) {
