@@ -22,6 +22,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.List;
+
 /**
  * packageName    : com.challenger.challengerbe.modules.challenge.controller
  * fileName       : ChallengeApplyController
@@ -42,6 +45,8 @@ public class ChallengeApplyController {
     
     private final ChallengeApplyService challengeApplyService;
 
+    private final ChallengeService challengeService;
+
 
     @Operation(summary = "챌린지 참여 목록 조회(페이징 포함)")
     @Parameters({
@@ -57,11 +62,29 @@ public class ChallengeApplyController {
         return challengeApplyService.selectChallengeUserPageList(searchDto);
     }
 
-    @Operation(summary = "챌린지 참여 목록 조회(페이징 포함)")
-    @Parameter(name = "idx" , description = "참여중인 챌린지 idx")
+    @Operation(summary = "챌린지 상세 정보")
+    @Parameters({
+            @Parameter(name = "idx" , description = "참여중인 챌린지 참여 idx",required = true),
+            @Parameter(name = "selectDate" , description = "선택일자",required = false)
+    })
+
     @GetMapping("/challenge/apply/view")
-    public ChallengeUserDto selectChallengeUserView(@Parameter(hidden = true) ChallengeUserDto dto) throws Exception {
-        return challengeApplyService.selectChallengeUser(dto);
+    public ChallengeUserWithItemListResponse selectChallengeUserView(@Parameter(hidden = true) ChallengeUserDto dto,
+                                                    @RequestParam(value = "selectDate",required = false) String completeDate,
+                                                    @Parameter(hidden = true) @AuthInfo String token) throws Exception {
+        dto.setIdk(token);
+        dto = challengeApplyService.selectChallengeUser(dto);
+
+        ChallengeUserItemDto userItemDto = new ChallengeUserItemDto();
+        userItemDto.setChallengeUserIdx(dto.getIdx());
+        userItemDto.setCompleteDate(completeDate);
+
+        ChallengeItemDto itemDto = new ChallengeItemDto();
+        itemDto.setChallengeIdx(dto.getChallengeIdx());
+        List<List<ChallengeItemDto>> itemList = challengeService.selectChallengeItemListForUser(itemDto,userItemDto);
+
+        return new ChallengeUserWithItemListResponse(dto,itemList);
+        
     }
 
     @Operation(summary = "챌린지 참여 등록(항목 포함 일괄 처리)")

@@ -4,10 +4,10 @@ import com.challenger.challengerbe.cms.file.domain.QCmsFile;
 import com.challenger.challengerbe.cms.publiccode.domain.QPublicCode;
 import com.challenger.challengerbe.common.BaseAbstractRepositoryImpl;
 import com.challenger.challengerbe.modules.challenge.domain.QChallenge;
+import com.challenger.challengerbe.modules.challenge.domain.QChallengeItem;
 import com.challenger.challengerbe.modules.challenge.domain.QChallengeUser;
-import com.challenger.challengerbe.modules.challenge.dto.ChallengeDefaultDto;
-import com.challenger.challengerbe.modules.challenge.dto.ChallengeSummaryInfoResponse;
-import com.challenger.challengerbe.modules.challenge.dto.ChallengeUserDto;
+import com.challenger.challengerbe.modules.challenge.domain.QChallengeUserItem;
+import com.challenger.challengerbe.modules.challenge.dto.*;
 import com.challenger.challengerbe.modules.challenge.repository.ChallengeUserCtRepository;
 import com.challenger.challengerbe.modules.user.domain.QUser;
 import com.querydsl.core.BooleanBuilder;
@@ -201,4 +201,5 @@ public class ChallengeUserCtRepositoryImpl extends BaseAbstractRepositoryImpl im
                 .where(new BooleanBuilder().and(qChallengeUser.idx.eq(dto.getIdx())))
                 .fetchFirst();
     }
+
 }

@@ -3,6 +3,7 @@ package com.challenger.challengerbe.modules.challenge.dto;
 import com.challenger.challengerbe.cms.file.dto.CmsFileDto;
 import com.challenger.challengerbe.cms.file.dto.CmsFileSupport;
 import com.challenger.challengerbe.modules.challenge.domain.Challenge;
+import com.challenger.challengerbe.modules.challenge.domain.ChallengeItem;
 import com.challenger.challengerbe.modules.user.domain.User;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;

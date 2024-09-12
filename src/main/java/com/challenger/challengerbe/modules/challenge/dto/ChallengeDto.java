@@ -2,6 +2,7 @@ package com.challenger.challengerbe.modules.challenge.dto;
 
 import com.challenger.challengerbe.cms.file.dto.CmsFileDto;
 import com.challenger.challengerbe.cms.file.dto.CmsFileSupport;
+import com.challenger.challengerbe.modules.challenge.domain.Challenge;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -57,6 +58,8 @@ public class ChallengeDto implements CmsFileSupport<CmsFileDto> {
 
     /**수정일자*/
     private LocalDateTime modifyDate;
+
+    private boolean isJoin = false;
     
     /**항목 목록*/
     private List<ChallengeItemDto> challengeItemList = new ArrayList<>();
@@ -75,6 +78,19 @@ public class ChallengeDto implements CmsFileSupport<CmsFileDto> {
         this.createDate = createDate;
         this.modifyDate = modifyDate;
         this.challengeItemList = challengeItemList;
+    }
+
+    public void setChallenge(Challenge challenge) {
+        this.idx = challenge.getIdx();
+        this.code = challenge.getPublicCode().getPubCd();
+        this.idk = challenge.getUser().getIdk();
+        this.startDate = challenge.getStartDate();
+        this.endDate = challenge.getEndDate();
+        this.successCnt = challenge.getSuccessCnt();
+        this.title = challenge.getTitle();
+        this.remark = challenge.getRemark();
+        this.createDate = challenge.getCreateDate();
+        this.modifyDate = challenge.getModifyDate();
     }
 
     public static ChallengeDto createof(ChallengeCreateRequest challengeCreateRequest) {

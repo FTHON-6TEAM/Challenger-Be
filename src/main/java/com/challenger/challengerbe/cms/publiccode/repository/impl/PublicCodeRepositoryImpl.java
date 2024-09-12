@@ -8,9 +8,11 @@ import com.challenger.challengerbe.cms.publiccode.repository.PublicCodeRepositor
 import com.challenger.challengerbe.common.BaseAbstractRepositoryImpl;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import io.micrometer.common.util.StringUtils;
 import jakarta.persistence.EntityManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -35,15 +37,36 @@ public class PublicCodeRepositoryImpl extends BaseAbstractRepositoryImpl impleme
         super(entityManager, jpaQuery);
     }
 
+    public BooleanBuilder commonQuery(PublicCodeDefaultDto searchDto) throws Exception {
+        QPublicCode qPublicCode = QPublicCode.publicCode;
+        BooleanBuilder sql = new BooleanBuilder();
+
+        if(!StringUtils.isBlank(searchDto.getParentCd())){
+            sql.and(qPublicCode.parentCd.eq(searchDto.getParentCd()));
+        }
+
+        if(!StringUtils.isBlank(searchDto.getPubCd())){
+            sql.and(qPublicCode.pubCd.eq(searchDto.getPubCd()));
+        }
+
+        if(!StringUtils.isBlank(searchDto.getUseYn())){
+            sql.and(qPublicCode.useYn.eq(searchDto.getUseYn()));
+        }
+
+        return sql;
+    }
+
     @Override
     public Page<PublicCodeDto> selectPublicCodePageList(PublicCodeDefaultDto searchDto) throws Exception {
         QPublicCode qPublicCode = QPublicCode.publicCode;
 
         Long cnt = jpaQuery.select(qPublicCode.count())
                 .from(qPublicCode)
+                .where(commonQuery(searchDto))
                 .fetchFirst();
 
         List<PublicCode> list = jpaQuery.selectFrom(qPublicCode)
+                .where(commonQuery(searchDto))
                 .offset(searchDto.getPageable().getOffset())
                 .limit(searchDto.getPageable().getPageSize()).fetch();
 
@@ -53,7 +76,8 @@ public class PublicCodeRepositoryImpl extends BaseAbstractRepositoryImpl impleme
     @Override
     public List<PublicCodeDto> selectPublicCodeList(PublicCodeDefaultDto searchDto) throws Exception {
         QPublicCode qPublicCode = QPublicCode.publicCode;
-        List<PublicCode> list = jpaQuery.selectFrom(qPublicCode).fetch();
+        List<PublicCode> list = jpaQuery.selectFrom(qPublicCode)
+                .where(commonQuery(searchDto)).fetch();
 
         return list.stream().map(PublicCodeDto::new).toList();
     }
