@@ -21,6 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -125,8 +126,10 @@ public class ChallengeApplyController {
     })
     @PostMapping(value = "/challenge/apply/item/ins",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> insertChallengeApplyItem(
-            final @Valid @RequestPart ChallengeUserItemCreateRequest challengeUserItemCreateRequest) throws Exception {
-        
+            final @Valid @RequestPart ChallengeUserItemCreateRequest challengeUserItemCreateRequest,
+            final @RequestPart(value = "_file", required = false) MultipartFile multipartFile
+            ) throws Exception {
+
         ChallengeUserItemDto dto = ChallengeUserItemDto.createOf(challengeUserItemCreateRequest);
         challengeApplyService.insertChallengeApplyItem(dto);
 

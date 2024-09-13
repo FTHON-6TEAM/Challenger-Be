@@ -35,24 +35,24 @@ public class ChallengeStatisticsRepositoryImpl extends BaseAbstractRepositoryImp
 
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT ");
-        sql.append("MAX(CASE WHEN m = 1 THEN av ELSE 0 END) AS month1,");
-        sql.append("MAX(CASE WHEN m = 2 THEN av ELSE 0 END) AS month2,");
-        sql.append("MAX(CASE WHEN m = 3 THEN av ELSE 0 END) AS month3,");
-        sql.append("MAX(CASE WHEN m = 4 THEN av ELSE 0 END) AS month4,");
-        sql.append("MAX(CASE WHEN m = 5 THEN av ELSE 0 END) AS month5,");
-        sql.append("MAX(CASE WHEN m = 6 THEN av ELSE 0 END) AS month6,");
-        sql.append("MAX(CASE WHEN m = 7 THEN av ELSE 0 END) AS month7,");
-        sql.append("MAX(CASE WHEN m = 8 THEN av ELSE 0 END) AS month8,");
-        sql.append("MAX(CASE WHEN m = 9 THEN av ELSE 0 END) AS month9,");
-        sql.append("MAX(CASE WHEN m = 10 THEN av ELSE 0 END) AS month10,");
-        sql.append("MAX(CASE WHEN m = 11 THEN av ELSE 0 END) AS month11,");
-        sql.append("MAX(CASE WHEN m = 12 THEN av ELSE 0 END) AS month12 ")
+        sql.append("IFNULL(MAX(CASE WHEN m = 1 THEN av ELSE 0 END),0) AS month1,");
+        sql.append("IFNULL(MAX(CASE WHEN m = 2 THEN av ELSE 0 END),0) AS month2,");
+        sql.append("IFNULL(MAX(CASE WHEN m = 3 THEN av ELSE 0 END),0) AS month3,");
+        sql.append("IFNULL(MAX(CASE WHEN m = 4 THEN av ELSE 0 END),0) AS month4,");
+        sql.append("IFNULL(MAX(CASE WHEN m = 5 THEN av ELSE 0 END),0) AS month5,");
+        sql.append("IFNULL(MAX(CASE WHEN m = 6 THEN av ELSE 0 END),0) AS month6,");
+        sql.append("IFNULL(MAX(CASE WHEN m = 7 THEN av ELSE 0 END),0) AS month7,");
+        sql.append("IFNULL(MAX(CASE WHEN m = 8 THEN av ELSE 0 END),0) AS month8,");
+        sql.append("IFNULL(MAX(CASE WHEN m = 9 THEN av ELSE 0 END),0) AS month9,");
+        sql.append("IFNULL(MAX(CASE WHEN m = 10 THEN av ELSE 0 END),0) AS month10,");
+        sql.append("IFNULL(MAX(CASE WHEN m = 11 THEN av ELSE 0 END),0) AS month11,");
+        sql.append("IFNULL(MAX(CASE WHEN m = 12 THEN av ELSE 0 END),0) AS month12 ")
                 .append("FROM ( ");
         sql.append("SELECT m, ROUND(AVG(av)) av, COUNT(*) c FROM ( " );
         sql.append("SELECT T.idx, T.challenge_idx, T.cnt, T.dcnt, ROUND(((T.cnt / T.dcnt) * 100)) av , T.m FROM ( ");
         sql.append("SELECT a.*, b.cnt, DATEDIFF(c.end_date,c.start_date) dcnt, MONTH(c.start_date) m FROM challenge_user a ");
-        sql.append("LEFT JOIN ( SELECT challenge_user_idx, COUNT(*) cnt FROM challenge_user_item WHERE complete_yn = 'Y' ");
-        sql.append("GROUP BY challenge_user_idx ) b ON a.idx = b.challenge_user_idx ");
+        sql.append("LEFT JOIN ( SELECT challenge_user_idx,COUNT(*) cnt  FROM ( select challenge_user_idx, complete_date FROM challenge_user_item ");
+        sql.append(" WHERE complete_yn = 'Y' GROUP BY complete_date,challenge_user_idx   ORDER BY complete_date asc )a GROUP BY challenge_user_idx ) b ON a.idx = b.challenge_user_idx ");
         sql.append("JOIN ( SELECT start_date, end_date, idx FROM challenge ) c ON a.challenge_idx = c.idx ");
         sql.append("WHERE 1=1 ");
         if(StringUtils.isBlank(searchDto.getIdk())) {
@@ -62,6 +62,78 @@ public class ChallengeStatisticsRepositoryImpl extends BaseAbstractRepositoryImp
             sql.append("and code = '").append(searchDto.getCode()).append("' ");
         }
         sql.append(")T )TT GROUP BY m ORDER BY m )TTT ");
+
+        JpaResultMapper jpaResultMapper = new JpaResultMapper();
+        return jpaResultMapper.uniqueResult(entityManager.createNativeQuery(sql.toString()), ChalendarMonthResponse.class);
+    }
+
+    @Override
+    public ChalendarMonthResponse selectChallengeSuccessStatisticsMonthList(ChallengeDefaultDto searchDto) throws Exception {
+        StringBuilder sql = new StringBuilder();
+        sql.append("SELECT ");
+        sql.append("IFNULL(MAX(CASE WHEN m = 1 THEN av ELSE 0 END),0) AS month1,");
+        sql.append("IFNULL(MAX(CASE WHEN m = 2 THEN av ELSE 0 END),0) AS month2,");
+        sql.append("IFNULL(MAX(CASE WHEN m = 3 THEN av ELSE 0 END),0) AS month3,");
+        sql.append("IFNULL(MAX(CASE WHEN m = 4 THEN av ELSE 0 END),0) AS month4,");
+        sql.append("IFNULL(MAX(CASE WHEN m = 5 THEN av ELSE 0 END),0) AS month5,");
+        sql.append("IFNULL(MAX(CASE WHEN m = 6 THEN av ELSE 0 END),0) AS month6,");
+        sql.append("IFNULL(MAX(CASE WHEN m = 7 THEN av ELSE 0 END),0) AS month7,");
+        sql.append("IFNULL(MAX(CASE WHEN m = 8 THEN av ELSE 0 END),0) AS month8,");
+        sql.append("IFNULL(MAX(CASE WHEN m = 9 THEN av ELSE 0 END),0) AS month9,");
+        sql.append("IFNULL(MAX(CASE WHEN m = 10 THEN av ELSE 0 END),0) AS month10,");
+        sql.append("IFNULL(MAX(CASE WHEN m = 11 THEN av ELSE 0 END),0) AS month11,");
+        sql.append("IFNULL(MAX(CASE WHEN m = 12 THEN av ELSE 0 END),0) AS month12 ")
+                .append("FROM ( ");
+        sql.append("SELECT m, ROUND(AVG(av)) av FROM ( SELECT m , ROUND(((cnt / dcnt) * 100 )) av FROM ( " );
+        sql.append("SELECT m, dcnt, count(*) cnt FROM ( ");
+        sql.append("SELECT a.*, DATEDIFF(c.end_date,c.start_date) dcnt, MONTH(c.start_date) m FROM challenge_user a ");
+        sql.append("LEFT JOIN ( SELECT challenge_user_idx, complete_date, count(*) cnt FROM challenge_user_item where complete_yn = 'Y' GROUP BY challenge_user_idx, complete_date ");
+        sql.append(") b ON a.idx = b.challenge_user_idx ");
+        sql.append("JOIN ( SELECT start_date, end_date, idx , success_cnt FROM challenge ) c ON a.challenge_idx = c.idx ");
+        sql.append("WHERE 1=1 and b.cnt >= c.success_cnt ");
+        if(StringUtils.isBlank(searchDto.getIdk())) {
+            sql.append("and idk = '").append(searchDto.getIdk()).append("' ");
+        }
+        if(!StringUtils.isBlank(searchDto.getCode())){
+            sql.append("and code = '").append(searchDto.getCode()).append("' ");
+        }
+        sql.append(")T GROUP BY m, dcnt )TT )TTT GROUP BY m ) TTTT ");
+
+        JpaResultMapper jpaResultMapper = new JpaResultMapper();
+        return jpaResultMapper.uniqueResult(entityManager.createNativeQuery(sql.toString()), ChalendarMonthResponse.class);
+    }
+
+    @Override
+    public ChalendarMonthResponse selectChallengeFailStatisticsMonthList(ChallengeDefaultDto searchDto) throws Exception {
+        StringBuilder sql = new StringBuilder();
+        sql.append("SELECT ");
+        sql.append("IFNULL(MAX(CASE WHEN m = 1 THEN av ELSE 0 END),0) AS month1,");
+        sql.append("IFNULL(MAX(CASE WHEN m = 2 THEN av ELSE 0 END),0) AS month2,");
+        sql.append("IFNULL(MAX(CASE WHEN m = 3 THEN av ELSE 0 END),0) AS month3,");
+        sql.append("IFNULL(MAX(CASE WHEN m = 4 THEN av ELSE 0 END),0) AS month4,");
+        sql.append("IFNULL(MAX(CASE WHEN m = 5 THEN av ELSE 0 END),0) AS month5,");
+        sql.append("IFNULL(MAX(CASE WHEN m = 6 THEN av ELSE 0 END),0) AS month6,");
+        sql.append("IFNULL(MAX(CASE WHEN m = 7 THEN av ELSE 0 END),0) AS month7,");
+        sql.append("IFNULL(MAX(CASE WHEN m = 8 THEN av ELSE 0 END),0) AS month8,");
+        sql.append("IFNULL(MAX(CASE WHEN m = 9 THEN av ELSE 0 END),0) AS month9,");
+        sql.append("IFNULL(MAX(CASE WHEN m = 10 THEN av ELSE 0 END),0) AS month10,");
+        sql.append("IFNULL(MAX(CASE WHEN m = 11 THEN av ELSE 0 END),0) AS month11,");
+        sql.append("IFNULL(MAX(CASE WHEN m = 12 THEN av ELSE 0 END),0) AS month12 ")
+                .append("FROM ( ");
+        sql.append("SELECT m, ROUND(AVG(av)) av FROM ( SELECT m , ROUND(((cnt / dcnt) * 100 )) av FROM ( " );
+        sql.append("SELECT m, dcnt, count(*) cnt FROM ( ");
+        sql.append("SELECT a.*, DATEDIFF(c.end_date,c.start_date) dcnt, MONTH(c.start_date) m FROM challenge_user a ");
+        sql.append("LEFT JOIN ( SELECT challenge_user_idx, complete_date, count(*) cnt FROM challenge_user_item where complete_yn = 'Y' GROUP BY challenge_user_idx, complete_date ");
+        sql.append(") b ON a.idx = b.challenge_user_idx ");
+        sql.append("JOIN ( SELECT start_date, end_date, idx , success_cnt FROM challenge ) c ON a.challenge_idx = c.idx ");
+        sql.append("WHERE 1=1 and b.cnt < c.success_cnt ");
+        if(StringUtils.isBlank(searchDto.getIdk())) {
+            sql.append("and idk = '").append(searchDto.getIdk()).append("' ");
+        }
+        if(!StringUtils.isBlank(searchDto.getCode())){
+            sql.append("and code = '").append(searchDto.getCode()).append("' ");
+        }
+        sql.append(")T GROUP BY m, dcnt )TT )TTT GROUP BY m ) TTTT ");
 
         JpaResultMapper jpaResultMapper = new JpaResultMapper();
         return jpaResultMapper.uniqueResult(entityManager.createNativeQuery(sql.toString()), ChalendarMonthResponse.class);
