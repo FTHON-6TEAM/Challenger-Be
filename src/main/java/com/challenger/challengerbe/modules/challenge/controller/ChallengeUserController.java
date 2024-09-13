@@ -22,6 +22,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * packageName    : com.challenger.challengerbe.modules.challenge.controller
@@ -78,6 +79,7 @@ public class ChallengeUserController {
     })
     @PostMapping(value="/challenge/ins", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> insertChallenge(final @Valid @RequestPart ChallengeCreateRequest challengeCreateRequest,
+                                             final @RequestPart(value = "_file", required = false) MultipartFile multipartFile,
                                              @AuthInfo String token) throws Exception {
         ChallengeDto challengeDto = ChallengeDto.createof(challengeCreateRequest);
         challengeDto.setIdk(token);
@@ -99,6 +101,7 @@ public class ChallengeUserController {
     })
     @PutMapping(value="/challenge/upd", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> updateChallenge(final @Valid @RequestPart ChallengeUpdateRequest challengeUpdateRequest,
+                                             final @RequestPart(value = "_file", required = false) MultipartFile multipartFile,
                                              @Parameter(hidden = true) @AuthInfo String token) throws Exception {
 
         ChallengeDto challengeDto = ChallengeDto.updateOf(challengeUpdateRequest);
