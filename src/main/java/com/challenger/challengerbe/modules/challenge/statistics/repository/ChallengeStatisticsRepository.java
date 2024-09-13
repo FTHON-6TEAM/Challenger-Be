@@ -1,6 +1,7 @@
 package com.challenger.challengerbe.modules.challenge.statistics.repository;
 
 import com.challenger.challengerbe.modules.challenge.dto.ChallengeDefaultDto;
+import com.challenger.challengerbe.modules.challenge.statistics.dto.ChalendarMonthResponse;
 
 import java.util.List;
 import java.util.Map;
@@ -24,7 +25,7 @@ public interface ChallengeStatisticsRepository {
      * @return
      * @throws Exception
      */
-    Map<String, String> selectChallengeJoinStatisticsMonthList(ChallengeDefaultDto searchDto) throws Exception;
+    ChalendarMonthResponse selectChallengeJoinStatisticsMonthList(ChallengeDefaultDto searchDto) throws Exception;
 
 
 }

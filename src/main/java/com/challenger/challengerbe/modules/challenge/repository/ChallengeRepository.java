@@ -2,6 +2,7 @@ package com.challenger.challengerbe.modules.challenge.repository;
 
 import com.challenger.challengerbe.modules.challenge.domain.Challenge;
 import com.challenger.challengerbe.modules.challenge.dto.ChallengeDto;
+import com.challenger.challengerbe.modules.challenge.dto.ChallengeWithItemListResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -21,8 +22,9 @@ import java.util.Map;
  */
 public interface ChallengeRepository extends JpaRepository<Challenge,Long> ,ChallengeCtRepository{
 
-    @Query(value = "select a.*, b.title,c.username from challenge a left join cms_public_code b on a.pub_cd = b.pub_cd " +
-            "left join user c on a.idk = c.idk where idx=:idx",nativeQuery = true)
-    Map<String,String> selectChallengeDto(Long idx);
+    @Query(value = "select new com.challenger.challengerbe.modules.challenge.dto.ChallengeWithItemListResponse(" +
+            "c.idx,c.publicCode.pubCd,c.startDate,c.endDate,c.successCnt,c.title,c.remark,p.title,u.username,c.createDate,c.modifyDate)  from Challenge c left join PublicCode p on c.publicCode.pubCd = p.pubCd " +
+            "left join User u on c.user.idk = u.idk where c.idx=:idx")
+    ChallengeWithItemListResponse selectChallengeDto(Long idx);
 
 }

@@ -76,17 +76,17 @@ public class ChallengeService {
      * @return
      * @throws Exception
      */
-    public ChallengeDto selectChallengeDto(ChallengeDto challengeDto) throws Exception {
-        Challenge challenge = challengeRepository.findById(challengeDto.getIdx()).orElseThrow();
-        challengeDto.setChallenge(challenge);
+    public ChallengeWithItemListResponse selectChallengeDto(ChallengeDto challengeDto, String idk) throws Exception {
 
-        ChallengeUser challengeUser = challengeUserRepository.selectChallengeUserByChallengeIdxAndIdk(challengeDto.getIdx(),challengeDto.getIdk());
+        ChallengeWithItemListResponse response = challengeRepository.selectChallengeDto(challengeDto.getIdx());
+
+        ChallengeUser challengeUser = challengeUserRepository.selectChallengeUserByChallengeIdxAndIdk(challengeDto.getIdx(),idk);
         if(challengeUser != null) {
-            challengeDto.setJoin(true);
+            response.setJoin(true);
         }
         List<ChallengeItem> itemList = challengeItemRepository.findByChallenge_Idx(challengeDto.getIdx());
-        challengeDto.setChallengeItemList(itemList.stream().map(ChallengeItemDto::new).toList());
-        return challengeDto;
+        response.setChallengeItemList(itemList.stream().map(ChallengeItemDto::new).toList());
+        return response;
     }
 
     /**
