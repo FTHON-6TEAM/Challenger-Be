@@ -2,6 +2,7 @@ package com.challenger.challengerbe.modules.challenge.statistics.controller;
 
 import com.challenger.challengerbe.auth.login.AuthInfo;
 import com.challenger.challengerbe.modules.challenge.dto.ChallengeDefaultDto;
+import com.challenger.challengerbe.modules.challenge.statistics.dto.ChalendarMonthResponse;
 import com.challenger.challengerbe.modules.challenge.statistics.repository.ChallengeStatisticsRepository;
 import com.challenger.challengerbe.modules.challenge.statistics.service.ChallengeStatisticsService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -34,12 +35,11 @@ public class ChallengeStatisticsController {
 
     private final ChallengeStatisticsService challengeStatisticsService;
 
-
     @Operation(summary = "챌린지 참여율 통계 (월별)")
     @Parameter(name = "code" , description = "키워드 default는 공백입니다.")
     @GetMapping("/challenge/join/month/statistics")
-    public Map<String,String> selectChallengeJoinMonthStatistics(@Parameter(hidden = true)ChallengeDefaultDto searchDto,
-                                                                 @Parameter(hidden = true) @AuthInfo String token) throws Exception {
+    public ChalendarMonthResponse selectChallengeJoinMonthStatistics(@Parameter(hidden = true) ChallengeDefaultDto searchDto,
+                                                                     @Parameter(hidden = true) @AuthInfo String token) throws Exception {
 
         searchDto.setIdk(token == null ? "" : token);
         return challengeStatisticsService.selectChallengeJoinStatisticsMonthList(searchDto);
