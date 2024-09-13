@@ -62,8 +62,9 @@ public class ChallengeUserController {
     @Operation(summary = "챌린지 상세 조회")
     @Parameter(name = "idx", description = "챌린지 일련번호")
     @GetMapping("/challenge/view")
-    public ChallengeDto selectChallengeView(@Parameter(hidden = true) ChallengeDto challengeDto) throws Exception {
-        return challengeService.selectChallengeDto(challengeDto);
+    public ChallengeWithItemListResponse selectChallengeView(@Parameter(hidden = true) ChallengeDto challengeDto,
+                                                             @Parameter(hidden = true) @AuthInfo String token) throws Exception {
+        return challengeService.selectChallengeDto(challengeDto,token);
     }
 
     @Operation(summary = "챌린지 등록(항목 포함 일괄 처리)")
