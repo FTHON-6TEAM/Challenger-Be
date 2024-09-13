@@ -23,6 +23,7 @@ import java.util.Map;
  */
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class ChallengeStatisticsService {
 
     private final ChallengeStatisticsRepository challengeStatisticsRepository;
@@ -35,6 +36,26 @@ public class ChallengeStatisticsService {
      */
     public ChalendarMonthResponse selectChallengeJoinStatisticsMonthList(ChallengeDefaultDto searchDto) throws Exception {
         return challengeStatisticsRepository.selectChallengeJoinStatisticsMonthList(searchDto);
+    }
+
+    /**
+     * 월별 참여 중 성공률 통계 자료
+     * @param searchDto
+     * @return
+     * @throws Exception
+     */
+    public ChalendarMonthResponse selectChallengeSuccessStatisticsMonthList(ChallengeDefaultDto searchDto) throws Exception {
+        return challengeStatisticsRepository.selectChallengeSuccessStatisticsMonthList(searchDto);
+    }
+
+    /**
+     * 월별 참여 중 실패율 통계 자료
+     * @param searchDto
+     * @return
+     * @throws Exception
+     */
+    public ChalendarMonthResponse selectChallengeFailStatisticsMonthList(ChallengeDefaultDto searchDto) throws Exception {
+        return challengeStatisticsRepository.selectChallengeFailStatisticsMonthList(searchDto);
     }
  
 }
