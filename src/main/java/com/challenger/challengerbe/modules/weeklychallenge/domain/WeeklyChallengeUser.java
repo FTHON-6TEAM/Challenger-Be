@@ -49,8 +49,8 @@ public class WeeklyChallengeUser {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "challenge_idx", nullable = false)
-    private Challenge challenge;
+    @JoinColumn(name = "weekly_challenge_idx", nullable = false)
+    private WeeklyChallenge weeklyChallenge;
 
     @Comment("등록일자")
     @CreatedDate

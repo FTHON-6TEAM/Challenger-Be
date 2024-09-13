@@ -44,7 +44,7 @@ public class Answer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idx;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idk", nullable = false)
     private User user;
 
@@ -63,10 +63,16 @@ public class Answer {
     @LastModifiedDate
     private LocalDateTime modifyDate;
 
+    private boolean isAi = false;
+
     @Builder
     public Answer(User user, Question question, String content) {
         this.user = user;
         this.question = question;
         this.content = content;
+    }
+
+    public void setIsAi() {
+        this.isAi = true;
     }
 }

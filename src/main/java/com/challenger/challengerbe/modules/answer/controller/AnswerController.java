@@ -7,6 +7,7 @@ import com.challenger.challengerbe.modules.answer.dto.AnswerDto;
 import com.challenger.challengerbe.modules.answer.dto.AnswerResponse;
 import com.challenger.challengerbe.modules.answer.openai.dto.ChatGPTResponse;
 //import com.challenger.challengerbe.modules.answer.openai.service.AiCallService;
+import com.challenger.challengerbe.modules.answer.openai.service.AiCallService;
 import com.challenger.challengerbe.modules.answer.service.AnswerService;
 import com.challenger.challengerbe.modules.question.repository.QuestionRepository;
 import io.swagger.v3.oas.annotations.Operation;
@@ -48,7 +49,7 @@ public class AnswerController {
     private final AnswerService answerService;
     private final OpenAiChatModel openAiChatModel;
     private final QuestionRepository questionRepository;
-//    private final AiCallService aiCallService;
+    private final AiCallService aiCallService;
 
     @Operation(summary = "답변 등록")
     @ApiResponses(value = {
@@ -77,21 +78,21 @@ public class AnswerController {
         return new ResponseEntity<>(CommonResponse.resAllOf("답변 조회가 완료되었습니다.", response),HttpStatus.CREATED);
     }
 
-    @GetMapping("/chat")
-    public Map<String, String> chat(@RequestBody String message) {
-        Map<String, String> responses = new HashMap<>();
-
-        String openAiResponse = openAiChatModel.call(message);
-        responses.put("openai(chatGPT) 응답", openAiResponse);
-
-        return responses;
-    }
-
-    @GetMapping("/test")
-    public Long test() {
-        Long response = questionRepository.selectFileIdxByQuestion(14L);
-        return response;
-    }
+//    @GetMapping("/chat")
+//    public Map<String, String> chat(@RequestBody String message) {
+//        Map<String, String> responses = new HashMap<>();
+//
+//        String openAiResponse = openAiChatModel.call(message);
+//        responses.put("openai(chatGPT) 응답", openAiResponse);
+//
+//        return responses;
+//    }
+//
+//    @GetMapping("/test")
+//    public Long test() {
+//        Long response = questionRepository.selectFileIdxByQuestion(14L);
+//        return response;
+//    }
 
 //    @GetMapping("/image/test")
 //    public String testImgae() throws IOException {

@@ -1,4 +1,4 @@
-package com.challenger.challengerbe.modules.weeklychallenge.service;
+package com.challenger.challengerbe.modules.weeklychallenge.repository;
 
 import com.challenger.challengerbe.modules.weeklychallenge.dto.WeeklyChallengeDefaultDto;
 import com.challenger.challengerbe.modules.weeklychallenge.dto.WeeklyChallengeDto;
@@ -6,8 +6,8 @@ import com.challenger.challengerbe.modules.weeklychallenge.dto.WeeklyChallengeIt
 import java.util.List;
 
 /**
- * packageName    : com.challenger.challengerbe.modules.weeklychallenge.service
- * fileName       : WeeklyChallengeService
+ * packageName    : com.challenger.challengerbe.modules.weeklychallenge.repository
+ * fileName       : WeeklyChallengeRepositoryCustom
  * author         : jongh
  * date           : 2024-09-13
  * description    :
@@ -16,10 +16,9 @@ import java.util.List;
  * -----------------------------------------------------------
  * 2024-09-13           jongh          최초 생성
  */
-public interface WeeklyChallengeService {
+public interface WeeklyChallengeRepositoryCustom {
 
-    WeeklyChallengeDto selectWeeklyChallengeDto(
-            WeeklyChallengeDefaultDto searchDto);
+    WeeklyChallengeDto selectWeeklyChallengeDto(WeeklyChallengeDefaultDto searchDto);
 
     List<WeeklyChallengeItemDto> selectWeeklyChallengeItemDto(Long weeklyChallengeIdx);
 }

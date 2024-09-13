@@ -16,6 +16,9 @@ import java.time.LocalDateTime;
 public record AnswerResponse(
         Long answerIdx,
         String content,
+        String email,
+        String username,
+        boolean isAi,
         LocalDateTime createDate,
         LocalDateTime modifyDate
 ) {}

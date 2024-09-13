@@ -1,8 +1,11 @@
 package com.challenger.challengerbe.modules.weeklychallenge.service;
 
 import com.challenger.challengerbe.modules.weeklychallenge.dto.WeeklyChallengeDefaultDto;
+import com.challenger.challengerbe.modules.weeklychallenge.dto.WeeklyChallengeDto;
+import com.challenger.challengerbe.modules.weeklychallenge.dto.WeeklyChallengeItemDto;
 import com.challenger.challengerbe.modules.weeklychallenge.dto.WeeklyChallengeSummaryResponse;
 import com.challenger.challengerbe.modules.weeklychallenge.repository.WeeklyChallengeRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -27,8 +30,15 @@ public class WeeklyChallengeServiceImpl implements WeeklyChallengeService {
 
 
     @Override
-    public Page<WeeklyChallengeSummaryResponse> selectWeeklyChallengePageList(
+    public WeeklyChallengeDto selectWeeklyChallengeDto(
             WeeklyChallengeDefaultDto searchDto) {
+        weeklyChallengeRepository.selectWeeklyChallengeDto(searchDto);
+        return null;
+    }
+
+    @Override
+    public List<WeeklyChallengeItemDto> selectWeeklyChallengeItemDto(Long weeklyChallengeIdx) {
+        weeklyChallengeRepository.selectWeeklyChallengeItemDto(weeklyChallengeIdx);
         return null;
     }
 }
