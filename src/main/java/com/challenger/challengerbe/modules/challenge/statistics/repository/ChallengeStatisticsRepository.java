@@ -27,5 +27,20 @@ public interface ChallengeStatisticsRepository {
      */
     ChalendarMonthResponse selectChallengeJoinStatisticsMonthList(ChallengeDefaultDto searchDto) throws Exception;
 
+    /**
+     * 챌린지 성공 월별 조회
+     * @param searchDto
+     * @return
+     * @throws Exception
+     */
+    ChalendarMonthResponse selectChallengeSuccessStatisticsMonthList(ChallengeDefaultDto searchDto) throws Exception;
+
+    /**
+     * 챌린지 실패 월별 조회
+     * @param searchDto
+     * @return
+     * @throws Exception
+     */
+    ChalendarMonthResponse selectChallengeFailStatisticsMonthList(ChallengeDefaultDto searchDto) throws Exception;
 
 }

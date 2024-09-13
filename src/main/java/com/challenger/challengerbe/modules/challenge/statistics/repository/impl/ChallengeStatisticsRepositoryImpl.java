@@ -51,8 +51,8 @@ public class ChallengeStatisticsRepositoryImpl extends BaseAbstractRepositoryImp
         sql.append("SELECT m, ROUND(AVG(av)) av, COUNT(*) c FROM ( " );
         sql.append("SELECT T.idx, T.challenge_idx, T.cnt, T.dcnt, ROUND(((T.cnt / T.dcnt) * 100)) av , T.m FROM ( ");
         sql.append("SELECT a.*, b.cnt, DATEDIFF(c.end_date,c.start_date) dcnt, MONTH(c.start_date) m FROM challenge_user a ");
-        sql.append("LEFT JOIN ( SELECT challenge_user_idx, COUNT(*) cnt FROM challenge_user_item WHERE complete_yn = 'Y' ");
-        sql.append("GROUP BY challenge_user_idx ) b ON a.idx = b.challenge_user_idx ");
+        sql.append("LEFT JOIN ( SELECT challenge_user_idx,COUNT(*) cnt  FROM ( select challenge_user_idx, complete_date FROM challenge_user_item ");
+        sql.append(" WHERE complete_yn = 'Y' GROUP BY complete_date,challenge_user_idx   ORDER BY complete_date asc )a GROUP BY challenge_user_idx ) b ON a.idx = b.challenge_user_idx ");
         sql.append("JOIN ( SELECT start_date, end_date, idx FROM challenge ) c ON a.challenge_idx = c.idx ");
         sql.append("WHERE 1=1 ");
         if(StringUtils.isBlank(searchDto.getIdk())) {
@@ -65,5 +65,15 @@ public class ChallengeStatisticsRepositoryImpl extends BaseAbstractRepositoryImp
 
         JpaResultMapper jpaResultMapper = new JpaResultMapper();
         return jpaResultMapper.uniqueResult(entityManager.createNativeQuery(sql.toString()), ChalendarMonthResponse.class);
+    }
+
+    @Override
+    public ChalendarMonthResponse selectChallengeSuccessStatisticsMonthList(ChallengeDefaultDto searchDto) throws Exception {
+        return null;
+    }
+
+    @Override
+    public ChalendarMonthResponse selectChallengeFailStatisticsMonthList(ChallengeDefaultDto searchDto) throws Exception {
+        return null;
     }
 }
