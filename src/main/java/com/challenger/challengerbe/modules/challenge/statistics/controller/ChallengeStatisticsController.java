@@ -37,7 +37,7 @@ public class ChallengeStatisticsController {
 
     @Operation(summary = "챌린지 참여율 통계 (월별)")
     @Parameter(name = "code" , description = "키워드 default는 공백입니다.")
-    @GetMapping("/challenge/join/month/statistics")
+    @GetMapping("/challenge/statistics/month/join")
     public ChalendarMonthResponse selectChallengeJoinMonthStatistics(@Parameter(hidden = true) ChallengeDefaultDto searchDto,
                                                                      @Parameter(hidden = true) @AuthInfo String token) throws Exception {
 
@@ -45,4 +45,25 @@ public class ChallengeStatisticsController {
         return challengeStatisticsService.selectChallengeJoinStatisticsMonthList(searchDto);
     }
 
+
+    @Operation(summary = "챌린지 참여중 성공률 통계 (월별)")
+    @Parameter(name = "code" , description = "키워드 default는 공백입니다.")
+    @GetMapping("/challenge/statistics/month/success")
+    public ChalendarMonthResponse selectChallengeSuccessMonthStatistics(@Parameter(hidden = true) ChallengeDefaultDto searchDto,
+                                                                     @Parameter(hidden = true) @AuthInfo String token) throws Exception {
+
+        searchDto.setIdk(token == null ? "" : token);
+        return challengeStatisticsService.selectChallengeSuccessStatisticsMonthList(searchDto);
+    }
+
+
+    @Operation(summary = "챌린지 참여중 실패률 통계 (월별)")
+    @Parameter(name = "code" , description = "키워드 default는 공백입니다.")
+    @GetMapping("/challenge/statistics/month/fail")
+    public ChalendarMonthResponse selectChallengeFailMonthStatistics(@Parameter(hidden = true) ChallengeDefaultDto searchDto,
+                                                                        @Parameter(hidden = true) @AuthInfo String token) throws Exception {
+
+        searchDto.setIdk(token == null ? "" : token);
+        return challengeStatisticsService.selectChallengeFailStatisticsMonthList(searchDto);
+    }
 }

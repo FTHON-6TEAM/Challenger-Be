@@ -35,7 +35,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ChallengeUserItemDto implements CmsFileSupport<CmsFileDto> {
 
-    private Long idx;
+    private Long idx = 0L;
 
     private Long challengeUserIdx;
 
