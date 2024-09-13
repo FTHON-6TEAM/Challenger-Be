@@ -32,4 +32,13 @@ public class WeeklyChallengeItemDto {
         this.createDate = item.getCreateDate();
         this.modifyDate = item.getModifyDate();
     }
+
+    public WeeklyChallengeItemDto(Long itemIdx, Long weeklyChallengeIdx, String title,
+            LocalDateTime createDate, LocalDateTime modifyDate) {
+        this.itemIdx = itemIdx;
+        this.weeklyChallengeIdx = weeklyChallengeIdx;
+        this.title = title;
+        this.createDate = createDate;
+        this.modifyDate = modifyDate;
+    }
 }

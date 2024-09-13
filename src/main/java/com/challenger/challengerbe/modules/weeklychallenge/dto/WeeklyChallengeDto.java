@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,11 +27,11 @@ import lombok.Setter;
 @NoArgsConstructor
 public class WeeklyChallengeDto {
 
-    @Schema(description = "위클리 챌린지 참여자 키값")
-    private String idk;
+//    @Schema(description = "위클리 챌린지 참여자 키값")
+//    private String idk;
 
-    @Schema(description = "위클리 챌린지 방 일련번호")
-    private Long challengeIdx;
+    @Schema(description = "위클리 챌린지 일련번호")
+    private Long weeklyChallengeIdx;
 
     @Schema(description = "위클리 챌린지 제목")
     private String title;
@@ -51,6 +52,15 @@ public class WeeklyChallengeDto {
         dto.setWeeklyChallengeIdx(request.weeklyChallengeIdx());
         return dto;
     }
+
+    public WeeklyChallengeDto(Long weeklyChallengeIdx, String title, LocalDateTime createDate,
+            LocalDateTime modifyDate) {
+        this.weeklyChallengeIdx = weeklyChallengeIdx;
+        this.title = title;
+        this.createDate = createDate;
+        this.modifyDate = modifyDate;
+    }
+
 
 //    public static WeeklyChallengeDto createof(WeeklyChallengeCreateRequest request) {
 //        WeeklyChallengeDto weeklyChallengeDto = new WeeklyChallengeDto();
