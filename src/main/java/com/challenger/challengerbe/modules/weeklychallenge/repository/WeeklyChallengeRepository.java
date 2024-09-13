@@ -16,5 +16,5 @@ import org.springframework.stereotype.Repository;
  * 2024-09-13           jongh          최초 생성
  */
 @Repository
-public interface WeeklyChallengeRepository extends JpaRepository<WeeklyChallenge, Long> {
+public interface WeeklyChallengeRepository extends JpaRepository<WeeklyChallenge, Long>, WeeklyChallengeRepositoryCustom {
 }

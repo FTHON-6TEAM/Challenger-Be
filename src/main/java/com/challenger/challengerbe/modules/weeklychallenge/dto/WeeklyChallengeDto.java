@@ -2,6 +2,8 @@ package com.challenger.challengerbe.modules.weeklychallenge.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,14 +25,15 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class WeeklyChallengeDto {
-    @Schema(description = "챌린지 참여자 일련번호")
-    private Long idx = 0L;
 
-    @Schema(description = "챌린지 참여자 키값")
+    @Schema(description = "위클리 챌린지 참여자 키값")
     private String idk;
 
-    @Schema(description = "챌린지 방 일련번호")
+    @Schema(description = "위클리 챌린지 방 일련번호")
     private Long challengeIdx;
+
+    @Schema(description = "위클리 챌린지 제목")
+    private String title;
 
     @Schema(description = "등록일자")
     private LocalDateTime createDate;
@@ -38,12 +41,24 @@ public class WeeklyChallengeDto {
     @Schema(description = "수정일자")
     private LocalDateTime modifyDate;
 
-    @Schema(description = "위클리 챌린지 방 정보")
-    private WeeklyChallengeSummaryInfoResponse weeklyChallengeSummaryInfoResponse;
+    private List<WeeklyChallengeItemDto> weeklyChallengeItemList = new ArrayList<>();
+
+//    @Schema(description = "위클리 챌린지 방 정보")
+//    private WeeklyChallengeSummaryInfoResponse weeklyChallengeSummaryInfoResponse;
 
     public static WeeklyChallengeUserDto createOf(WeeklyChallengeUserCreateRequest request) {
         WeeklyChallengeUserDto dto = new WeeklyChallengeUserDto();
         dto.setWeeklyChallengeIdx(request.weeklyChallengeIdx());
         return dto;
     }
+
+//    public static WeeklyChallengeDto createof(WeeklyChallengeCreateRequest request) {
+//        WeeklyChallengeDto weeklyChallengeDto = new WeeklyChallengeDto();
+//        weeklyChallengeDto.setTitle(request.getTitle());
+//        weeklyChallengeDto.setWeeklyChallengeItemList(request.getItemList().stream().map(WeeklyChallengeDto::new).toList());
+//
+//        return weeklyChallengeDto;
+//    }
+
+
 }

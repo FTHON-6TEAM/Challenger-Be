@@ -48,8 +48,9 @@ public class AnswerQuestionMediator {
 
         Long fileIdx = questionRepository.selectFileIdxByQuestion(answerCreateDto.getQuestionIdx());
         String preFileUrl = "http://115.85.182.23:32468/cms/file/image/link/";
-//        String fileUrl = preFileUrl + fileIdx;
-        String fileUrl = "https://ojsfile.ohmynews.com/CT_T_IMG/2022/0715/IE003021157_LT.jpg";
+        String fileUrl = preFileUrl + "?idx=" +fileIdx;
+//        String fileUrl = "https://ojsfile.ohmynews.com/CT_T_IMG/2022/0715/IE003021157_LT.jpg";
+//        String fileUrl = "";
         log.info("file URL : " + fileUrl);
 
         ChatGPTResponse chatGPTResponse = aiCallService.requestImageAnalysisWithUrl(fileUrl, answerCreateDto.getQuestionContent());

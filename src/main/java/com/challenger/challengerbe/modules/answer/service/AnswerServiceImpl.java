@@ -58,6 +58,7 @@ public class AnswerServiceImpl implements AnswerService {
                 .question(question)
                 .content(dto.getContent())
                 .build();
+        newAnswer.setIsAi();
         Answer answer = answerRepository.save(newAnswer);
 
         return CompletableFuture.completedFuture(answer.getIdx());
@@ -70,6 +71,9 @@ public class AnswerServiceImpl implements AnswerService {
                 .map(answer -> new AnswerResponse(
                         answer.getIdx(),
                         answer.getContent(),
+                        answer.getUser().getEmail(),
+                        answer.getUser().getUsername(),
+                        answer.isAi(),
                         answer.getCreateDate(),
                         answer.getModifyDate()
                 ))

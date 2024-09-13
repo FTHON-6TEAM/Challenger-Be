@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * packageName    : com.challenger.challengerbe.modules.question.controller
@@ -70,7 +71,9 @@ public class QuestionController {
             @ApiResponse(responseCode = "400", description = "등록시 오류 발생")
     })
     @PostMapping(value="", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> createQuestion(@Valid @RequestPart QuestionCreateRequest request, @AuthInfo String userIdk) {
+    public ResponseEntity<?> createQuestion(@Valid @RequestPart QuestionCreateRequest request,
+            @RequestPart(value = "_file",required = false) MultipartFile multipartFile
+            ,@AuthInfo String userIdk) {
 
         try {
             QuestionDto questionDto = QuestionDto.createOf(request);

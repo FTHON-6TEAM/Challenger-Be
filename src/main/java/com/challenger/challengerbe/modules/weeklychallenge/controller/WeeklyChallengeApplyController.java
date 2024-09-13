@@ -29,6 +29,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/weekly")
 @RequiredArgsConstructor
 public class WeeklyChallengeApplyController {
+    /*
+    위클리 챌린지 참여하기
+     */
 
     private final WeeklyChallengeApplyService weeklyChallengeApplyService;
 

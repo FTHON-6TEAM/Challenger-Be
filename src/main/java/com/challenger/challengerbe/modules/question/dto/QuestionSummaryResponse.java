@@ -23,6 +23,8 @@ public record QuestionSummaryResponse(
         String content,
         @Schema(name = "username", description = "질문자 이름")
         String username,
+        @Schema(name = "email", description = "질문자 이메일")
+        String email,
         @Schema(name = "userIdk", description = "질문자 유저 idk")
         String userIdk,
         @Schema(name = "fileIdx", description = "이미지 파일 일련번호")
