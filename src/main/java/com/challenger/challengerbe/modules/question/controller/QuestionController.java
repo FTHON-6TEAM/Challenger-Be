@@ -70,7 +70,7 @@ public class QuestionController {
             @ApiResponse(responseCode = "200", description = "등록완료"),
             @ApiResponse(responseCode = "400", description = "등록시 오류 발생")
     })
-    @PostMapping(value="", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value="", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<?> createQuestion(@Valid @RequestPart QuestionCreateRequest request,
             @RequestPart(value = "_file",required = false) MultipartFile multipartFile
             ,@AuthInfo String userIdk) {

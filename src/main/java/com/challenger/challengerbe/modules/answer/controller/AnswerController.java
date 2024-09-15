@@ -22,6 +22,7 @@ import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -78,15 +79,15 @@ public class AnswerController {
         return new ResponseEntity<>(CommonResponse.resAllOf("답변 조회가 완료되었습니다.", response),HttpStatus.CREATED);
     }
 
-//    @GetMapping("/chat")
-//    public Map<String, String> chat(@RequestBody String message) {
-//        Map<String, String> responses = new HashMap<>();
-//
-//        String openAiResponse = openAiChatModel.call(message);
-//        responses.put("openai(chatGPT) 응답", openAiResponse);
-//
-//        return responses;
-//    }
+    @PostMapping(value = "", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE })
+    public Map<String, String> chat(@RequestBody String message) {
+        Map<String, String> responses = new HashMap<>();
+
+        String openAiResponse = openAiChatModel.call(message);
+        responses.put("openai(chatGPT) 응답", openAiResponse);
+
+        return responses;
+    }
 //
 //    @GetMapping("/test")
 //    public Long test() {
