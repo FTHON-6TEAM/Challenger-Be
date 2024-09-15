@@ -2,6 +2,7 @@ package com.challenger.challengerbe.modules.question.controller;
 
 import com.challenger.challengerbe.auth.login.AuthInfo;
 import com.challenger.challengerbe.common.CommonResponse;
+import com.challenger.challengerbe.common.annotation.FileUploadAction;
 import com.challenger.challengerbe.modules.question.dto.QuestionCreateRequest;
 import com.challenger.challengerbe.modules.question.dto.QuestionDeleteRequest;
 import com.challenger.challengerbe.modules.question.dto.QuestionDto;
@@ -70,6 +71,7 @@ public class QuestionController {
             @ApiResponse(responseCode = "200", description = "등록완료"),
             @ApiResponse(responseCode = "400", description = "등록시 오류 발생")
     })
+    @FileUploadAction()
     @PostMapping(value="", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> createQuestion(@Valid @RequestPart QuestionCreateRequest request,
             @RequestPart(value = "_file",required = false) MultipartFile multipartFile

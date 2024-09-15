@@ -2,6 +2,7 @@ package com.challenger.challengerbe.modules.challenge.controller;
 
 import com.challenger.challengerbe.auth.login.AuthInfo;
 import com.challenger.challengerbe.common.CommonResponse;
+import com.challenger.challengerbe.common.annotation.FileUploadAction;
 import com.challenger.challengerbe.common.exception.AlreadyExistException;
 import com.challenger.challengerbe.common.exception.AlreadyUseException;
 import com.challenger.challengerbe.modules.challenge.dto.*;
@@ -68,7 +69,7 @@ public class ChallengeUserController {
         return challengeService.selectChallengeDto(challengeDto,token);
     }
 
-    @Operation(summary = "챌린지 등록(항목 포함 일괄 처리)")
+    @Operation(summary = "챌린지 등록(항목 포함 일괄 처리)",description = "Multipart-form-data 타입만 지정한 API (원본)")
     @Parameters({
             @Parameter(name = "_file", description = "formData 에서 파일 형식, 파일 이름에 해당 , 파일명은 아무거나 선언가능 _file은 예시"),
             @Parameter(name = "_alt_file", description = " formData에서 String으로 전달,  파일의 비고명 아무거나 선언가능 대신 파일명의 name을 뒤에 그대로 붙여줘야함 _alt{파일name}")
@@ -77,10 +78,50 @@ public class ChallengeUserController {
             @ApiResponse(responseCode = "200", description = "등록 완료"),
             @ApiResponse(responseCode = "400", description = "등록 오류 발생")
     })
+    @FileUploadAction()
     @PostMapping(value="/challenge/ins", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> insertChallenge(final @Valid @RequestPart ChallengeCreateRequest challengeCreateRequest,
-                                             final @RequestPart(value = "_file", required = false) MultipartFile multipartFile,
                                              @AuthInfo String token) throws Exception {
+        ChallengeDto challengeDto = ChallengeDto.createof(challengeCreateRequest);
+        challengeDto.setIdk(token);
+        challengeService.insertChallenge(challengeDto);
+
+        return new ResponseEntity<>(CommonResponse.resOnlyMessageOf("등록 되었습니다."),HttpStatus.OK);
+    }
+
+    @Operation(summary = "챌린지 등록(항목 포함 일괄 처리) v2", description = "Content-type을 아무것도 지정하지 않는 API")
+    @Parameters({
+            @Parameter(name = "_file", description = "formData 에서 파일 형식, 파일 이름에 해당 , 파일명은 아무거나 선언가능 _file은 예시"),
+            @Parameter(name = "_alt_file", description = " formData에서 String으로 전달,  파일의 비고명 아무거나 선언가능 대신 파일명의 name을 뒤에 그대로 붙여줘야함 _alt{파일name}")
+    })
+    @ApiResponses(value={
+            @ApiResponse(responseCode = "200", description = "등록 완료"),
+            @ApiResponse(responseCode = "400", description = "등록 오류 발생")
+    })
+    @FileUploadAction()
+    @PostMapping(value="/challenge/v2/ins")
+    public ResponseEntity<?> insertChallengeV2(final @Valid @RequestPart ChallengeCreateRequest challengeCreateRequest,
+                                             @AuthInfo String token) throws Exception {
+        ChallengeDto challengeDto = ChallengeDto.createof(challengeCreateRequest);
+        challengeDto.setIdk(token);
+        challengeService.insertChallenge(challengeDto);
+
+        return new ResponseEntity<>(CommonResponse.resOnlyMessageOf("등록 되었습니다."),HttpStatus.OK);
+    }
+
+    @Operation(summary = "챌린지 등록(항목 포함 일괄 처리) v3", description = "consumes에 Content-Type을 Multipart-form-data 와 application/json을 둘다 받도록 설정햔 API")
+    @Parameters({
+            @Parameter(name = "_file", description = "formData 에서 파일 형식, 파일 이름에 해당 , 파일명은 아무거나 선언가능 _file은 예시"),
+            @Parameter(name = "_alt_file", description = " formData에서 String으로 전달,  파일의 비고명 아무거나 선언가능 대신 파일명의 name을 뒤에 그대로 붙여줘야함 _alt{파일name}")
+    })
+    @ApiResponses(value={
+            @ApiResponse(responseCode = "200", description = "등록 완료"),
+            @ApiResponse(responseCode = "400", description = "등록 오류 발생")
+    })
+    @FileUploadAction()
+    @PostMapping(value="/challenge/v3/ins", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<?> insertChallengeV3(final @Valid @RequestPart ChallengeCreateRequest challengeCreateRequest,
+                                               @AuthInfo String token) throws Exception {
         ChallengeDto challengeDto = ChallengeDto.createof(challengeCreateRequest);
         challengeDto.setIdk(token);
         challengeService.insertChallenge(challengeDto);
