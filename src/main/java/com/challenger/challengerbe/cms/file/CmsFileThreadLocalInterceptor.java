@@ -1,9 +1,13 @@
 package com.challenger.challengerbe.cms.file;
 
+import com.challenger.challengerbe.common.annotation.FileUploadAction;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
+
+import java.lang.reflect.Method;
 
 /**
  * packageName    : com.routdoo.dailyroutine.cms.file
@@ -25,8 +29,14 @@ public class CmsFileThreadLocalInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
-        System.out.println("------------------------ cms file support intercepter ----------------------------");
-        CmsFileThreadLocalHolder.setRequest(request);
+        // 어노테이션 FileUploadAction 어노테이션일 경오에만 인터셉터가 타도록 수정
+        if(handler instanceof HandlerMethod handlerMethod) {
+            Method method = handlerMethod.getMethod();
+            if(method.isAnnotationPresent(FileUploadAction.class)){
+                System.out.println("------------------------ cms file support intercepter ----------------------------");
+                CmsFileThreadLocalHolder.setRequest(request);
+            }
+        }
         return true;
     }
 
