@@ -1,18 +1,17 @@
 package com.challenger.challengerbe.modules.weeklychallenge.controller;
 
 import com.challenger.challengerbe.auth.login.AuthInfo;
-import com.challenger.challengerbe.modules.challenge.dto.ChallengeDto;
 import com.challenger.challengerbe.modules.weeklychallenge.dto.WeeklyChallengeCreateRequest;
 import com.challenger.challengerbe.modules.weeklychallenge.dto.WeeklyChallengeDefaultDto;
 import com.challenger.challengerbe.modules.weeklychallenge.dto.WeeklyChallengeDto;
-import com.challenger.challengerbe.modules.weeklychallenge.dto.WeeklyChallengeSummaryResponse;
+import com.challenger.challengerbe.modules.weeklychallenge.dto.WeeklyChallengeItemDto;
 import com.challenger.challengerbe.modules.weeklychallenge.service.WeeklyChallengeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -51,9 +50,11 @@ public class WeeklyChallengeController {
     @Operation(summary = "위클리 챌린지 상세 조회")
     @Parameter(name = "searchDto", description = "위클리 챌린지 일련번호")
     @GetMapping("/view")
-    public WeeklyChallengeDto selectWeeklyChallenge (@Parameter WeeklyChallengeDefaultDto searchDto, @AuthInfo String userIdk) {
+    public ResponseEntity<WeeklyChallengeDto> selectWeeklyChallenge (@Parameter WeeklyChallengeDefaultDto searchDto, @AuthInfo String userIdk) {
         searchDto.setUserIdk(userIdk);
-        return weeklyChallengeService.selectWeeklyChallengeDto(searchDto);
+        WeeklyChallengeDto response = weeklyChallengeService.selectWeeklyChallengeDto(searchDto);
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @Operation(summary = "위클리 챌린지 아이템 조회")
@@ -61,8 +62,9 @@ public class WeeklyChallengeController {
     @GetMapping("/item/{weeklychallengeIdx}")
     public ResponseEntity<?> selectWeeklyChallengeItemList(
             @PathVariable("weeklychallengeIdx") Long weeklyChallengeIdx) {
-        weeklyChallengeService.selectWeeklyChallengeItemDto(weeklyChallengeIdx);
-        return null;
+        List<WeeklyChallengeItemDto> response = weeklyChallengeService.selectWeeklyChallengeItemDto(weeklyChallengeIdx);
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @Operation(summary = "위클리 챌린지 전체 성공률 조회")
