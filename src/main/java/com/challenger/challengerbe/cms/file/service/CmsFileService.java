@@ -109,6 +109,8 @@ public class CmsFileService implements CmsFileDetailService{
 
             MultiValueMap<String, MultipartFile> files = multirequest.getMultiFileMap();
 
+            System.out.println("### files empty boolean : "+files.isEmpty());
+
             //첨부 파일 가능한지 먼저 체크
             for(Map.Entry<String, List<MultipartFile>> entry : files.entrySet()){
                 MultipartFile multiFile = entry.getValue().get(0);
