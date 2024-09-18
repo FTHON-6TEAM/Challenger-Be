@@ -179,6 +179,7 @@ public class CmsFileService implements CmsFileDetailService{
             fileUploadUtil.deleteFile(existFileDeleteList);
         }catch (Exception e){
             fileUploadUtil.deleteFile(exceptionFileDeleteList);
+            e.printStackTrace();
             System.out.println("### cms file insert error  : "+e.getMessage());
         }
 
