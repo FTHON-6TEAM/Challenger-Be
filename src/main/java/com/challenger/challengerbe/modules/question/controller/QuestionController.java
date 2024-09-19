@@ -2,6 +2,7 @@ package com.challenger.challengerbe.modules.question.controller;
 
 import com.challenger.challengerbe.auth.login.AuthInfo;
 import com.challenger.challengerbe.common.CommonResponse;
+import com.challenger.challengerbe.common.annotation.FileUploadAction;
 import com.challenger.challengerbe.modules.question.dto.QuestionCreateRequest;
 import com.challenger.challengerbe.modules.question.dto.QuestionDeleteRequest;
 import com.challenger.challengerbe.modules.question.dto.QuestionDto;
@@ -65,14 +66,62 @@ public class QuestionController {
         return response;
     }
 
-    @Operation(summary = "질문 등록")
+    @Operation(summary = "질문 등록 v1" ,description = " Mediatype이 Multipart하나만 처리")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "등록 완료"),
+            @ApiResponse(responseCode = "400", description = "등록시 오류 발생")
+    })
+    @FileUploadAction()
+    @PostMapping(value="", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> createQuestion(@Valid @RequestPart QuestionCreateRequest request,
+            @RequestPart(value = "_file",required = false) MultipartFile multipartFile
+            ,@AuthInfo String userIdk) {
+
+        try {
+            QuestionDto questionDto = QuestionDto.createOf(request);
+            questionDto.setUserIdx(userIdk);
+            questionService.insertQuestion(questionDto);
+
+        } catch (Exception e) {
+            log.error("insert question info error : {}", e.getMessage());
+            return new ResponseEntity<>(CommonResponse.resOnlyMessageOf("등록시 오류가 발생했습니다."), HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(CommonResponse.resOnlyMessageOf("질문 등록이 완료되었습니다."),HttpStatus.CREATED);
+    }
+
+    @Operation(summary = "질문 등록 V2 " , description = "mediaType을 Multipart와 application 두개를 선언하여 처리")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "등록 완료"),
+            @ApiResponse(responseCode = "400", description = "등록시 오류 발생")
+    })
+    @FileUploadAction()
+    @PostMapping(value="", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<?> createQuestionv2(@Valid @RequestPart QuestionCreateRequest request,
+                                            @RequestPart(value = "_file",required = false) MultipartFile multipartFile
+            ,@AuthInfo String userIdk) {
+
+        try {
+            QuestionDto questionDto = QuestionDto.createOf(request);
+            questionDto.setUserIdx(userIdk);
+            questionService.insertQuestion(questionDto);
+
+        } catch (Exception e) {
+            log.error("insert question info error : {}", e.getMessage());
+            return new ResponseEntity<>(CommonResponse.resOnlyMessageOf("등록시 오류가 발생했습니다."), HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(CommonResponse.resOnlyMessageOf("질문 등록이 완료되었습니다."),HttpStatus.CREATED);
+    }
+
+    @Operation(summary = "질문 등록 v3", description = "Mediatype을 아에 지정 안함")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "등록완료"),
             @ApiResponse(responseCode = "400", description = "등록시 오류 발생")
     })
-    @PostMapping(value="", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<?> createQuestion(@Valid @RequestPart QuestionCreateRequest request,
-            @RequestPart(value = "_file",required = false) MultipartFile multipartFile
+    @FileUploadAction()
+    @PostMapping(value="")
+    public ResponseEntity<?> createQuestionv3(@Valid @RequestPart QuestionCreateRequest request
             ,@AuthInfo String userIdk) {
 
         try {
