@@ -1,6 +1,7 @@
 package com.challenger.challengerbe.modules.weeklychallenge.controller;
 
 import com.challenger.challengerbe.auth.login.AuthInfo;
+import com.challenger.challengerbe.common.CommonResponse;
 import com.challenger.challengerbe.modules.weeklychallenge.dto.WeeklyChallengeCreateRequest;
 import com.challenger.challengerbe.modules.weeklychallenge.dto.WeeklyChallengeDefaultDto;
 import com.challenger.challengerbe.modules.weeklychallenge.dto.WeeklyChallengeDto;
@@ -50,41 +51,35 @@ public class WeeklyChallengeController {
     @Operation(summary = "위클리 챌린지 상세 조회")
     @Parameter(name = "searchDto", description = "위클리 챌린지 일련번호")
     @GetMapping("/view")
-    public ResponseEntity<WeeklyChallengeDto> selectWeeklyChallenge (@Parameter WeeklyChallengeDefaultDto searchDto, @AuthInfo String userIdk) {
+    public ResponseEntity<?> selectWeeklyChallenge (@Parameter WeeklyChallengeDefaultDto searchDto, @AuthInfo String userIdk) {
         searchDto.setUserIdk(userIdk);
         WeeklyChallengeDto response = weeklyChallengeService.selectWeeklyChallengeDto(searchDto);
 
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+        return ResponseEntity.status(HttpStatus.OK).body(CommonResponse.resAllOf("위클리 챌린지 상세 조회가 완료되었습니다.", response));
     }
 
-    @Operation(summary = "위클리 챌린지 아이템 조회")
-    @Parameter(name = "weeklychallengeIdx", description = "위클래 챌린지 일련번호")
-    @GetMapping("/item/{weeklychallengeIdx}")
-    public ResponseEntity<?> selectWeeklyChallengeItemList(
-            @PathVariable("weeklychallengeIdx") Long weeklyChallengeIdx) {
-        List<WeeklyChallengeItemDto> response = weeklyChallengeService.selectWeeklyChallengeItemDto(weeklyChallengeIdx);
+//    @Operation(summary = "위클리 챌린지 전체 성공률 조회")
+//    @Parameter(name = "success", description = "위클리 챌린지 일련번호")
+//    @GetMapping("/success")
+//    public ResponseEntity<?> successWeeklyRate(@AuthInfo String userIdk) {
+//        return null;
+//    }
 
-        return ResponseEntity.status(HttpStatus.OK).body(response);
-    }
-
-    @Operation(summary = "위클리 챌린지 전체 성공률 조회")
-    @Parameter(name = "success", description = "위클리 챌린지 일련번호")
-    @GetMapping("/success")
-    public ResponseEntity<?> successWeeklyRate(@AuthInfo String userIdk) {
-        return null;
-    }
-
-    @Operation(summary = "내가 참여중인 위클리 챌린지 조회")
-    @GetMapping("/")
+    @Operation(summary = "내가 참여한 위클리 챌린지 조회")
+    @GetMapping("/me")
     public ResponseEntity<?> selectMyWeeklyChallenge(@AuthInfo String userIdk) {
-        return null;
+        List<WeeklyChallengeDto> response = weeklyChallengeService.selectMyWeeklyChallenge(userIdk);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(CommonResponse.resAllOf("내가 참여한 위클리 챌린지 조회가 완료되었습니다.", response));
     }
 
     @Operation(summary = "위클리 챌린지 생성")
     @PostMapping
     public ResponseEntity<?> insertWeeklyChallenge(@RequestBody WeeklyChallengeCreateRequest request) {
-//        WeeklyChallengeDto challengeDto = WeeklyChallengeDto.createof(request);
-        return null;
+        WeeklyChallengeDto challengeDto = WeeklyChallengeDto.createof(request);
+        weeklyChallengeService.insertWeeklyChallenge(challengeDto);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
 

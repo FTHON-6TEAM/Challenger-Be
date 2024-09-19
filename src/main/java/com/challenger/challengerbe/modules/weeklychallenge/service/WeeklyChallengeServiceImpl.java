@@ -1,6 +1,10 @@
 package com.challenger.challengerbe.modules.weeklychallenge.service;
 
+import com.challenger.challengerbe.cms.publiccode.domain.PublicCode;
+import com.challenger.challengerbe.cms.publiccode.dto.PublicCodeDto;
+import com.challenger.challengerbe.cms.publiccode.repository.PublicCodeRepository;
 import com.challenger.challengerbe.modules.challenge.dto.ChallengeItemDto;
+import com.challenger.challengerbe.modules.weeklychallenge.domain.WeeklyChallenge;
 import com.challenger.challengerbe.modules.weeklychallenge.domain.WeeklyChallengeItem;
 import com.challenger.challengerbe.modules.weeklychallenge.dto.WeeklyChallengeDefaultDto;
 import com.challenger.challengerbe.modules.weeklychallenge.dto.WeeklyChallengeDto;
@@ -8,10 +12,12 @@ import com.challenger.challengerbe.modules.weeklychallenge.dto.WeeklyChallengeIt
 import com.challenger.challengerbe.modules.weeklychallenge.dto.WeeklyChallengeSummaryResponse;
 import com.challenger.challengerbe.modules.weeklychallenge.repository.WeeklyChallengeItemRepository;
 import com.challenger.challengerbe.modules.weeklychallenge.repository.WeeklyChallengeRepository;
+import com.challenger.challengerbe.modules.weeklychallenge.repository.WeeklyChallengeUserRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * packageName    : com.challenger.challengerbe.modules.weeklychallenge.service
@@ -27,25 +33,46 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class WeeklyChallengeServiceImpl implements WeeklyChallengeService {
 
     private final WeeklyChallengeRepository weeklyChallengeRepository;
     private final WeeklyChallengeItemRepository weeklyChallengeItemRepository;
-
+    private final WeeklyChallengeUserRepository weeklyChallengeUserRepository;
 
     @Override
-    public WeeklyChallengeDto selectWeeklyChallengeDto(
-            WeeklyChallengeDefaultDto searchDto) {
+    public WeeklyChallengeDto selectWeeklyChallengeDto(WeeklyChallengeDefaultDto searchDto) {
         WeeklyChallengeDto dto = weeklyChallengeRepository.selectWeeklyChallengeDto(searchDto);
         List<WeeklyChallengeItem> list = weeklyChallengeItemRepository.findWeeklyChallengeItemsByWeeklyChallengeId(dto.getWeeklyChallengeIdx());
         dto.setWeeklyChallengeItemList(list.stream().map(WeeklyChallengeItemDto::new).toList());
-//        response.setChallengeItemList(itemList.stream().map(ChallengeItemDto::new).toList());
         return dto;
     }
 
+
     @Override
-    public List<WeeklyChallengeItemDto> selectWeeklyChallengeItemDto(Long weeklyChallengeIdx) {
-        weeklyChallengeRepository.selectWeeklyChallengeItemDto(weeklyChallengeIdx);
-        return null;
+    public List<WeeklyChallengeDto> selectMyWeeklyChallenge(String userIdk) {
+        List<Long> ids = weeklyChallengeUserRepository.findAllByUserIdk(userIdk);
+        List<WeeklyChallengeDto> list = weeklyChallengeRepository.selectWeeklyChallengeInIdx(ids);
+        return list;
     }
+
+    @Override
+    @Transactional
+    public void insertWeeklyChallenge(WeeklyChallengeDto challengeDto) {
+        WeeklyChallenge weeklyChallenge = new WeeklyChallenge(challengeDto.getTitle());
+//        List<WeeklyChallengeItem> list = challengeDto.getWeeklyChallengeItemList().stream().map(WeeklyChallengeItem::new).toList();
+
+        // 2. WeeklyChallengeItem 리스트 생성 및 연관 관계 설정
+        List<WeeklyChallengeItem> list = challengeDto.getWeeklyChallengeItemList().stream()
+                .map(itemDto -> {
+                    WeeklyChallengeItem item = new WeeklyChallengeItem(itemDto);
+                    item.addChallenge(weeklyChallenge);  // 연관 관계 설정
+                    return item;
+                }).toList();
+
+        // 3. WeeklyChallenge에 WeeklyChallengeItem 리스트 추가
+        weeklyChallenge.addItemList(list);
+        weeklyChallengeRepository.save(weeklyChallenge);
+    }
+
 }

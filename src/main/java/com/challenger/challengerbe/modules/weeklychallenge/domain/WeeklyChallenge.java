@@ -4,6 +4,7 @@ import com.challenger.challengerbe.cms.publiccode.domain.PublicCode;
 import com.challenger.challengerbe.modules.challenge.domain.ChallengeItem;
 import com.challenger.challengerbe.modules.challenge.dto.ChallengeDto;
 import com.challenger.challengerbe.modules.user.domain.User;
+import com.challenger.challengerbe.modules.weeklychallenge.dto.WeeklyChallengeDto;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -50,9 +51,9 @@ public class WeeklyChallenge {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idx;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "pub_cd", nullable = false)
-    private PublicCode publicCode;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "pub_cd", nullable = false)
+//    private PublicCode publicCode;
 
     @Comment("시작일자")
     @Column(length = 20)
@@ -83,17 +84,10 @@ public class WeeklyChallenge {
     @OneToMany(mappedBy = "weeklyChallenge",orphanRemoval = true, cascade = {CascadeType.PERSIST},fetch = FetchType.LAZY)
     private List<WeeklyChallengeItem> weeklyChallengeItemList = new ArrayList<>();
 
-    public WeeklyChallenge(ChallengeDto dto) {
-        if(dto.getIdx() > 0){
-            this.idx = dto.getIdx();
-        }
-        this.publicCode = new PublicCode();
-        publicCode.addPubCd(dto.getCode());
-        this.startDate =  dto.getStartDate();
-        this.endDate = dto.getEndDate();
-        this.successCnt = dto.getSuccessCnt();
-        this.title = dto.getTitle();
-        this.remark = dto.getRemark();
+    public WeeklyChallenge(String title) {
+        this.title = title;
+        this.startDate = String.valueOf(LocalDateTime.now());
+        this.endDate = String.valueOf(LocalDateTime.now().plusWeeks(1));
     }
 
     public void addIdx(Long idx) {

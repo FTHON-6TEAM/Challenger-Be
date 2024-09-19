@@ -37,6 +37,12 @@ public class CommonResponse<T> {
         return commonResponse;
     }
 
+    public static CommonResponse<?> resElementOf(Object element) {
+        CommonResponse<Object> commonResponse = new CommonResponse<>();
+        commonResponse.setElement(element);
+        return commonResponse;
+    }
+
     public static CommonResponse<?> resAllOf(String message, Object element) {
         CommonResponse<Object> commonResponse = new CommonResponse<>();
         commonResponse.setElement(element);

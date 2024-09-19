@@ -1,5 +1,7 @@
 package com.challenger.challengerbe.modules.weeklychallenge.dto;
 
+import com.challenger.challengerbe.cms.publiccode.dto.PublicCodeDto;
+import com.challenger.challengerbe.common.BaseDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -25,6 +27,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class WeeklyChallengeDto {
 
 //    @Schema(description = "위클리 챌린지 참여자 키값")
@@ -36,6 +39,8 @@ public class WeeklyChallengeDto {
     @Schema(description = "위클리 챌린지 제목")
     private String title;
 
+    private String code;
+
     @Schema(description = "등록일자")
     private LocalDateTime createDate;
 
@@ -43,9 +48,6 @@ public class WeeklyChallengeDto {
     private LocalDateTime modifyDate;
 
     private List<WeeklyChallengeItemDto> weeklyChallengeItemList = new ArrayList<>();
-
-//    @Schema(description = "위클리 챌린지 방 정보")
-//    private WeeklyChallengeSummaryInfoResponse weeklyChallengeSummaryInfoResponse;
 
     public static WeeklyChallengeUserDto createOf(WeeklyChallengeUserCreateRequest request) {
         WeeklyChallengeUserDto dto = new WeeklyChallengeUserDto();
@@ -61,14 +63,13 @@ public class WeeklyChallengeDto {
         this.modifyDate = modifyDate;
     }
 
+    public static WeeklyChallengeDto createof(WeeklyChallengeCreateRequest request) {
+        WeeklyChallengeDto weeklyChallengeDto = new WeeklyChallengeDto();
+        weeklyChallengeDto.setTitle(request.getTitle());
+        weeklyChallengeDto.setWeeklyChallengeItemList(request.getItemList().stream().map(WeeklyChallengeItemDto::new).toList());
 
-//    public static WeeklyChallengeDto createof(WeeklyChallengeCreateRequest request) {
-//        WeeklyChallengeDto weeklyChallengeDto = new WeeklyChallengeDto();
-//        weeklyChallengeDto.setTitle(request.getTitle());
-//        weeklyChallengeDto.setWeeklyChallengeItemList(request.getItemList().stream().map(WeeklyChallengeDto::new).toList());
-//
-//        return weeklyChallengeDto;
-//    }
+        return weeklyChallengeDto;
+    }
 
 
 }
