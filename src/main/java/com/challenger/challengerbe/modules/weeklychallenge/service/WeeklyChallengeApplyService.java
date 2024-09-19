@@ -17,5 +17,5 @@ import org.springframework.data.domain.Page;
  */
 public interface WeeklyChallengeApplyService {
 
-    Page<WeeklyChallengeUserDto> selectChallengeUserPageList(WeeklyChallengeDefaultDto searchDto);
+    void applyChallenge(WeeklyChallengeDefaultDto searchDto);
 }

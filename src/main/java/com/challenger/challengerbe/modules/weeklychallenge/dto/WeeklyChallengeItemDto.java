@@ -3,6 +3,7 @@ package com.challenger.challengerbe.modules.weeklychallenge.dto;
 import com.challenger.challengerbe.modules.weeklychallenge.domain.WeeklyChallengeItem;
 import java.time.LocalDateTime;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -18,6 +19,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@NoArgsConstructor
 public class WeeklyChallengeItemDto {
     private Long itemIdx;
     private Long weeklyChallengeIdx;
@@ -31,5 +33,18 @@ public class WeeklyChallengeItemDto {
         this.title = item.getTitle();
         this.createDate = item.getCreateDate();
         this.modifyDate = item.getModifyDate();
+    }
+
+    public WeeklyChallengeItemDto(Long itemIdx, Long weeklyChallengeIdx, String title,
+            LocalDateTime createDate, LocalDateTime modifyDate) {
+        this.itemIdx = itemIdx;
+        this.weeklyChallengeIdx = weeklyChallengeIdx;
+        this.title = title;
+        this.createDate = createDate;
+        this.modifyDate = modifyDate;
+    }
+
+    public WeeklyChallengeItemDto(WeeklyChallengeItemCreateRequest request) {
+        this.title = request.getTitle();
     }
 }

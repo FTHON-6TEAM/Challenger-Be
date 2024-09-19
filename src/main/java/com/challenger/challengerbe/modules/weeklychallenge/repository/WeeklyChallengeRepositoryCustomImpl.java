@@ -2,6 +2,7 @@ package com.challenger.challengerbe.modules.weeklychallenge.repository;
 
 import com.challenger.challengerbe.modules.weeklychallenge.domain.QWeeklyChallenge;
 import com.challenger.challengerbe.modules.weeklychallenge.domain.QWeeklyChallengeItem;
+import com.challenger.challengerbe.modules.weeklychallenge.domain.QWeeklyChallengeUser;
 import com.challenger.challengerbe.modules.weeklychallenge.dto.WeeklyChallengeDefaultDto;
 import com.challenger.challengerbe.modules.weeklychallenge.dto.WeeklyChallengeDto;
 import com.challenger.challengerbe.modules.weeklychallenge.dto.WeeklyChallengeItemDto;
@@ -33,10 +34,13 @@ public class WeeklyChallengeRepositoryCustomImpl implements WeeklyChallengeRepos
     @Override
     public WeeklyChallengeDto selectWeeklyChallengeDto(WeeklyChallengeDefaultDto searchDto) {
         QWeeklyChallenge qWeeklyChallenge = QWeeklyChallenge.weeklyChallenge;
+        QWeeklyChallengeItem qWeeklyChallengeItem = QWeeklyChallengeItem.weeklyChallengeItem;
 
-
-        // 현재 날짜
         LocalDate currentDate = LocalDate.now();
+        // 현재 날짜로부터 이전 3일, 이후 3일
+        LocalDate threeDaysBefore = currentDate.minusDays(3);
+        LocalDate threeDaysAfter = currentDate.plusDays(3);
+
         return queryFactory.select(
                 Projections.constructor(
                         WeeklyChallengeDto.class,
@@ -46,9 +50,28 @@ public class WeeklyChallengeRepositoryCustomImpl implements WeeklyChallengeRepos
                         qWeeklyChallenge.modifyDate
                 )
                 ).from(qWeeklyChallenge)
-                .where(qWeeklyChallenge.startDate.loe(currentDate.toString()) // 시작일이 현재 날짜보다 같거나 이전
-                        .and(qWeeklyChallenge.endDate.goe(currentDate.toString()))) // 종료일이 현재 날짜보다 같거나 이후
+                .where(qWeeklyChallenge.startDate.goe(threeDaysBefore.toString()) // 시작일이 현재 날짜보다 같거나 이전
+                        .and(qWeeklyChallenge.endDate.loe(threeDaysAfter.toString()))) // 종료일이 현재 날짜보다 같거나 이후
                 .fetchOne();
+    }
+
+
+
+    @Override
+    public List<WeeklyChallengeDto> selectWeeklyChallengeInIdx(List<Long> ids) {
+        QWeeklyChallenge qWeeklyChallenge = QWeeklyChallenge.weeklyChallenge;
+
+        return queryFactory.select(
+                        Projections.constructor(
+                                WeeklyChallengeDto.class,
+                                qWeeklyChallenge.idx,
+                                qWeeklyChallenge.title,
+                                qWeeklyChallenge.createDate,
+                                qWeeklyChallenge.modifyDate
+                        )
+                ).from(qWeeklyChallenge)
+                .where(qWeeklyChallenge.idx.in(ids))
+                .fetch();
     }
 
     @Override

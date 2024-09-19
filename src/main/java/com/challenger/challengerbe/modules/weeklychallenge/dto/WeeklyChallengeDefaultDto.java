@@ -18,18 +18,12 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class WeeklyChallengeDefaultDto extends BaseDto {
+public class WeeklyChallengeDefaultDto {
     /**키워드*/
     private String code;
 
+    /** 위클리 챌린지 id */
+    private Long weeklyChallengeIdx;
+
     private String userIdk;
-
-    /**시작일자*/
-    private String startDate;
-
-    /**마지막일자*/
-    private String endDate;
-
-    /**진행 상태값*/
-    private String activeStatus;
 }

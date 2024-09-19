@@ -23,7 +23,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class WeeklyChallengeCreateRequest {
-    @NotBlank
+    @NotBlank(message = "제목은 필수항목입니다.")
     private String title;
 
     // 항목 정보

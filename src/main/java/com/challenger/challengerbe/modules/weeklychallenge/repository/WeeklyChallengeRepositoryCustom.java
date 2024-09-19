@@ -21,4 +21,6 @@ public interface WeeklyChallengeRepositoryCustom {
     WeeklyChallengeDto selectWeeklyChallengeDto(WeeklyChallengeDefaultDto searchDto);
 
     List<WeeklyChallengeItemDto> selectWeeklyChallengeItemDto(Long weeklyChallengeIdx);
+
+    List<WeeklyChallengeDto> selectWeeklyChallengeInIdx(List<Long> ids);
 }

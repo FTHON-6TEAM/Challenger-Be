@@ -1,6 +1,7 @@
 package com.challenger.challengerbe.modules.weeklychallenge.domain;
 
 import com.challenger.challengerbe.modules.challenge.domain.Challenge;
+import com.challenger.challengerbe.modules.weeklychallenge.dto.WeeklyChallengeItemDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.FetchType;
@@ -58,6 +59,10 @@ public class WeeklyChallengeItem {
     }
     public void addTitle(String title) {
         this.title = title;
+    }
+
+    public WeeklyChallengeItem(WeeklyChallengeItemDto dto) {
+        this.title = dto.getTitle();
     }
 
 }

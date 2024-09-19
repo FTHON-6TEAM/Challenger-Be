@@ -13,6 +13,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
@@ -45,7 +46,7 @@ public class WeeklyChallengeUser {
     private Long idx;
 
     @ManyToOne(fetch =  FetchType.LAZY)
-    @JoinColumn(name = "idk", nullable = false)
+    @JoinColumn(name = "user_idk", nullable = false)
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -60,7 +61,9 @@ public class WeeklyChallengeUser {
     @LastModifiedDate
     private LocalDateTime modifyDate;
 
-    public WeeklyChallengeUser(WeeklyChallengeDto dto) {
-
+    @Builder
+    public WeeklyChallengeUser(User user, WeeklyChallenge weeklyChallenge) {
+        this.user = user;
+        this.weeklyChallenge = weeklyChallenge;
     }
 }
