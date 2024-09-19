@@ -2,13 +2,14 @@ package com.challenger.challengerbe.modules.weeklychallenge.controller;
 
 import com.challenger.challengerbe.auth.login.AuthInfo;
 import com.challenger.challengerbe.modules.weeklychallenge.dto.WeeklyChallengeDefaultDto;
-import com.challenger.challengerbe.modules.weeklychallenge.dto.WeeklyChallengeUserDto;
 import com.challenger.challengerbe.modules.weeklychallenge.service.WeeklyChallengeApplyService;
-import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,14 +36,12 @@ public class WeeklyChallengeApplyController {
 
     private final WeeklyChallengeApplyService weeklyChallengeApplyService;
 
+    @Operation(summary = "위클리 챌린지 참여")
     @PostMapping
-    public Page<WeeklyChallengeUserDto> selectWeeklyChallengeUserList(@Parameter
-    WeeklyChallengeDefaultDto searchDto, @AuthInfo String userIdk) {
+    public ResponseEntity<?> applyWeeklyChallenge(@RequestBody WeeklyChallengeDefaultDto searchDto, @AuthInfo String userIdk) {
         searchDto.setUserIdk(userIdk);
-        return weeklyChallengeApplyService.selectChallengeUserPageList(searchDto);
+        weeklyChallengeApplyService.applyChallenge(searchDto);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
-
-
-
 
 }
