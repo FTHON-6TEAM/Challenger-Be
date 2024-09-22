@@ -45,8 +45,8 @@ jobs:
           file: ./Dockerfile
           push: false
           tags: challenger:latest
-          build-args:
-            OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          build-args: |
+            OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
       env:
         OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
     - run: /usr/bin/docker save -o challenger.tar challenger:latest
