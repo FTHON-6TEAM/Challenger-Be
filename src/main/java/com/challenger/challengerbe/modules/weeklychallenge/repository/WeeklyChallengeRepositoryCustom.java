@@ -18,9 +18,9 @@ import java.util.List;
  */
 public interface WeeklyChallengeRepositoryCustom {
 
-    WeeklyChallengeDto selectWeeklyChallengeDto(WeeklyChallengeDefaultDto searchDto);
+    WeeklyChallengeDto selectWeeklyChallengeDto();
 
     List<WeeklyChallengeItemDto> selectWeeklyChallengeItemDto(Long weeklyChallengeIdx);
 
-    List<WeeklyChallengeDto> selectWeeklyChallengeInIdx(List<Long> ids);
+    List<WeeklyChallengeDto> selectWeeklyChallengeInIdx(String userIdk);
 }

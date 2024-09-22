@@ -41,8 +41,8 @@ public class WeeklyChallengeServiceImpl implements WeeklyChallengeService {
     private final WeeklyChallengeUserRepository weeklyChallengeUserRepository;
 
     @Override
-    public WeeklyChallengeDto selectWeeklyChallengeDto(WeeklyChallengeDefaultDto searchDto) {
-        WeeklyChallengeDto dto = weeklyChallengeRepository.selectWeeklyChallengeDto(searchDto);
+    public WeeklyChallengeDto selectWeeklyChallengeDto() {
+        WeeklyChallengeDto dto = weeklyChallengeRepository.selectWeeklyChallengeDto();
         List<WeeklyChallengeItem> list = weeklyChallengeItemRepository.findWeeklyChallengeItemsByWeeklyChallengeId(dto.getWeeklyChallengeIdx());
         dto.setWeeklyChallengeItemList(list.stream().map(WeeklyChallengeItemDto::new).toList());
         return dto;
@@ -51,8 +51,7 @@ public class WeeklyChallengeServiceImpl implements WeeklyChallengeService {
 
     @Override
     public List<WeeklyChallengeDto> selectMyWeeklyChallenge(String userIdk) {
-        List<Long> ids = weeklyChallengeUserRepository.findAllByUserIdk(userIdk);
-        List<WeeklyChallengeDto> list = weeklyChallengeRepository.selectWeeklyChallengeInIdx(ids);
+        List<WeeklyChallengeDto> list = weeklyChallengeRepository.selectWeeklyChallengeInIdx(userIdk);
         return list;
     }
 
@@ -60,7 +59,6 @@ public class WeeklyChallengeServiceImpl implements WeeklyChallengeService {
     @Transactional
     public void insertWeeklyChallenge(WeeklyChallengeDto challengeDto) {
         WeeklyChallenge weeklyChallenge = new WeeklyChallenge(challengeDto.getTitle());
-//        List<WeeklyChallengeItem> list = challengeDto.getWeeklyChallengeItemList().stream().map(WeeklyChallengeItem::new).toList();
 
         // 2. WeeklyChallengeItem 리스트 생성 및 연관 관계 설정
         List<WeeklyChallengeItem> list = challengeDto.getWeeklyChallengeItemList().stream()

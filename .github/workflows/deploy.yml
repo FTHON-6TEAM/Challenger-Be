@@ -45,6 +45,8 @@ jobs:
           file: ./Dockerfile
           push: false
           tags: challenger:latest
+          build-args:
+            OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       env:
         OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
     - run: /usr/bin/docker save -o challenger.tar challenger:latest
@@ -99,4 +101,4 @@ jobs:
           port: ${{ secrets.DEVELOP_PORT}}
           connect_timeout: 120s
           first_ssh: |
-            docker run -d -p 32468:8080 --name challenger -e SPRING_PROFILES_ACTIVE=dev --network mariadb_mariadb-master-net -v /home/fton/backend/upload:/home/fton/backend/upload challenger:latest;
+            docker run -d -p 32468:8080 --name challenger -e  SPRING_PROFILES_ACTIVE=dev --network mariadb_mariadb-master-net -v /home/fton/backend/upload:/home/fton/backend/upload challenger:latest;

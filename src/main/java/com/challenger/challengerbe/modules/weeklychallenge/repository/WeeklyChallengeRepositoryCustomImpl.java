@@ -1,5 +1,6 @@
 package com.challenger.challengerbe.modules.weeklychallenge.repository;
 
+import com.challenger.challengerbe.modules.user.domain.QUser;
 import com.challenger.challengerbe.modules.weeklychallenge.domain.QWeeklyChallenge;
 import com.challenger.challengerbe.modules.weeklychallenge.domain.QWeeklyChallengeItem;
 import com.challenger.challengerbe.modules.weeklychallenge.domain.QWeeklyChallengeUser;
@@ -32,7 +33,7 @@ public class WeeklyChallengeRepositoryCustomImpl implements WeeklyChallengeRepos
 
 
     @Override
-    public WeeklyChallengeDto selectWeeklyChallengeDto(WeeklyChallengeDefaultDto searchDto) {
+    public WeeklyChallengeDto selectWeeklyChallengeDto() {
         QWeeklyChallenge qWeeklyChallenge = QWeeklyChallenge.weeklyChallenge;
         QWeeklyChallengeItem qWeeklyChallengeItem = QWeeklyChallengeItem.weeklyChallengeItem;
 
@@ -58,8 +59,9 @@ public class WeeklyChallengeRepositoryCustomImpl implements WeeklyChallengeRepos
 
 
     @Override
-    public List<WeeklyChallengeDto> selectWeeklyChallengeInIdx(List<Long> ids) {
+    public List<WeeklyChallengeDto> selectWeeklyChallengeInIdx(String userIdk) {
         QWeeklyChallenge qWeeklyChallenge = QWeeklyChallenge.weeklyChallenge;
+        QWeeklyChallengeUser qWeeklyChallengeUser = QWeeklyChallengeUser.weeklyChallengeUser;
 
         return queryFactory.select(
                         Projections.constructor(
@@ -70,7 +72,9 @@ public class WeeklyChallengeRepositoryCustomImpl implements WeeklyChallengeRepos
                                 qWeeklyChallenge.modifyDate
                         )
                 ).from(qWeeklyChallenge)
-                .where(qWeeklyChallenge.idx.in(ids))
+                .leftJoin(qWeeklyChallengeUser)
+                .on(qWeeklyChallenge.idx.eq(qWeeklyChallengeUser.weeklyChallenge.idx))
+                .where(qWeeklyChallengeUser.user.idk.eq(userIdk))
                 .fetch();
     }
 
@@ -90,8 +94,6 @@ public class WeeklyChallengeRepositoryCustomImpl implements WeeklyChallengeRepos
                                 qWeeklyChallengeItem.modifyDate
                         )
                 ).from(qWeeklyChallengeItem)
-//                .leftJoin(qWeeklyChallenge)
-//                .on(qWeeklyChallengeItem.weeklyChallenge.idx.eq(qWeeklyChallenge.idx))
                 .where(qWeeklyChallengeItem.weeklyChallenge.idx.eq(weeklyChallengeIdx))
                 .fetch();
     }

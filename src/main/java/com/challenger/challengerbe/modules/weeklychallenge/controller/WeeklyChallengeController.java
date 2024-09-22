@@ -3,9 +3,7 @@ package com.challenger.challengerbe.modules.weeklychallenge.controller;
 import com.challenger.challengerbe.auth.login.AuthInfo;
 import com.challenger.challengerbe.common.CommonResponse;
 import com.challenger.challengerbe.modules.weeklychallenge.dto.WeeklyChallengeCreateRequest;
-import com.challenger.challengerbe.modules.weeklychallenge.dto.WeeklyChallengeDefaultDto;
 import com.challenger.challengerbe.modules.weeklychallenge.dto.WeeklyChallengeDto;
-import com.challenger.challengerbe.modules.weeklychallenge.dto.WeeklyChallengeItemDto;
 import com.challenger.challengerbe.modules.weeklychallenge.service.WeeklyChallengeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -15,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,9 +48,8 @@ public class WeeklyChallengeController {
     @Operation(summary = "위클리 챌린지 상세 조회")
     @Parameter(name = "searchDto", description = "위클리 챌린지 일련번호")
     @GetMapping("/view")
-    public ResponseEntity<?> selectWeeklyChallenge (@Parameter WeeklyChallengeDefaultDto searchDto, @AuthInfo String userIdk) {
-        searchDto.setUserIdk(userIdk);
-        WeeklyChallengeDto response = weeklyChallengeService.selectWeeklyChallengeDto(searchDto);
+    public ResponseEntity<?> selectWeeklyChallenge (@AuthInfo String userIdk) {
+        WeeklyChallengeDto response = weeklyChallengeService.selectWeeklyChallengeDto();
 
         return ResponseEntity.status(HttpStatus.OK).body(CommonResponse.resAllOf("위클리 챌린지 상세 조회가 완료되었습니다.", response));
     }

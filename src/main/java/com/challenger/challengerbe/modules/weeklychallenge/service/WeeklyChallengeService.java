@@ -18,7 +18,7 @@ import java.util.List;
  */
 public interface WeeklyChallengeService {
 
-    WeeklyChallengeDto selectWeeklyChallengeDto(WeeklyChallengeDefaultDto searchDto);
+    WeeklyChallengeDto selectWeeklyChallengeDto();
 
     void insertWeeklyChallenge(WeeklyChallengeDto challengeDto);
 
