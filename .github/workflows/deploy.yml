@@ -39,7 +39,7 @@ jobs:
 
 
     - name: Docker build
-      uses: docker/build-push-action@v3.2.0
+      uses: docker/build-push-action@v4
       with:
           context: .
           file: ./Dockerfile
@@ -51,14 +51,12 @@ jobs:
         OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
     - run: /usr/bin/docker save -o challenger.tar challenger:latest
 
-    - run: ls
-
       # tar 파일 권한 수정
     - name: Set permission for tar file
       run: chmod 664 challenger.tar
 
     - name: Send docker image file to test server
-      uses: appleboy/scp-action@master
+      uses: appleboy/scp-action@v0.1.6
       with:
         host: ${{ secrets.DEVELOP_HOST}}
         username: ${{ secrets.POSTOFFICE_NAME }}
