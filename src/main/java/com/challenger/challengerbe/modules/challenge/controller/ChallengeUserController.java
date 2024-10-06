@@ -141,7 +141,6 @@ public class ChallengeUserController {
     })
     @PutMapping(value="/challenge/upd", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> updateChallenge(final @Valid @RequestPart ChallengeUpdateRequest challengeUpdateRequest,
-                                             final @RequestPart(value = "_file", required = false) MultipartFile multipartFile,
                                              @Parameter(hidden = true) @AuthInfo String token) throws Exception {
 
         ChallengeDto challengeDto = ChallengeDto.updateOf(challengeUpdateRequest);
