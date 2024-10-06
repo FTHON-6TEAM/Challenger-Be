@@ -11,19 +11,20 @@ import com.challenger.challengerbe.cms.upload.service.FileUploadService;
 import com.challenger.challengerbe.cms.util.FileUploadUtil;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * packageName    : com.challenger.challengerbe.cms.file.service
@@ -40,6 +41,8 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class CmsFileService implements CmsFileDetailService{
+
+    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final CmsFileRepository cmsFileRepository;
 
@@ -107,17 +110,21 @@ public class CmsFileService implements CmsFileDetailService{
                 throw new NullPointerException("존재 하지 않는 파일 경로 입니다.");
             }
 
-            MultiValueMap<String, MultipartFile> files = multirequest.getMultiFileMap();
-
-            System.out.println("### files empty boolean : "+files.isEmpty());
+            MultiValueMap<String, MultipartFile> checkFiles = multirequest.getMultiFileMap();
+            MultiValueMap<String, MultipartFile> files = new LinkedMultiValueMap<>();
 
             //첨부 파일 가능한지 먼저 체크
-            for(Map.Entry<String, List<MultipartFile>> entry : files.entrySet()){
+            for(Map.Entry<String, List<MultipartFile>> entry : checkFiles.entrySet()){
                 MultipartFile multiFile = entry.getValue().get(0);
                 String saveFileName = multiFile.getOriginalFilename();
-                //첨부 파일 확장명 체크
-                if(!fileUploadUtil.validateUploadFile(saveFileName,fileUploadUtil.ALLOW_EXTS)){
-                    throw new DoNotMatchExtException("해당 파일은 첨부할 수 없는 파일 형식입니다.");
+                //application이 아닌 Content-type만을 잡을 수 있도록 처리
+                if(!Objects.requireNonNull(multiFile.getContentType()).contains("application")) {
+                    logger.info("Intercepted file: {}, ContentType: {}",  multiFile.getOriginalFilename(), multiFile.getContentType());
+                    //첨부 파일 확장명 체크
+                    if (!fileUploadUtil.validateUploadFile(saveFileName, fileUploadUtil.ALLOW_EXTS)) {
+                        throw new DoNotMatchExtException("해당 파일은 첨부할 수 없는 파일 형식입니다.");
+                    }
+                    files.add(entry.getKey(), multiFile);
                 }
             }
 

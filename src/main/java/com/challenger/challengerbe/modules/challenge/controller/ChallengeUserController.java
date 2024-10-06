@@ -3,7 +3,6 @@ package com.challenger.challengerbe.modules.challenge.controller;
 import com.challenger.challengerbe.auth.login.AuthInfo;
 import com.challenger.challengerbe.common.CommonResponse;
 import com.challenger.challengerbe.common.annotation.FileUploadAction;
-import com.challenger.challengerbe.common.exception.AlreadyExistException;
 import com.challenger.challengerbe.common.exception.AlreadyUseException;
 import com.challenger.challengerbe.modules.challenge.dto.*;
 import com.challenger.challengerbe.modules.challenge.service.ChallengeApplyService;
