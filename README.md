@@ -20,6 +20,7 @@
 
 
 ## ![icons8-함께-일하는-사람들-45](https://github.com/user-attachments/assets/a7e65e40-3e5d-4883-b123-63e075671664) 작업 회고
+* [프론트와 백엔드간의 파일 처리 통신 이슈 회고](https://ghgo195.tistory.com/75)
 
 
 ## ![icons8-함께-일하는-사람들-45](https://github.com/user-attachments/assets/a7e65e40-3e5d-4883-b123-63e075671664) 아키텍처 
