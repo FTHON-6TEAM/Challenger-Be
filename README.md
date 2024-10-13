@@ -14,6 +14,7 @@
 
 
 ## ![icons8-함께-일하는-사람들-45](https://github.com/user-attachments/assets/a7e65e40-3e5d-4883-b123-63e075671664) 프로젝트 사용기술
+`Spring Boot` `Java 17` `JPA` `MYSQL` `Docker` `Intellij IDEA` `github action (CI/CD)` `Swagger`
 
 
 ## ![icons8-함께-일하는-사람들-45](https://github.com/user-attachments/assets/a7e65e40-3e5d-4883-b123-63e075671664) 프로젝트 요점
