@@ -18,6 +18,8 @@
 
 
 ## ![icons8-함께-일하는-사람들-45](https://github.com/user-attachments/assets/a7e65e40-3e5d-4883-b123-63e075671664) 프로젝트 요점
+* 프론트 와 백엔드 분리된 협업을 통해 커뮤니케이션 능력을 키우는 목적
+* 새로운 기술에 대한 도입 및 분담 개발에 대한 능력을 경험
 
 
 ## ![icons8-함께-일하는-사람들-45](https://github.com/user-attachments/assets/a7e65e40-3e5d-4883-b123-63e075671664) 작업 회고
