@@ -96,7 +96,7 @@ public class QuestionController {
             @ApiResponse(responseCode = "400", description = "등록시 오류 발생")
     })
     @FileUploadAction()
-    @PostMapping(value="", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(value="/v2", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<?> createQuestionv2(@Valid @RequestPart QuestionCreateRequest request,
                                             @RequestPart(value = "_file",required = false) MultipartFile multipartFile
             ,@AuthInfo String userIdk) {
@@ -120,7 +120,7 @@ public class QuestionController {
             @ApiResponse(responseCode = "400", description = "등록시 오류 발생")
     })
     @FileUploadAction()
-    @PostMapping(value="")
+    @PostMapping(value="/v3")
     public ResponseEntity<?> createQuestionv3(@Valid @RequestPart QuestionCreateRequest request
             ,@AuthInfo String userIdk) {
 

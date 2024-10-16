@@ -38,7 +38,6 @@ public class WeeklyChallengeServiceImpl implements WeeklyChallengeService {
 
     private final WeeklyChallengeRepository weeklyChallengeRepository;
     private final WeeklyChallengeItemRepository weeklyChallengeItemRepository;
-    private final WeeklyChallengeUserRepository weeklyChallengeUserRepository;
 
     @Override
     public WeeklyChallengeDto selectWeeklyChallengeDto() {
